@@ -2,6 +2,12 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.5.
 
+A recipe management app that allows users to add, edit, delete, browse recipes. 
+
+It can include information about ingredients, cooking instructions, cooking times, and photos.
+
+In addition, the app can allow users to filter recipes by category (e.g. breakfast, dinner, dessert), and also allow users to search for favorite dishes.
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
