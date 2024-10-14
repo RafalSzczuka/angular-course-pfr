@@ -1,5 +1,5 @@
 import { NgFor } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-recipe-list',
@@ -14,4 +14,10 @@ export class RecipeListComponent {
     { title: 'Pancakes', description: 'Puszyste naleśniki z syropem klonowym.' },
     { title: 'Tacos', description: 'Meksykańskie tacos z wołowiną i salsą.' }
   ];
+
+  @Output() recipeSelected = new EventEmitter<{ title: string, description: string }>();
+
+  onRecipeClick(recipe: { title: string, description: string }) {
+    this.recipeSelected.emit(recipe);
+  }
 }

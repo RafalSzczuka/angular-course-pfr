@@ -1,0 +1,10 @@
+<section class="container">
+    <div *ngIf="!selectedRecipe">
+        <p>Wybierz przepis z listy, aby zobaczyć szczegóły.</p>
+    </div>
+
+    <div *ngIf="selectedRecipe" class="container--selected">
+        <h2>{{ selectedRecipe.title }}</h2>
+        <p>{{ selectedRecipe.description }}</p>
+    </div>
+</section>
