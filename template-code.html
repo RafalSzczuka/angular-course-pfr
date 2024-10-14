@@ -1,0 +1,27 @@
+<!-- STEP 5 -->
+<section class="container">
+    <div *ngIf="!selectedRecipe">
+        <p>Wybierz przepis z listy, aby zobaczyć szczegóły.</p>
+    </div>
+
+    <div *ngIf="selectedRecipe" class="container--selected">
+        <h2>{{ selectedRecipe.title }}</h2>
+        <p>{{ selectedRecipe.description }}</p>
+    </div>
+</section>
+<!--  -->
+
+<!-- Step 6 -->
+<h2 class="header">Lista Przepisów</h2>
+<ul>
+    <li *ngFor="let recipe of recipes" (click)="onRecipeClick(recipe)">
+        <h3>{{ recipe.title }}</h3>
+        <p>{{ recipe.description }}</p>
+    </li>
+</ul>
+<!--  -->
+
+<!-- Step 7 -->
+<app-recipe-list (recipeSelected)="onRecipeSelected($event)"></app-recipe-list>
+<app-recipe-detail [selectedRecipe]="selectedRecipe"></app-recipe-detail>
+<!--  -->
