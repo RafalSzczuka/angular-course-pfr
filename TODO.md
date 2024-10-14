@@ -58,3 +58,4 @@ W tym module:
 
 Zadanie dla chętnych
 * Spraw by pozycja wybrana z listy przepisów odróżniała się od tych nie wybranych (selected vs not selected).
+    >Podpowiedź: Użyj dyrektywy ngClass
