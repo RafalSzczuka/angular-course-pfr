@@ -6,5 +6,7 @@
     <div *ngIf="selectedRecipe" class="container--selected">
         <h2>{{ selectedRecipe.title }}</h2>
         <p>{{ selectedRecipe.description }}</p>
+        <p>Poziom trudności: {{ selectedRecipe.difficulty }}</p>
+        <p>Czas przygotowania: {{ selectedRecipe.preparationTime }} minut</p>
     </div>
 </section>

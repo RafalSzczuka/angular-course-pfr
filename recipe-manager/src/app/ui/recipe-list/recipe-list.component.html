@@ -1,0 +1,11 @@
+<h2 class="header">Lista Przepisów</h2>
+<section>
+  <ul>
+    <li *ngFor="let recipe of recipes"
+      [ngClass]="{'element-selected': selectedRecipeTitle === recipe.title}">
+      <app-recipe-list-element [recipe]="recipe"
+        (recipeRemoved)="onDeleteRecipe($event)"
+        (recipeSelected)="onRecipeClick($event)"></app-recipe-list-element>
+    </li>
+  </ul>
+</section>
