@@ -1,46 +1,91 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+// Krok 1 - Aktualizacja modelu RecipeModel
+export interface RecipeModel {
+  id: number;
+  title: string;
+  description: string;
+  ingredients: string[];
+  preparationTime: number;  // w minutach
+  difficulty: 'easy' | 'medium' | 'hard';
+}
 
-@Component({
-  selector: 'app-recipe-list',
-  templateUrl: './recipe-list.component.html',
-  styleUrls: ['./recipe-list.component.scss']
+// Krok 2 - Tworzenie serwisu RecipeService
+import { Injectable } from '@angular/core';
+import { RecipeModel } from '../models/recipe.model';
+
+@Injectable({
+  providedIn: 'root'
 })
-export class RecipeListComponent {
-  recipes = [
-    { title: 'Spaghetti Carbonara', description: 'Klasyczne włoskie danie.' },
-    { title: 'Pancakes', description: 'Puszyste naleśniki z syropem klonowym.' },
-    { title: 'Tacos', description: 'Meksykańskie tacos z wołowiną i salsą.' }
+export class RecipeService {
+  private recipes: RecipeModel[] = [
+    {
+      id: 1,
+      title: 'Spaghetti Carbonara',
+      description: 'Klasyczne włoskie danie.',
+      ingredients: ['makaron', 'jajka', 'boczek', 'ser', 'pieprz'],
+      preparationTime: 30,
+      difficulty: 'easy'
+    },
+    {
+      id: 2,
+      title: 'Pancakes',
+      description: 'Puszyste naleśniki z syropem klonowym.',
+      ingredients: ['mąka', 'mleko', 'jajka', 'syrop klonowy'],
+      preparationTime: 20,
+      difficulty: 'medium'
+    },
+    {
+      id: 3,
+      title: 'Tacos',
+      description: 'Meksykańskie tacos z wołowiną i salsą.',
+      ingredients: ['mąka', 'mleko', 'jajka', 'wołowina', 'salsa'],
+      preparationTime: 60,
+      difficulty: 'hard'
+    }
   ];
 
-  // ####################  TAKE THIS (step 6)
-  @Output() recipeSelected = new EventEmitter<{ title: string, description: string }>();
+  constructor() {}
 
-  onRecipeClick(recipe: { title: string, description: string }) {
-    this.recipeSelected.emit(recipe);
+  // Metoda pobierająca wszystkie przepisy
+  getRecipes(): RecipeModel[] {
+    return this.recipes;
   }
+}
 
-  // ####################
+// Krok 5 - recipe-list-element.component.ts emitowanie zdarzenia usunięcia przepisu
+// ...
+export class RecipeListComponent implements OnInit {
+  // ...
+  @Output() recipeRemoved = new EventEmitter<number>();
+// ...
+  onDeleteRecipe(id: number): void {
+    this.recipeRemoved.emit(id);
+  }
 }
 
 
 
-import { Component } from '@angular/core';
-import { RecipeListComponent } from './recipe-list/recipe-list.component';
+// Krok 5 - recipe.service.ts
 
-@Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [RecipeListComponent],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+// ...
+@Injectable({
+  providedIn: 'root'
 })
-export class AppComponent {
-  title = 'recipe-manager';
-  // ####################  TAKE THIS (step 7)
-  selectedRecipe: { title: string, description: string } | null = null;
+export class RecipeService {
+// ...
 
-  onRecipeSelected(recipe: { title: string, description: string }) {
-    this.selectedRecipe = recipe;
+  // Metoda usuwająca przepis
+  deleteRecipe(id: number): void {
+    this.recipes = this.recipes.filter(r => r.id !== id);
   }
-  // ####################
+}
+
+// Krok 5 - recipe-list.component usuwanie przepisu
+
+// ...
+export class RecipeListComponent implements OnInit{
+// ...
+  onDeleteRecipe(id: number): void {
+    this.recipeService.deleteRecipe(id);  // Usuwanie przepisu
+    this.recipes = this.recipeService.getRecipes();  // Odśwież listę
+  }
 }

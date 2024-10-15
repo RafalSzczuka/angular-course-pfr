@@ -1,27 +1,32 @@
-<!-- STEP 5 -->
-<section class="container">
-    <div *ngIf="!selectedRecipe">
-        <p>Wybierz przepis z listy, aby zobaczyć szczegóły.</p>
-    </div>
-
-    <div *ngIf="selectedRecipe" class="container--selected">
-        <h2>{{ selectedRecipe.title }}</h2>
-        <p>{{ selectedRecipe.description }}</p>
-    </div>
-</section>
+<!-- Krok 4 - recipe-list-element.component.html -->
+<article *ngIf="recipe" (click)="onRecipeClick(recipe)">
+    <h3>{{ recipe.title }}</h3>
+    <p>{{ recipe.description }}</p>
+    <p>Poziom trudności: {{ recipe.difficulty }}</p>
+    <p>Czas przygotowania: {{ recipe.preparationTime }} minut</p>
+</article>
 <!--  -->
 
-<!-- Step 6 -->
+<!-- Krok 5 - recipe-list-element.component.html -->
+<article *ngIf="recipe" (click)="onRecipeClick(recipe)">
+    <h3>{{ recipe.title }}</h3>
+    <p>{{ recipe.description }}</p>
+    <p>Poziom trudności: {{ recipe.difficulty }}</p>
+    <p>Czas przygotowania: {{ recipe.preparationTime }} minut</p>
+    <button (click)="onDeleteRecipe(recipe.id)">Usuń</button>
+</article>
+<!--  -->
+
+<!-- krok 5 - recipe-list.component.html -->
 <h2 class="header">Lista Przepisów</h2>
-<ul>
-    <li *ngFor="let recipe of recipes" (click)="onRecipeClick(recipe)">
-        <h3>{{ recipe.title }}</h3>
-        <p>{{ recipe.description }}</p>
-    </li>
-</ul>
-<!--  -->
-
-<!-- Step 7 -->
-<app-recipe-list (recipeSelected)="onRecipeSelected($event)"></app-recipe-list>
-<app-recipe-detail [selectedRecipe]="selectedRecipe"></app-recipe-detail>
+<section>
+    <ul>
+        <li *ngFor="let recipe of recipes"
+            [ngClass]="{'element-selected': selectedRecipeTitle === recipe.title}">
+            <app-recipe-list-element [recipe]="recipe"
+                (recipeRemoved)="onDeleteRecipe($event)"
+                (recipeSelected)="onRecipeClick($event)"></app-recipe-list-element>
+        </li>
+    </ul>
+</section>
 <!--  -->
