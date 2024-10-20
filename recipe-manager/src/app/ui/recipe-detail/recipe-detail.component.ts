@@ -1,6 +1,6 @@
 import { NgIf } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { RecipeModel } from '../../core/recipe/models';
+import { RecipeModel } from '../../core/recipe/model';
 
 @Component({
   selector: 'app-recipe-detail',
@@ -10,5 +10,5 @@ import { RecipeModel } from '../../core/recipe/models';
   styleUrl: './recipe-detail.component.scss'
 })
 export class RecipeDetailComponent {
-  @Input() selectedRecipe: Partial<RecipeModel> | null = null;
+  @Input() selectedRecipe: RecipeModel | null = null;
 }

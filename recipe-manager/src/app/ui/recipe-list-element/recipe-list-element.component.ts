@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RecipeModel } from '../../core/recipe/models';
+import { RecipeModel } from '../../core/recipe/model';
 
 @Component({
   selector: 'app-recipe-list-element',

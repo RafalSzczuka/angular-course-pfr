@@ -7,6 +7,15 @@
 </article>
 <!--  -->
 
+<!-- Krok 4 - recipe-detail.component.html -->
+<article *ngIf="recipe" (click)="onRecipeClick(recipe)">
+    <h2>{{ selectedRecipe.title }}</h2>
+    <p>{{ selectedRecipe.description }}</p>
+    <p>Poziom trudności: {{ selectedRecipe.difficulty }}</p>
+    <p>Czas przygotowania: {{ selectedRecipe.preparationTime }} minut</p>
+</article>
+<!--  -->
+
 <!-- Krok 5 - recipe-list-element.component.html -->
 <article *ngIf="recipe" (click)="onRecipeClick(recipe)">
     <h3>{{ recipe.title }}</h3>

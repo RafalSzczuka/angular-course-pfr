@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-
-import { RecipeDetailComponent } from './ui/recipe-detail/recipe-detail.component';
 import { RecipeListComponent } from './ui/recipe-list';
-import { RecipeModel } from './core/recipe/models';
+import { RecipeDetailComponent } from './ui/recipe-detail/';
+import { RecipeModel } from './core/recipe/model';
 
 @Component({
   selector: 'app-root',
@@ -14,9 +13,9 @@ import { RecipeModel } from './core/recipe/models';
 export class AppComponent {
   title = 'recipe-manager';
 
-  selectedRecipe: Partial<RecipeModel> | null = null;
+  selectedRecipe: RecipeModel | null = null;
 
-  onRecipeSelected(recipe: Partial<RecipeModel>) {
+  onRecipeSelected(recipe: RecipeModel) {
     this.selectedRecipe = recipe;
   }
 }

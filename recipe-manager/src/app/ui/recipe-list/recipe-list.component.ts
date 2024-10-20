@@ -1,8 +1,8 @@
 import { CommonModule, NgFor } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { RecipeListElementComponent } from '../recipe-list-element/recipe-list-element.component';
-import { RecipeService } from '../../core/recipe/services/recipe.service';
-import { RecipeModel } from '../../core/recipe/models';
+import { RecipeService } from '../../core/recipe/service/recipe.service';
+import { RecipeModel } from '../../core/recipe/model';
 
 @Component({
   selector: 'app-recipe-list',
@@ -15,7 +15,7 @@ export class RecipeListComponent implements OnInit{
   selectedRecipeTitle: string = '';
   recipes: RecipeModel[]  = [];
 
-  @Output() recipeSelected = new EventEmitter<Partial<RecipeModel>>();
+  @Output() recipeSelected = new EventEmitter<RecipeModel>();
 
   constructor(private recipeService: RecipeService) {
 
@@ -24,7 +24,7 @@ export class RecipeListComponent implements OnInit{
     this.recipes =  this.recipeService.getRecipes();
   }
 
-  onRecipeClick(listElement: Partial<RecipeModel> & { selectedRecipeTitle: string }) {
+  onRecipeClick(listElement: RecipeModel & { selectedRecipeTitle: string }) {
     this.selectedRecipeTitle = listElement.selectedRecipeTitle;
     this.recipeSelected.emit(listElement);
   }

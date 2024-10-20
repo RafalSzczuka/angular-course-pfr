@@ -1,11 +1,11 @@
 // Krok 1 - Aktualizacja modelu RecipeModel
 export interface RecipeModel {
-  id: number;
+  id?: number;
   title: string;
-  description: string;
-  ingredients: string[];
-  preparationTime: number;  // w minutach
-  difficulty: 'easy' | 'medium' | 'hard';
+  description?: string;
+  ingredients?: string[];
+  preparationTime?: number;  // w minutach
+  difficulty?: 'easy' | 'medium' | 'hard';
 }
 
 // Krok 2 - Tworzenie serwisu RecipeService
@@ -51,9 +51,24 @@ export class RecipeService {
   }
 }
 
-// Krok 5 - recipe-list-element.component.ts emitowanie zdarzenia usunięcia przepisu
+// Krok 3 - recipe-list.component.ts - wstrzykiwanie serwisu
 // ...
 export class RecipeListComponent implements OnInit {
+  constructor(private recipeService: RecipeService) {}
+
+  selectedRecipeTitle: string = '';
+  recipes: RecipeModel[] = [];
+
+  @Output() recipeSelected = new EventEmitter<RecipeModel>();
+
+  ngOnInit(): void {
+    this.recipes = this.recipeService.getRecipes();
+  }
+// 
+
+// Krok 5 - recipe-list-element.component.ts emitowanie zdarzenia usunięcia przepisu
+// ...
+export class RecipeListElementComponent implements OnInit {
   // ...
   @Output() recipeRemoved = new EventEmitter<number>();
 // ...
