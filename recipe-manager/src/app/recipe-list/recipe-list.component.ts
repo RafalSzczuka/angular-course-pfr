@@ -1,7 +1,7 @@
-import { CommonModule, NgFor } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { RecipeListElementComponent } from '../recipe-list-element/recipe-list-element.component';
-import { RecipeModel } from '../core/recipe';
+import { RecipeModel } from '../core/recipe/model';
 
 @Component({
   selector: 'app-recipe-list',
@@ -12,7 +12,7 @@ import { RecipeModel } from '../core/recipe';
 })
 export class RecipeListComponent {
   selectedRecipeTitle: string = '';
-  recipes = [
+  recipes: RecipeModel[] = [
     { title: 'Spaghetti Carbonara', description: 'Klasyczne włoskie danie.' },
     { title: 'Pancakes', description: 'Puszyste naleśniki z syropem klonowym.' },
     { title: 'Tacos', description: 'Meksykańskie tacos z wołowiną i salsą.' }
