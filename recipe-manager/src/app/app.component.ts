@@ -15,7 +15,7 @@ export class AppComponent {
 
   selectedRecipe: RecipeModel | null = null;
 
-  onRecipeSelected(recipe: RecipeModel) {
+  onRecipeSelected(recipe: RecipeModel | null) {
     this.selectedRecipe = recipe;
   }
 }

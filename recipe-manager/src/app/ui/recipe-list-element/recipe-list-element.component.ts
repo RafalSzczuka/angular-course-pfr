@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RecipeModel } from '../../core/recipe/model';
+import { EventRecipeModel, RecipeModel } from '../../core/recipe/model';
 
 @Component({
   selector: 'app-recipe-list-element',
@@ -11,15 +11,16 @@ import { RecipeModel } from '../../core/recipe/model';
 })
 export class RecipeListElementComponent {
   @Input() recipe: RecipeModel | undefined = undefined;
-  @Output() recipeSelected = new EventEmitter<RecipeModel & { selectedRecipeTitle: string }>();
+  @Output() recipeSelected = new EventEmitter<EventRecipeModel | null>();
   @Output() recipeRemoved = new EventEmitter<number>();
 
   onRecipeClick(recipe: RecipeModel) {
-    const toEmit = { ...recipe, selectedRecipeTitle: recipe.title };
+    const toEmit: EventRecipeModel = { ...recipe, selectedRecipeTitle: recipe.title,  };
     this.recipeSelected.emit(toEmit);
   }
 
-  onDeleteRecipe(id: number): void {
-    this.recipeRemoved.emit(id);
+  onDeleteRecipe(recipe: RecipeModel): void {
+    this.recipeRemoved.emit(recipe.id);
+    this.recipeSelected.emit(null);
   }
 }
