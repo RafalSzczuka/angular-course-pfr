@@ -1,0 +1,49 @@
+<div *ngIf="showForm">
+    <h2>{{ isEditMode ? 'Edytuj przepis' : 'Dodaj nowy przepis' }}</h2>
+
+    <form [formGroup]="recipeFormGroup" (ngSubmit)="onSubmit()" novalidate>
+        <!-- Tytuł -->
+        <div>
+            <label for="title">Tytuł przepisu:</label>
+            <input type="text" id="title" formControlName="title" />
+            <div
+                *ngIf="recipeFormGroup.get('title')?.invalid && recipeFormGroup.get('title')?.touched">
+                <small
+                    *ngIf="recipeFormGroup.get('title')?.errors?.required">Tytuł
+                    jest wymagany</small>
+                <small
+                    *ngIf="recipeFormGroup.get('title')?.errors?.minlength">Tytuł
+                    musi mieć co najmniej 3 znaki</small>
+            </div>
+        </div>
+
+        <!-- Opis -->
+        <div>
+            <label for="description">Opis :</label>
+            <textarea type="text" id="description"
+                formControlName="description"></textarea>
+            <div
+                *ngIf="recipeFormGroup.get('description')?.invalid && recipeFormGroup.get('description')?.touched">
+                <small
+                    *ngIf="recipeFormGroup.get('description')?.errors?.required">Składniki
+                    są wymagane</small>
+            </div>
+        </div>
+
+        <!-- Składniki -->
+        <div>
+            <label for="ingredients">Składniki (minimum 2):</label>
+            <input type="text" id="ingredients" formControlName="ingredients" />
+            <div
+                *ngIf="recipeFormGroup.get('ingredients')?.invalid && recipeFormGroup.get('ingredients')?.touched">
+                <small
+                    *ngIf="recipeFormGroup.get('ingredients')?.errors?.required">Składniki
+                    są wymagane</small>
+            </div>
+        </div>
+
+        <button type="submit" [disabled]="recipeFormGroup.invalid">
+            {{ isEditMode ? 'Zapisz zmiany' : 'Dodaj przepis' }}
+        </button>
+    </form>
+</div>

@@ -44,6 +44,31 @@
             </div>
         </div>
 
+        <!-- Poziom trudności -->
+        <div>
+            <label for="difficulty">Poziom trudności wykonania :</label>
+            <select type="text" id="difficulty" name="difficulty" ngModel
+                required #difficulty="ngModel">
+                <option value="hard">hard</option>
+                <option value="medium">medium</option>
+                <option value="easy">easy</option>
+            </select>
+            <div *ngIf="difficulty.invalid && difficulty.touched">
+                <small *ngIf="difficulty.errors?.required">Poziom trudności
+                    wykonania jest wymagany</small>
+            </div>
+        </div>
+
+        <!-- Czas przygotowania -->
+        <div>
+            <label for="preparationTime">Czas wykonania (w minutach):</label>
+            <input type="text" id="preparationTime" name="preparationTime" ngModel
+                required #preparationTime="ngModel" />
+            <div *ngIf="preparationTime.invalid && preparationTime.touched">
+                <small *ngIf="preparationTime.errors?.required">Czas wykonania jest wymagany</small>
+            </div>
+        </div>
+
         <!-- Przycisk wysyłający -->
         <button type="submit" [disabled]="recipeForm.invalid">
             {{ isEditMode ? 'Zapisz zmiany' : 'Dodaj przepis' }}

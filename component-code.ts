@@ -1,4 +1,7 @@
+// CZĘŚĆ Template Driven Forms
+
 // KROK 4 - LOGIKA KOMPONENTU RecipeTemplateFormComponent
+
 // ...
 export class RecipeTemplateFormComponent implements OnInit {
   // Normalnie moglibyśmy nie pisać tutaj typu bo po co
@@ -48,6 +51,64 @@ export class RecipeTemplateFormComponent implements OnInit {
 
       // Gdy już wszystkie czynności wymagane do dodania lub edycji przepisu są wykonane, musimy zresetować formularz i ukryć komponent
       form.reset();
+      this.showForm = false;
+    }
+  }
+}
+
+
+
+
+
+// CZĘŚĆ Reactive Forms
+
+
+// ...
+export class RecipeFormComponent implements OnInit {
+  @Input() isEditMode = false;
+  @Input() currentRecipe: RecipeModel | null = null;
+
+  showForm = false;
+  recipeFormGroup!: FormGroup;
+
+  // wstrzykujemy FormBuildera, to dzięki niemu będziemy w stanie zbudować reactive forms
+  constructor(private fb: FormBuilder, private recipeService: RecipeService) {}
+
+  // definiujemy nasza formGroup dzięki FormBuilder'owi, zauważ że na tym poziomie defiuniujesz strukturę, wartośc początkową, walidatory i tak dalej.
+  ngOnInit(): void {
+    this.recipeFormGroup = this.fb.group({
+      title: ['', [Validators.required, Validators.minLength(3)]],
+      description: ['', Validators.required],
+      ingredients: ['', Validators.required]
+    });
+
+    // metoda patchValue inteligętnie podmienia wartości kontrolek podanych jako wartość wejściowa funkcji
+    if (this.currentRecipe) {
+      this.recipeFormGroup.patchValue(this.currentRecipe);
+    }
+  }
+
+  toggleForm(): void {
+    this.showForm = !this.showForm;
+  }
+
+  onSubmit(): void {
+    if (this.recipeFormGroup.valid) {
+      const newRecipe: RecipeModel = {
+        id: this.isEditMode ? this.currentRecipe!.id : Date.now(),
+        ...this.recipeFormGroup.value, // ta linijka tworzy 'shadow copy' obecnych wartości formularza i je tu wrzuca, dzięki temu nie musimy ich deklarować ręcznie jeżeli się nie zmianiają, nie są mapowane, parsowane itp.
+        ingredients: this.recipeFormGroup.value.ingredients.split(','), // metoda pomocnicza split(',') znajduje w ciągu znaków ',' i na tej podstawie rozdziela ciąg na części
+        preparationTime: 30,
+        difficulty: 'easy'
+      };
+
+      if (this.isEditMode) {
+        this.recipeService.editRecipe(newRecipe);
+      } else {
+        this.recipeService.addRecipe(newRecipe);
+      }
+
+      this.recipeFormGroup.reset();
       this.showForm = false;
     }
   }

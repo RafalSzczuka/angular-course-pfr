@@ -44,7 +44,7 @@ Zbudujemy formularz umożliwiający dodawanie i edytowanie przepisów kulinarnyc
 
 4. Mamy już mechanikę ukrywania i odkrywania komponentu z formularzem którego użyjemy przy dodawaniu nowych przepisów.
 Teraz dodajmy formularz
-    * Do listy importów w `app-recipe-template-form` dorzuć FormModule, to moduł który zawiera wszystkie podstawowe zasoby potrzebne do obsługi formularza opartego na szablonach.
+    * Do listy importów w `app-recipe-template-form.component.ts` dorzuć FormModule, to moduł który zawiera wszystkie podstawowe zasoby potrzebne do obsługi formularza opartego na szablonach.
     * W pliku `template-code.html` znajdziesz kod potrzebny do stworzenia widoku. Komentarze zawierają opis potrzebny do zrozumienia wykorzystanych mechanizmów. W razie niezrozumienia, śmiało pytaj trenera :)
     * Gdy dodasz kod szablonu, kompilator poimformuje Cię o blądach, rozwiążesz je dodając logikę komponentu, znajdziesz ją w `component-code.ts` Komentarze zawierają wyjaśnienia użytych mechanizmów.
 
@@ -52,18 +52,64 @@ Teraz w przeglądarce zobaczysz przycisk dodaj nowy przepis, a po kliknięciu zo
 
 Zadanie do wykonania
   * Dodaj kontrolki do obsługi poziomu trudności wykonania oraz czas przygotowania dania z przepisu.
+  * Spraw by składniki były wyświetlane... może?
 
 
 
 **CZĘŚĆ Reactive Forms**
 
+1. Zacznijmy od utworzenia komponentu, który będzie odpowiedzialny za formularz dodawania i edytowania przepisu.
+    * W terminalu w katalogu projektu utwórz nowy komponent za pomocą `ng generate component ui/recipe-reactive-form`
+
+    >To polecenie utworzy pliki:
+    >
+    >    `recipe-reactive-form.component.ts`
+    >    `recipe-reactive-form.component.html`
+    >    `recipe-reactive-form.component.scss`
+
+2. Przejdź do `recipe-template-form.component.ts`
+    * Zaimporuj CommonModule
+    * Dodaj zmienną `showForm: boolean = false`
+    * Zdefiniuj metodę
+        toggleForm(): void
+            {
+                this.showForm = !this.showForm;
+            }
+    * Przejdźmy do `recipe-template-form.component.html`, Dodajmy tam początkową formę kodu widoku naszego komponentu
+        `<div *ngIf="showForm">`
+        `<h2>Dodaj nowy przepis</h2>`
+        `</div>`
+
+3. Logikę odpowiedzialną za wyświetlenie oraz ukrycie już mamy.
+Przejdźmy do `app.component.html` i podmieńmy tagi komponentów by zacząć używać `<app-recipe-reactive-form #recipeReactiveForm></app-recipe-reactive-form>`
+Następnie przejdźmy do `app.component.ts` i zaimportujmy nasz nowy komponent
+
+3,5. Dodałeś nowy import czy podmieniłeś na nowy? Jest to bardzo istotne, nie importujmy rzeczy których nie używamy.
+                                    ###########  dopisz coś mądrego   ###########
+
+
+
+
+
+
+                                                                    ###########  czy na pewno?   ###########
+4. Teraz dodajmy formularz
+    * Do listy importów w `app-recipe-reactive-form.component.ts` dorzuć FormModule oraz ReactiveFormModule, te moduły są potrzebne do pełnej obsługi formularzy Angular opartych na reaktywności.
+    * W pliku `template-code.html` znajdziesz kod potrzebny do stworzenia widoku. Komentarze zawierają opis potrzebny do zrozumienia wykorzystanych mechanizmów. W razie niezrozumienia, śmiało pytaj trenera :)
+    * Gdy dodasz kod szablonu, kompilator poimformuje Cię o blądach, rozwiążesz je dodając logikę komponentu, znajdziesz ją w `component-code.ts` Komentarze zawierają wyjaśnienia użytych mechanizmów.
+
+Teraz w przeglądarce zobaczysz przycisk dodaj nowy przepis, a po kliknięciu zobaczysz komponent odpowiedzialny za dodanie przepisu!  🎉
+
+Zadanie do wykonania
+  * Dodaj kontrolki do obsługi poziomu trudności wykonania oraz czas przygotowania dania z przepisu.
+  * Spraw by składniki były wyświetlane... może?
+
 ##### Podsumowanie Modułu:
 W tym module:
 
-* Nauczyliśmy się jak tworzy się serwisy oraz jak się ich używa
-* Zobaczyliśmy jak pracuje się z modelami danych, oraz przypomnieliśmy sobie Data Binding
+Mieliśmy okazję poznać oba sposoby na tworzenie formularzy w Angularze.
+* Template-Driven Forms są prostsze do wdrożenia, ale mniej elastyczne. Świetnie sprawdzają się w małych formularzach.
+* Reactive Forms dają większą kontrolę nad logiką formularza, są bardziej złożone, ale umożliwiają skomplikowaną walidację i łatwą integrację z innymi częściami aplikacji.
 
 
 Zadanie dla chętnych
-* Spraw by naciśnięciu przycisku usunięcia przepis nie był jednocześnie zaznaczany.
-* Spraw by usunięcie zaznaczonego przepisu powodowało jego "odznaczenie".

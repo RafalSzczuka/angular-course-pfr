@@ -1,55 +1,97 @@
-<!-- KROK 4 - TEMPLATE DRIVEN FORM -->
+<!-- CZĘŚĆ Template Driven Forms -->
+
+<!-- KROK 4 - recipe-template-form.component.html -->
 
 <div *ngIf="showForm">
     <!-- Nagłówek który wykorzystuje Conditional (ternary) operator do wyświetlania odpowiedniego tekstu-->
     <h2>{{ isEditMode ? 'Edytuj przepis' : 'Dodaj nowy przepis' }}</h2>
-  
+
     <!-- znacznik (tag) form z dołączoną template variable i przypisaną ngForm, dzięki tego zostanie stworzona nadrzędna instancja grupy kontrolek formularza-->
-     <!-- jest też dorzucona obsługa mechanizmu potwierdzania formularza -->
-     <!-- Na końcu widzimy artybut novalidate, Angular w ten sposób wyłącza defaultową, natywną walidacje formularza pochodzącą z natywneg formularza HTML ... -->
+    <!-- jest też dorzucona obsługa mechanizmu potwierdzania formularza -->
+    <!-- Na końcu widzimy artybut novalidate, Angular w ten sposób wyłącza defaultową, natywną walidacje formularza pochodzącą z natywneg formularza HTML ... -->
     <form #recipeForm="ngForm" (ngSubmit)="onSubmit(recipeForm)" novalidate>
-     <!-- Tytuł -->
-     <div>
-        <!-- tytuł inputa, dyrektywa for oraz nam służy do połączenia taga label z tagiem input -->
-        <label for="title">Tytuł przepisu:</label>
-        <!-- type określa typ danych które będą wprowadzane do inputa -->
-        <!-- id sprawi że nasz input dostanie identyfikator o treści 'title' dzięki temu można się odnieść do niego bezpośrednio np w klasie css czy w metodzie querySelector()  -->
-        <!-- required oraz minlength to walidatory natywnie zdefiniowane w formularzu HTML, które dorzycają mechanizm walidacji pod kątem wymagalności i długości wprowadonych danych -->
-        <!-- #title to template variable, przypisujemy do niej ngModel, dzięki temu zostanie stworzona instancja kontrolki formularza Angular - FormControl -->
-        <input type="text" id="title" name="title" ngModel required
-            minlength="3" #title="ngModel" />
-        <!-- Poniższy kontener to ta treść którą zobaczymy gdy kontrolka będzie błędna oraz już dotknięta przez użytkownika -->
-        <div *ngIf="title.invalid && title.touched">
-            <!-- Tę treść zobaczymy gdy użytkownik dotknie kontrolki ale nie wprowadzi żadnych danych, lub gdy usunie wszystko co zawierała kontrolka i zostawi puste - wymagane (required) -->
-            <small *ngIf="title.errors?.required">Tytuł jest
-                wymagany</small>
-            <!-- Tę treść zobaczymy gdy użytkonik wprowadzi tekst ktrótszy niż wymagany (3 znaki) -->
-            <small *ngIf="title.errors?.minlength">Tytuł musi mieć co
-                najmniej 3 znaki</small>
+        <!-- Tytuł -->
+        <div>
+            <!-- tytuł inputa, dyrektywa for oraz nam służy do połączenia taga label z tagiem input -->
+            <label for="title">Tytuł przepisu:</label>
+            <!-- type określa typ danych które będą wprowadzane do inputa -->
+            <!-- id sprawi że nasz input dostanie identyfikator o treści 'title' dzięki temu można się odnieść do niego bezpośrednio np w klasie css czy w metodzie querySelector()  -->
+            <!-- required oraz minlength to walidatory natywnie zdefiniowane w formularzu HTML, które dorzycają mechanizm walidacji pod kątem wymagalności i długości wprowadonych danych -->
+            <!-- #title to template variable, przypisujemy do niej ngModel, dzięki temu zostanie stworzona instancja kontrolki formularza Angular - FormControl -->
+            <input type="text" id="title" name="title" ngModel required
+                minlength="3" #title="ngModel" />
+            <!-- Poniższy kontener to ta treść którą zobaczymy gdy kontrolka będzie błędna oraz już dotknięta przez użytkownika -->
+            <div *ngIf="title.invalid && title.touched">
+                <!-- Tę treść zobaczymy gdy użytkownik dotknie kontrolki ale nie wprowadzi żadnych danych, lub gdy usunie wszystko co zawierała kontrolka i zostawi puste - wymagane (required) -->
+                <small *ngIf="title.errors?.required">Tytuł jest
+                    wymagany</small>
+                <!-- Tę treść zobaczymy gdy użytkonik wprowadzi tekst ktrótszy niż wymagany (3 znaki) -->
+                <small *ngIf="title.errors?.minlength">Tytuł musi mieć co
+                    najmniej 3 znaki</small>
+            </div>
         </div>
-    </div>
-  
-      <!-- Opis -->
-      <div>
-        <label for="description">Opis przepisu:</label>
-        <textarea id="description" name="description" ngModel></textarea>
-      </div>
-  
-      <!-- Składniki -->
-      <div>
-        <label for="ingredients">Składniki (minimum 2):</label>
-        <input type="text" id="ingredients" name="ingredients" ngModel required #ingredients="ngModel" />
-        <div *ngIf="ingredients.invalid && ingredients.touched">
-          <small *ngIf="ingredients.errors?.required">Składniki są wymagane</small>
+
+        <!-- Opis -->
+        <div>
+            <label for="description">Opis przepisu:</label>
+            <textarea id="description" name="description" ngModel></textarea>
         </div>
-      </div>
-  
-      <!-- Przycisk wysyłający -->
-      <button type="submit" [disabled]="recipeForm.invalid">
-        {{ isEditMode ? 'Zapisz zmiany' : 'Dodaj przepis' }}
-      </button>
+
+        <!-- Składniki -->
+        <div>
+            <label for="ingredients">Składniki (minimum 2):</label>
+            <input type="text" id="ingredients" name="ingredients" ngModel
+                required #ingredients="ngModel" />
+            <div *ngIf="ingredients.invalid && ingredients.touched">
+                <small *ngIf="ingredients.errors?.required">Składniki są
+                    wymagane</small>
+            </div>
+        </div>
+
+        <!-- Przycisk wysyłający -->
+        <button type="submit" [disabled]="recipeForm.invalid">
+            {{ isEditMode ? 'Zapisz zmiany' : 'Dodaj przepis' }}
+        </button>
     </form>
-  </div>
+</div>
 
+<!-- CZĘŚĆ Reactive Forms -->
 
-  
+<!-- KROK 4 - recipe-reactive-form.component.html -->
+
+<div *ngIf="showForm">
+    <h2>{{ isEditMode ? 'Edytuj przepis' : 'Dodaj nowy przepis' }}</h2>
+
+    <form [formGroup]="recipeFormGroup" (ngSubmit)="onSubmit()" novalidate>
+        <!-- Tytuł -->
+        <div>
+            <label for="title">Tytuł przepisu:</label>
+            <input type="text" id="title" formControlName="title" />
+            <div
+                *ngIf="recipeFormGroup.get('title')?.invalid && recipeFormGroup.get('title')?.touched">
+                <small
+                    *ngIf="recipeFormGroup.get('title')?.errors?.required">Tytuł
+                    jest wymagany</small>
+                <small
+                    *ngIf="recipeFormGroup.get('title')?.errors?.minlength">Tytuł
+                    musi mieć co najmniej 3 znaki</small>
+            </div>
+        </div>
+
+        <!-- Składniki -->
+        <div>
+            <label for="ingredients">Składniki (minimum 2):</label>
+            <input type="text" id="ingredients" formControlName="ingredients" />
+            <div
+                *ngIf="recipeFormGroup.get('ingredients')?.invalid && recipeFormGroup.get('ingredients')?.touched">
+                <small
+                    *ngIf="recipeFormGroup.get('ingredients')?.errors?.required">Składniki
+                    są wymagane</small>
+            </div>
+        </div>
+
+        <button type="submit" [disabled]="recipeFormGroup.invalid">
+            {{ isEditMode ? 'Zapisz zmiany' : 'Dodaj przepis' }}
+        </button>
+    </form>
+</div>

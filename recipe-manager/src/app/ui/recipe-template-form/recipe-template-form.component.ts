@@ -39,8 +39,8 @@ export class RecipeTemplateFormComponent implements OnInit {
         title: form.value.title,
         description: form.value.description,
         ingredients: form.value.ingredients.split(','),
-        preparationTime: 30,
-        difficulty: 'easy'
+        preparationTime: form.value.preparationTime,
+        difficulty: form.value.difficulty
       };
 
       if (this.isEditMode) {
