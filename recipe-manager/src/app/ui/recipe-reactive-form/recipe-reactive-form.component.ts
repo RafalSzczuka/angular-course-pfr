@@ -23,7 +23,9 @@ export class RecipeReactiveFormComponent {
     this.recipeFormGroup = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
       description: ['', Validators.required],
-      ingredients: ['', Validators.required]
+      ingredients: ['', Validators.required],
+      preparationTime: ['', Validators.required],
+      difficulty: ['', Validators.required]
     });
 
     if (this.currentRecipe) {
@@ -41,8 +43,6 @@ export class RecipeReactiveFormComponent {
         id: this.isEditMode ? this.currentRecipe!.id : Date.now(),
         ...this.recipeFormGroup.value,
         ingredients: this.recipeFormGroup.value.ingredients.split(','), // metoda pomocnicza split(',') znajduje w ciągu znaków ',' i na tej podstawie rozdziela ciąg na części
-        preparationTime: 30,
-        difficulty: 'easy'
       };
 
       if (this.isEditMode) {
