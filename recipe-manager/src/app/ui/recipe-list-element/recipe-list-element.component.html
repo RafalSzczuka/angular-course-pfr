@@ -1,7 +1,10 @@
-<article *ngIf="recipe" (click)="onRecipeClick(recipe)">
-    <h3>{{ recipe.title }}</h3>
-    <p>{{ recipe.description }}</p>
-    <p>Poziom trudności: {{ recipe.difficulty }}</p>
-    <p>Czas przygotowania: {{ recipe.preparationTime }} minut</p>
-    <button (click)="onDeleteRecipe(recipe.id)">Usuń</button>
+<article *ngIf="recipe">
+    <div (click)="onRecipeClick(recipe)">
+        <h3>{{ recipe.title }}</h3>
+        <p>{{ recipe.description }}</p>
+        <p>Poziom trudności: {{ recipe.difficulty }}</p>
+        <p>Czas przygotowania: {{ recipe.preparationTime }} minut</p>
+    </div>
+    <button (click)="onDeleteRecipe(recipe)">Usuń</button>
 </article>
+

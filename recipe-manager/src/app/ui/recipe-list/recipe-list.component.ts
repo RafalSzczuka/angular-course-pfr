@@ -2,7 +2,7 @@ import { CommonModule, NgFor } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { RecipeListElementComponent } from '../recipe-list-element/recipe-list-element.component';
 import { RecipeService } from '../../core/recipe/service/recipe.service';
-import { RecipeModel } from '../../core/recipe/model';
+import { EventRecipeModel, RecipeModel } from '../../core/recipe/model';
 
 @Component({
   selector: 'app-recipe-list',
@@ -12,10 +12,10 @@ import { RecipeModel } from '../../core/recipe/model';
   styleUrl: './recipe-list.component.scss'
 })
 export class RecipeListComponent implements OnInit{
-  selectedRecipeTitle: string = '';
+  selectedRecipeTitle: string | null = '';
   recipes: RecipeModel[]  = [];
 
-  @Output() recipeSelected = new EventEmitter<RecipeModel>();
+  @Output() recipeSelected = new EventEmitter<RecipeModel | null>();
 
   constructor(private recipeService: RecipeService) {
 
@@ -24,9 +24,12 @@ export class RecipeListComponent implements OnInit{
     this.recipes =  this.recipeService.getRecipes();
   }
 
-  onRecipeClick(listElement: RecipeModel & { selectedRecipeTitle: string }) {
-    this.selectedRecipeTitle = listElement.selectedRecipeTitle;
+  onRecipeClick(listElement: EventRecipeModel | null) {
+    if (listElement) {
+      this.selectedRecipeTitle = listElement.selectedRecipeTitle;
+    }
     this.recipeSelected.emit(listElement);
+    
   }
 
   onDeleteRecipe(id: number): void {
