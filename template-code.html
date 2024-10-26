@@ -1,41 +1,55 @@
-<!-- Krok 4 - recipe-list-element.component.html -->
-<article *ngIf="recipe" (click)="onRecipeClick(recipe)">
-    <h3>{{ recipe.title }}</h3>
-    <p>{{ recipe.description }}</p>
-    <p>Poziom trudności: {{ recipe.difficulty }}</p>
-    <p>Czas przygotowania: {{ recipe.preparationTime }} minut</p>
-</article>
-<!--  -->
+<!-- KROK 4 - TEMPLATE DRIVEN FORM -->
 
-<!-- Krok 4 - recipe-detail.component.html -->
-<article *ngIf="recipe" (click)="onRecipeClick(recipe)">
-    <h2>{{ selectedRecipe.title }}</h2>
-    <p>{{ selectedRecipe.description }}</p>
-    <p>Poziom trudności: {{ selectedRecipe.difficulty }}</p>
-    <p>Czas przygotowania: {{ selectedRecipe.preparationTime }} minut</p>
-</article>
-<!--  -->
+<div *ngIf="showForm">
+    <!-- Nagłówek który wykorzystuje Conditional (ternary) operator do wyświetlania odpowiedniego tekstu-->
+    <h2>{{ isEditMode ? 'Edytuj przepis' : 'Dodaj nowy przepis' }}</h2>
+  
+    <!-- znacznik (tag) form z dołączoną template variable i przypisaną ngForm, dzięki tego zostanie stworzona nadrzędna instancja grupy kontrolek formularza-->
+     <!-- jest też dorzucona obsługa mechanizmu potwierdzania formularza -->
+     <!-- Na końcu widzimy artybut novalidate, Angular w ten sposób wyłącza defaultową, natywną walidacje formularza pochodzącą z natywneg formularza HTML ... -->
+    <form #recipeForm="ngForm" (ngSubmit)="onSubmit(recipeForm)" novalidate>
+     <!-- Tytuł -->
+     <div>
+        <!-- tytuł inputa, dyrektywa for oraz nam służy do połączenia taga label z tagiem input -->
+        <label for="title">Tytuł przepisu:</label>
+        <!-- type określa typ danych które będą wprowadzane do inputa -->
+        <!-- id sprawi że nasz input dostanie identyfikator o treści 'title' dzięki temu można się odnieść do niego bezpośrednio np w klasie css czy w metodzie querySelector()  -->
+        <!-- required oraz minlength to walidatory natywnie zdefiniowane w formularzu HTML, które dorzycają mechanizm walidacji pod kątem wymagalności i długości wprowadonych danych -->
+        <!-- #title to template variable, przypisujemy do niej ngModel, dzięki temu zostanie stworzona instancja kontrolki formularza Angular - FormControl -->
+        <input type="text" id="title" name="title" ngModel required
+            minlength="3" #title="ngModel" />
+        <!-- Poniższy kontener to ta treść którą zobaczymy gdy kontrolka będzie błędna oraz już dotknięta przez użytkownika -->
+        <div *ngIf="title.invalid && title.touched">
+            <!-- Tę treść zobaczymy gdy użytkownik dotknie kontrolki ale nie wprowadzi żadnych danych, lub gdy usunie wszystko co zawierała kontrolka i zostawi puste - wymagane (required) -->
+            <small *ngIf="title.errors?.required">Tytuł jest
+                wymagany</small>
+            <!-- Tę treść zobaczymy gdy użytkonik wprowadzi tekst ktrótszy niż wymagany (3 znaki) -->
+            <small *ngIf="title.errors?.minlength">Tytuł musi mieć co
+                najmniej 3 znaki</small>
+        </div>
+    </div>
+  
+      <!-- Opis -->
+      <div>
+        <label for="description">Opis przepisu:</label>
+        <textarea id="description" name="description" ngModel></textarea>
+      </div>
+  
+      <!-- Składniki -->
+      <div>
+        <label for="ingredients">Składniki (minimum 2):</label>
+        <input type="text" id="ingredients" name="ingredients" ngModel required #ingredients="ngModel" />
+        <div *ngIf="ingredients.invalid && ingredients.touched">
+          <small *ngIf="ingredients.errors?.required">Składniki są wymagane</small>
+        </div>
+      </div>
+  
+      <!-- Przycisk wysyłający -->
+      <button type="submit" [disabled]="recipeForm.invalid">
+        {{ isEditMode ? 'Zapisz zmiany' : 'Dodaj przepis' }}
+      </button>
+    </form>
+  </div>
 
-<!-- Krok 5 - recipe-list-element.component.html -->
-<article *ngIf="recipe" (click)="onRecipeClick(recipe)">
-    <h3>{{ recipe.title }}</h3>
-    <p>{{ recipe.description }}</p>
-    <p>Poziom trudności: {{ recipe.difficulty }}</p>
-    <p>Czas przygotowania: {{ recipe.preparationTime }} minut</p>
-    <button (click)="onDeleteRecipe(recipe.id)">Usuń</button>
-</article>
-<!--  -->
 
-<!-- krok 5 - recipe-list.component.html -->
-<h2 class="header">Lista Przepisów</h2>
-<section>
-    <ul>
-        <li *ngFor="let recipe of recipes"
-            [ngClass]="{'element-selected': selectedRecipeTitle === recipe.title}">
-            <app-recipe-list-element [recipe]="recipe"
-                (recipeRemoved)="onDeleteRecipe($event)"
-                (recipeSelected)="onRecipeClick($event)"></app-recipe-list-element>
-        </li>
-    </ul>
-</section>
-<!--  -->
+  

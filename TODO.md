@@ -1,92 +1,61 @@
-**Moduł 3: Serwisy i zarządzanie danymi**
-_W tym module skupimy się na stworzeniu serwisu, który będzie przechowywał dane o przepisach oraz pozwalał na ich pobieranie oraz usuwanie. Dodawanie i edytowaniem zajmiemy się w kolejnych modułach. Serwis zostanie wstrzyknięty do komponentu RecipeListComponent, co oddzieli logikę biznesową od warstwy prezentacji._
+**Moduł 4 - Formularze i walidacja - Dodawanie oraz edytowanie przepisów:**
+W tym module uczestnicy nauczą się, jak tworzyć formularze w Angularze z użyciem dwóch podejść:
+  * Template-driven Forms (formularze oparte na szablonach)
+  * Reactive Forms (formularze reaktywne)
+Zbudujemy formularz umożliwiający dodawanie i edytowanie przepisów kulinarnych, z walidacją pól. Na głównej stronie umieścimy przycisk, który będzie pokazywał i ukrywał formularz. Na koniec omówimy walidację formularzy, np. wymagana nazwa przepisu i minimalna liczba składników.
 
-_Będziemy pracować na modelu danych RecipeModel (Został stworzony podczas rozwiązywania zadania z gwiazdką), który rozszerzymy o dodatkowe właściwości, takie jak np. ID i składniki, aby był bardziej funkcjonalny._
+**CZĘŚĆ Template-driven Forms**
+1. Zacznijmy od utworzenia komponentu, który będzie odpowiedzialny za formularz dodawania i edytowania przepisu.
+    * W terminalu w katalogu projektu utwórz nowy komponent za pomocą `ng generate component ui/recipe-template-form`
 
-1. Na poziomie /core stwórzmy folder ui. Natępnie przenieśmy tam stworzone przez nas komponenty. Poprawi to trochę naszą strukturę.
-    * dorzućmy do folderów z komponentami plik index.ts w którym eksportujemy stworzone wcześniej komponenty. Analogicznie jak przy `/core/recipe`
-    * poprawmy importy
-2. Przejdźmy od stworzenia/aktualizacji modelu danych `RecipeModel`
-    * przejdź do `src/app/core/recipe` i stórz tam folder models.
-    * przejdź do `src/app/core/recipe/models`, stwórz lub zaktualizuj stworzony wcześniej model tak by zawierał:
-        * id – unikalny identyfikator przepisu.
-        * title – tytuł przepisu.
-        * description – krótki opis przepisu.
-        * ingredients – tablica składników.
-        * preparationTime – czas przygotowania w minutach.
-        * difficulty – poziom trudności (easy, medium, hard).
-    * Do folderu models, dodaj index.ts i wyeksportuj model.
-    * W miejscach w których deklarujemy zmienne typu `RecipeModel` kompilator zwórci uwagę, że brakuje pełnej definicji modelu.
-        Na razie by go zadowolić, moglibyśmy użyjemy utility type pochodzącego z TypeScrip `Partial<>` który sprawy, że wszystkie właściwości takiego modelu staną się opcjonalne.
-        Możemy także ręcznie pokazać kompilatorowi które pola są opcjonalne poprzed dodanie `?` po nazwie właściwości jak
-        `id?: number;`
-        I tak właśnie zróbmy, z biegiem czasu zaczniemy usuwać opcjonalności.
+    >To polecenie utworzy pliki:
+    >
+    >    `recipe-template-form.component.ts`
+    >    `recipe-template-form.component.html`
+    >    `recipe-template-form.component.scss`
 
-3. Następnie stwórzmy serwis RecipeService
-    * W terminalu, w folderze projektu utwórz serwis za pomocą Angular CLI:
-    `ng generate service core/recipe/services/recipe`
-    
-    >To polecenie stworzy pliki:
-    >src/app/core/recipe/services/recipe.service.ts
-    >src/app/core/recipe/services/recipe.service.spec.ts (testy, na razie ich nie ruszamy).
-
-    * Dorzućmy index.ts do folderu ze stworzonym serwisem i go wyeksportujmy.
-
-    * Cały kod znajdziesz w `component-code.ts`, jednak chciałbym żebyście najpierw spróbowali sami.
-  
-    * Na początek przenieśmy do serwisu `recipe-service.ts`  przepisy z komponentu `recipe-list`. Uzupełnijmy brakujące pola modelu wg uznania. (ingredients, preparationTime, difficulty)
-
-    * Teraz dodajmy metodę `getRecipes(): RecipeModel[]` którą pobierzemy nasz przepisy w przyszłości.
-
-    * Gdy metoda jest już gotowa, a przepisy są przeniesione do ciała serwisu, wstrzyknijmy serwis `RecipeService` do komponentu `RecipeListComponent` i sprawmy by nasza aplikacja zaczęła działać z wykorzystaniem serwisu.
-      * By wstrzyknąć serwis do komponentu będzie potrzebny nam konstruktor `constructor() {}` w ciele klasy komponentu. Dodajmy go.
-      * Następnie jako parametr podajmy nasz serwis `private recipeService: RecipeService`
-      * W komponencie `RecipeListComponent` dodajmy zmienną `recipes: RecipeModel[]  = []`.
-      * Następnie zaciągnijmy dane z serwisu i przypiszmy je do naszej zmiennej. Żeby zrobić to w odpowiednim momencie, musimy dodać `ngOnInit` life cycle hook.
-        Zrobimy to poprzez implementacje interfejsu OnInit i spełnienie jego kontraktu, czyli stworzenie metody `ngOnInit(): void {}`
-      * W ciele ngOnInit przypisz wywołanie funkcji getRecipes z serwisu, o tak
-        ngOnInit(): void {
-            this.recipes =  this.recipeService.getRecipes();
+2. Do komponentu zaimporujmy CommonModule. Następnie przejdźmy do implementacji logiki która pozwoli nam na pokazanie oraz ukrycie komponentu.
+    * Przejdź do `recipe-template-form.component.ts`, dodaj tam zmienną showForm: boolean = false
+        zmienna posłuży jako swojego rodzaju stan, odniesienie do tego czy widzimy komponent czy nie.
+    * W komponencie zdefiniuj metodę toggleForm(): void - ta ma manipulować stanem showForm
+        {
+            this.showForm = !this.showForm;
         }
+    * Przejdźmy do `recipe-template-form.component.html`, Dodajmy tam początkową formę kodu widoku naszego komponentu
+        `<div *ngIf="showForm">`
+        `<h2>Dodaj nowy przepis</h2>`
+        `</div>`
 
-    Akcja przypisania wartości do zmiennej recipe dzieje się w metodzie ngOnInit, bo to pierwszy moment w którym wszystko potrzebne jest gotowe, komponent jest wyrenderowany i mamy dostępn do jego zależności, serwis jest stworzony a jego instancja jest dostępna w scope komponentu.
-    Jest to bardzo istotne, w momencie w którym przejdziemy do programowania reaktywnego, zrozumienie cyków życia jest niezbędne.
-    Po wykonaniu wszystkich kroków aplikacja powinna wrócić do stanu sprzed dodania serwisu.
-    Możesz mieć problem z importami, wyrównaj je.
+3. Przejdzmy do komponentu głownego (w naszym wypadku `app.component`) i dodajmy nasz nowo utworzony komponent.
+    * Zaimportujmy `RecipeTemplateFormComponent`
+    * dodajmy następujący kod do `recipe-template-form.component.html`
 
-4. Rozszerzyliśmy model o dodatkowe właściwości, zróbmy to samo z widokiem komponentów wyświetlających nasze przepisy
-    *  Przejdzmy do `recipe-list-element.component.html` dostosujmy widok do modelu analogiczne do tego co już jest tam robione. Dorzućmy linijki które wyświtlą nam poziom trudności oraz czas przygotowania. Gotowy kod znajdziesz w `template-code.html`, najpierw spróbuj wykonać wszystko sam.
-    *  To samo zróbmy z komponentem `recipe-detail.component`
-    
-    > Wszystkie modele inline zamień na `RecipeModel` lub `RecipeModel & { selectedRecipeTitle: string }` w zależności od potrzeby
-    > Podczas podmienianie modeli, zauważ ile to pracy, dlatego bardzo ważna jest chociaż podstawowa znajomość TS'a oraz prawidłowe modelowanie najlepiej od samego początku powstawania projektu.
-    > Możesz potrzebować mapowania, np przy emitowaniu wartości, możesz to zrobić poprzez stworzenie nowego obiektu i przypsanie do niego ręcznie pól jakie Cię interesuje, przykład:
-    const toEmit = {
-      id: listElement.id,
-      title: listElement.title,
-      description: listElement.description,
-      ingredients: listElement.ingredients,
-      preparationTime: listElement.preparationTime,
-      difficulty: listElement.difficulty
-    }
-    
+    `<button (click)="recipeTemplateForm.toggleForm()">`
+    `{{ recipeTemplateForm.showForm ? 'Ukryj formularz' : 'Dodaj nowy przepis' }}`
+    `</button>`
 
-5. Dodajmy teraz przycisk który pozwoli nam usunąć przepis.
-    * Zacznijmy od widoku, przejdzmy do `recipe-list-element.html` i dodajmy `<button (click)="onDeleteRecipe(recipe.id)">Usuń</button>` pod  `<p>Czas przygotowania: {{ recipe.preparationTime }} minut</p>`
-    * Przejdzmy do `recipe-list-element.component.ts` i dodajmy implementacje metody `onDeleteRecipe(id: number)` Powinna emitować id do komponentu nadrzędnego.
-    * Następnie przejdzmy do komponentu `recipe-list.component.html` i dodajmy obsługę zdarzenia. `(recipeRemoved)="onDeleteRecipe($event)"`
-    * W tym samym komponencie, w jego .ts zaimplementuje metodę `onDeleteRecipe(id: number)`. Teraz brakuje nam już tylko logiki która obsłuży usuwanie przepisu.
-    * Przejdzmy do serwisu `recipe-service.ts` i dodajmy metode `deleteRecipe(id: number): void` w jej ciale usuń przekazany przepis. Kod znajdziesz w `component-code.ts` jednak spróbuj najpierw sam.
-    * Gdy już mamy gotową metodę, wywołajmy ja w metodzie `onDeleteRecipe` w komponencie `recipe-listcomponent.ts`, przekazując id jako parametr.
-    Nie zapomnij przy akcji usunięcia o odświeżeniu modelu danych. ` this.recipes = this.recipeService.getRecipes();`
+    `<!-- Dodaj formularz do komponentu -->`
+    `<app-recipe-template-form #recipeTemplateForm></app-recipe-template-form>`
 
-6. Na sam koniec powinieneś zobaczyć błędy w konsoli, dotyczą one typów. Usuń opcjonalność z właściwości modelu RecipeModel.ts.
-    Upewnij się, że wszędzie używasz tego modelu danych.
+    > #recipeTemplateForm to zmienna (template variable) dzięki niej możemy się dostać do instancji klasy komponentu.
+    > Użycie jest widoczne w (click) naszego buttona.
+    > Dzięki template variable bezpośrednio możemy się odwołać do metody zdefiniowanej w ramach komponentu.
+
+
+4. Mamy już mechanikę ukrywania i odkrywania komponentu z formularzem którego użyjemy przy dodawaniu nowych przepisów.
+Teraz dodajmy formularz
+    * Do listy importów w `app-recipe-template-form` dorzuć FormModule, to moduł który zawiera wszystkie podstawowe zasoby potrzebne do obsługi formularza opartego na szablonach.
+    * W pliku `template-code.html` znajdziesz kod potrzebny do stworzenia widoku. Komentarze zawierają opis potrzebny do zrozumienia wykorzystanych mechanizmów. W razie niezrozumienia, śmiało pytaj trenera :)
+    * Gdy dodasz kod szablonu, kompilator poimformuje Cię o blądach, rozwiążesz je dodając logikę komponentu, znajdziesz ją w `component-code.ts` Komentarze zawierają wyjaśnienia użytych mechanizmów.
+
+Teraz w przeglądarce zobaczysz przycisk dodaj nowy przepis, a po kliknięciu zobaczysz komponent odpowiedzialny za dodanie przepisu!  🎉
+
+Zadanie do wykonania
+  * Dodaj kontrolki do obsługi poziomu trudności wykonania oraz czas przygotowania dania z przepisu.
 
 
 
-
-Teraz w przeglądarce zobaczysz listę przepisów kulinarnych, będziesz mógł podejrzeć ich szczegóły oraz usunąć wybrane pozycje! 🎉
+**CZĘŚĆ Reactive Forms**
 
 ##### Podsumowanie Modułu:
 W tym module:

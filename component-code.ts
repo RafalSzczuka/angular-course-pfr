@@ -1,106 +1,54 @@
-// Krok 1 - Aktualizacja modelu RecipeModel
-export interface RecipeModel {
-  id?: number;
-  title: string;
-  description?: string;
-  ingredients?: string[];
-  preparationTime?: number;  // w minutach
-  difficulty?: 'easy' | 'medium' | 'hard';
-}
-
-// Krok 2 - Tworzenie serwisu RecipeService
-import { Injectable } from '@angular/core';
-import { RecipeModel } from '../models/recipe.model';
-
-@Injectable({
-  providedIn: 'root'
-})
-export class RecipeService {
-  private recipes: RecipeModel[] = [
-    {
-      id: 1,
-      title: 'Spaghetti Carbonara',
-      description: 'Klasyczne włoskie danie.',
-      ingredients: ['makaron', 'jajka', 'boczek', 'ser', 'pieprz'],
-      preparationTime: 30,
-      difficulty: 'easy'
-    },
-    {
-      id: 2,
-      title: 'Pancakes',
-      description: 'Puszyste naleśniki z syropem klonowym.',
-      ingredients: ['mąka', 'mleko', 'jajka', 'syrop klonowy'],
-      preparationTime: 20,
-      difficulty: 'medium'
-    },
-    {
-      id: 3,
-      title: 'Tacos',
-      description: 'Meksykańskie tacos z wołowiną i salsą.',
-      ingredients: ['mąka', 'mleko', 'jajka', 'wołowina', 'salsa'],
-      preparationTime: 60,
-      difficulty: 'hard'
-    }
-  ];
-
-  constructor() {}
-
-  // Metoda pobierająca wszystkie przepisy
-  getRecipes(): RecipeModel[] {
-    return this.recipes;
-  }
-}
-
-// Krok 3 - recipe-list.component.ts - wstrzykiwanie serwisu
+// KROK 4 - LOGIKA KOMPONENTU RecipeTemplateFormComponent
 // ...
-export class RecipeListComponent implements OnInit {
+export class RecipeTemplateFormComponent implements OnInit {
+  // Normalnie moglibyśmy nie pisać tutaj typu bo po co
+  // Robimy to explicite  w celach dydaktycznych
+  showForm: boolean = false;
+
+  // wartość wejściowa komponentu która odpowie na pytanie czy dodajemy nowy przepis czy edytujemy już istniejący.
+  @Input() isEditMode = false;
+  // Jeżeli edytujemy, to potrzebujemy przepis, po to jest ta wartość wejściowa (opcjonalna)
+  @Input() currentRecipe: RecipeModel | null = null;
+
+  // Dzięki konstruktorowi wstzrzykniemy zależność (zasób) RecipeService
   constructor(private recipeService: RecipeService) {}
 
-  selectedRecipeTitle: string = '';
-  recipes: RecipeModel[] = [];
-
-  @Output() recipeSelected = new EventEmitter<RecipeModel>();
-
+  // onInit life cycle hook przyda się gdy będziemy przygotowywać logikę edycji przepisu
   ngOnInit(): void {
-    this.recipes = this.recipeService.getRecipes();
+    if (this.currentRecipe) {
+      // Jeśli edytujemy, wypełnij formularz danymi przepisu
+    }
   }
-// 
 
-// Krok 5 - recipe-list-element.component.ts emitowanie zdarzenia usunięcia przepisu
-// ...
-export class RecipeListElementComponent implements OnInit {
-  // ...
-  @Output() recipeRemoved = new EventEmitter<number>();
-// ...
-  onDeleteRecipe(id: number): void {
-    this.recipeRemoved.emit(id);
+  // Metoda do pokazania/ukrycia formularza
+  toggleForm(): void {
+      this.showForm = !this.showForm;
   }
-}
 
+  // Metoda do zatwierdzenia zmian (submit) formularza
+  onSubmit(form: NgForm): void {
+    // chcemy zmienić / dodać przepis jedynie gdy formularz nie zawiera błędów
+    if (form.valid) {
+      // tworzymy instancje przepisu (RecipeModel)
+      const newRecipe: RecipeModel = {
+        id: this.isEditMode ? this.currentRecipe!.id : Date.now(), //id musi być unikalny
+        title: form.value.title,
+        description: form.value.description,
+        ingredients: form.value.ingredients.split(','),
+        preparationTime: 30, // na razie nie mamy kontrolki, dodajemy predefiniowaną wartość
+        difficulty: 'easy' // na razie nie mamy kontrolki, dodajemy predefiniowaną wartość
+      };
 
+      // Serwis zawiera osobne metody na dodanie i edycje przepisu dlatego
+      if (this.isEditMode) {
+        this.recipeService.editRecipe(newRecipe);
+      } else {
+        this.recipeService.addRecipe(newRecipe);
+      }
 
-// Krok 5 - recipe.service.ts
-
-// ...
-@Injectable({
-  providedIn: 'root'
-})
-export class RecipeService {
-// ...
-
-  // Metoda usuwająca przepis
-  deleteRecipe(id: number): void {
-    this.recipes = this.recipes.filter(r => r.id !== id);
-  }
-}
-
-// Krok 5 - recipe-list.component usuwanie przepisu
-
-// ...
-export class RecipeListComponent implements OnInit{
-// ...
-  onDeleteRecipe(id: number): void {
-    this.recipeService.deleteRecipe(id);  // Usuwanie przepisu
-    this.recipes = this.recipeService.getRecipes();  // Odśwież listę
+      // Gdy już wszystkie czynności wymagane do dodania lub edycji przepisu są wykonane, musimy zresetować formularz i ukryć komponent
+      form.reset();
+      this.showForm = false;
+    }
   }
 }

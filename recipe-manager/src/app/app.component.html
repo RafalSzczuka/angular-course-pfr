@@ -1,2 +1,9 @@
 <app-recipe-list (recipeSelected)="onRecipeSelected($event)"></app-recipe-list>
 <app-recipe-detail [selectedRecipe]="selectedRecipe"></app-recipe-detail>
+
+<button (click)="recipeTemplateForm.toggleForm()">
+    {{ recipeTemplateForm.showForm ? 'Ukryj formularz' : 'Dodaj nowy przepis' }}
+</button>
+
+<!-- Dodaj formularz do komponentu -->
+<app-recipe-template-form #recipeTemplateForm></app-recipe-template-form>
