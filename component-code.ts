@@ -113,3 +113,18 @@ export class RecipeFormComponent implements OnInit {
     }
   }
 }
+
+
+
+
+// CZĘŚĆ Angular Material
+
+  // Lista popularnych składników
+  popularIngredients: string[] = [
+    'Tomatoes', 'Onions', 'Garlic', 'Potatoes', 'Carrots', 'Olive oil', 'Butter',
+    'Chicken', 'Beef', 'Pork', 'Salt', 'Pepper', 'Paprika', 'Basil', 'Parsley',
+    'Oregano', 'Lemon', 'Sugar', 'Flour', 'Eggs', 'Milk', 'Cheese', 'Cream',
+    'Bread', 'Rice', 'Pasta', 'Beans', 'Lettuce', 'Spinach', 'Broccoli', 'Mushrooms',
+    'Fish', 'Shrimp', 'Soy sauce', 'Vinegar', 'Honey', 'Peppers', 'Zucchini', 'Cucumber',
+    'Corn', 'Chili powder'
+  ];

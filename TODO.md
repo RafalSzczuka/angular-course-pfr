@@ -104,6 +104,40 @@ Zadanie do wykonania
   * Dodaj kontrolki do obsługi poziomu trudności wykonania oraz czas przygotowania dania z przepisu.
   * Spraw by składniki były wyświetlane... może?
 
+
+
+
+**CZĘŚĆ Angular Material**
+
+1. Instalacja Angular Material, Angular CDK oraz Angular Animations
+    * W terminalu przejdź do lokalizacji swojego projektu i uruchom polecenie: `ng add @angular/material`
+    > Konfiguracja stylów Angular Material:
+    > Po wykonaniu powyższego polecenia, Angular Material poprosi o wybór opcji, które zainstalują style, czcionki i animacje dla projektu:
+    > * Theme: Wybierz Azure/Blue.
+    > * Global Typography Styles: Wybierz Yes.
+    > * Animations: Wybierz Yes (dzięki temu animacje Angular Material będą działały poprawnie).
+
+    * Po wykonaniu tego polecenia część plików została edytowana....
+
+2. Użycie komponentów UI pochodzących z biblioteki Angular Material
+   * Po instalacji zaszły pewne zmiany w projekcie, m.in dostaliśmy predefiniowany zestaw styli globalnych, przejdźmy teraz do pliku `global-styles.scss` i skopiujmy temte style i podmieńmy w pliku `styles.scss`
+
+   * Dodając bibliotekę zaznaczyliśmy że chcemy korzystać z animacji, a więc przejdźmy do ustawień głównych aplikacji `app.config.ts` i upewnijmy się że na liście provide jest `provideAnimationsAsync()`
+
+   * Przejdźmy teraz do obecnie używanego komponentu dodawania i edytowania przepisów `app-recipe-reactive-form.component.ts` i dodajmy do listy importów `MatFormFieldModule, MatInputModule, MatButtonModule, MatSelectModule`
+   * Gdy już importy mamy ograne, czas na edycje widoku. Przejdź do `template-code.html` znajdź tam część dotyczącą Angular Material, krok drugi i skopiuj kod a następnie podmień na ten znajdujący się w `app-recipe-reactive-form.component.ts`
+   * Dorzućmy style z `component.style.scss` do `app-recipe-reactive-form.component.scss` by trochę wyrównać nasze kontenery na kontrolki jak i sam formularz
+   Gdybyś się zastanawiał co to jest @if, @for to są to alternatywy dla dyrektyw *ngIf *ngFor pochodzące z nowego "control flow" - dopytaj trenera
+
+Zadanie do wykonania
+  * Kontrolka składników jest obsługiwana przez texarea, fajnie byłoby gdyby urzytkownik nie musiał wpisywać ich z palca a mógł wybrać z listy wielokrotnego wyboru. Zaimplementuj to w oparciu o `https://material.angular.io/components/select/overview#multiple-selection`
+  Dorzućmy też wyświetlanie składników po wyborze przepisu.
+  Podpowiedź: Potrzebna będzie lista składników by móc po niej iterować, przykładową znajdziesz w `component-code.ts`
+
+Zadanie dodatkowe
+    * Przerób komponent `recipe-template-form` tak by używał Angular Material komponentów UI
+    * Przerób reszte komponentów, tak by używały Angular Material komponentów UI
+
 ##### Podsumowanie Modułu:
 W tym module:
 

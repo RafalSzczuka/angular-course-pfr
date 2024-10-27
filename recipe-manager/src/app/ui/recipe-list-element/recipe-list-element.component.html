@@ -5,6 +5,6 @@
         <p>Poziom trudności: {{ recipe.difficulty }}</p>
         <p>Czas przygotowania: {{ recipe.preparationTime }} minut</p>
     </div>
-    <button (click)="onDeleteRecipe(recipe)">Usuń</button>
+    <button mat-fab
+        (click)="onDeleteRecipe(recipe)"><mat-icon>delete</mat-icon></button>
 </article>
-

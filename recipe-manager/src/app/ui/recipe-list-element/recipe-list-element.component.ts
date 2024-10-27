@@ -1,11 +1,12 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EventRecipeModel, RecipeModel } from '../../core/recipe/model';
-
+import { MatButtonModule } from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
 @Component({
   selector: 'app-recipe-list-element',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatButtonModule, MatIconModule],
   templateUrl: './recipe-list-element.component.html',
   styleUrl: './recipe-list-element.component.scss',
 })

@@ -1,78 +1,86 @@
 <div *ngIf="showForm">
     <h2>{{ isEditMode ? 'Edytuj przepis' : 'Dodaj nowy przepis' }}</h2>
 
-    <form [formGroup]="recipeFormGroup" (ngSubmit)="onSubmit()" novalidate>
+    <form [formGroup]="recipeFormGroup" (ngSubmit)="onSubmit()"
+        class="reactive-form" novalidate>
         <!-- Tytuł -->
         <div>
-            <label for="title">Tytuł przepisu:</label>
-            <input type="text" id="title" formControlName="title" />
-            <div
-                *ngIf="recipeFormGroup.get('title')?.invalid && recipeFormGroup.get('title')?.touched">
-                <small
-                    *ngIf="recipeFormGroup.get('title')?.errors?.required">Tytuł
-                    jest wymagany</small>
-                <small
-                    *ngIf="recipeFormGroup.get('title')?.errors?.minlength">Tytuł
-                    musi mieć co najmniej 3 znaki</small>
-            </div>
+            <mat-form-field class="form-control-full-width">
+                <mat-label>Tytuł przepisu</mat-label>
+                <input matInput type="text" formControlName="title" />
+                <mat-error
+                    *ngIf="recipeFormGroup.get('title')?.hasError('required')">
+                    Tytuł jest wymagany
+                </mat-error>
+                <mat-error
+                    *ngIf="recipeFormGroup.get('title')?.hasError('minlength')">
+                    Tytuł musi mieć co najmniej 3 znaki
+                </mat-error>
+            </mat-form-field>
         </div>
 
         <!-- Opis -->
         <div>
-            <label for="description">Opis :</label>
-            <textarea type="text" id="description"
-                formControlName="description"></textarea>
-            <div
-                *ngIf="recipeFormGroup.get('description')?.invalid && recipeFormGroup.get('description')?.touched">
-                <small
+            <mat-form-field class="form-control-full-width">
+                <mat-label>Opis: </mat-label>
+                <textarea matInput
+                    cdkTextareaAutosize
+                    #autosize="cdkTextareaAutosize"
+                    cdkAutosizeMinRows="1"
+                    cdkAutosizeMaxRows="5" type="text"
+                    formControlName="description"></textarea>
+                <mat-error
                     *ngIf="recipeFormGroup.get('description')?.errors?.required">Składniki
-                    są wymagane</small>
-            </div>
+                    są wymagane
+                </mat-error>
+            </mat-form-field>
         </div>
 
         <!-- Składniki -->
         <div>
-            <label for="ingredients">Składniki (minimum 2):</label>
-            <input type="text" id="ingredients" formControlName="ingredients" />
-            <div
-                *ngIf="recipeFormGroup.get('ingredients')?.invalid && recipeFormGroup.get('ingredients')?.touched">
-                <small
+            <mat-form-field class="form-control-full-width">
+                <mat-label>Składniki (minimum 2):</mat-label>
+                <mat-select
+                    formControlName="ingredients" multiple>
+                    @for (popularIngredient of popularIngredients; track
+                    popularIngredient) {
+                    <mat-option
+                        [value]="popularIngredient">{{popularIngredient}}</mat-option>
+                    }</mat-select>
+                <mat-error
                     *ngIf="recipeFormGroup.get('ingredients')?.errors?.required">Składniki
-                    są wymagane</small>
-            </div>
+                    są wymagane
+                </mat-error>
+            </mat-form-field>
         </div>
 
         <!-- Poziom trudności -->
         <div>
-            <label for="difficulty">Poziom trudności wykonania :</label>
-            <select type="text" id="difficulty" formControlName="difficulty">
-                <option value="hard">hard</option>
-                <option value="medium">medium</option>
-                <option value="easy">easy</option>
-            </select>
-            <div
-                *ngIf="recipeFormGroup.get('difficulty')?.invalid && recipeFormGroup.get('difficulty')?.touched">
-                <small
-                    *ngIf="recipeFormGroup.get('difficulty')?.errors?.required">Poziom
-                    trudności
-                    wykonania jest wymagany</small>
-            </div>
+            <mat-form-field class="form-control-full-width">
+                <mat-label>Poziom trudności wykonania :</mat-label>
+                <select matNativeControl required formControlName="difficulty">
+                    <option value="hard">hard</option>
+                    <option value="medium">medium</option>
+                    <option value="easy">easy</option>
+                </select>
+            </mat-form-field>
         </div>
 
         <!-- Czas przygotowania -->
         <div>
-            <label for="preparationTime">Czas wykonania (w minutach):</label>
-            <input type="text" id="preparationTime"
-                formControlName="preparationTime" />
-            <div
-                *ngIf="recipeFormGroup.get('preparationTime')?.invalid && recipeFormGroup.get('preparationTime')?.touched">
-                <small
+            <mat-form-field class="form-control-full-width">
+                <mat-label>Czas wykonania (w minutach):</mat-label>
+                <input matInput type="text"
+                    formControlName="preparationTime" />
+                <mat-error
                     *ngIf="recipeFormGroup.get('preparationTime')?.errors?.required">Czas
-                    wykonania jest wymagany</small>
-            </div>
+                    wykonania jest wymagany
+                </mat-error>
+            </mat-form-field>
         </div>
 
-        <button type="submit" [disabled]="recipeFormGroup.invalid">
+        <button mat-raised-button color="primary" type="submit"
+            [disabled]="recipeFormGroup.invalid">
             {{ isEditMode ? 'Zapisz zmiany' : 'Dodaj przepis' }}
         </button>
     </form>
