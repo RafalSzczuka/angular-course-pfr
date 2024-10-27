@@ -52,7 +52,6 @@ Teraz w przeglądarce zobaczysz przycisk dodaj nowy przepis, a po kliknięciu zo
 
 Zadanie do wykonania
   * Dodaj kontrolki do obsługi poziomu trudności wykonania oraz czas przygotowania dania z przepisu.
-  * Spraw by składniki były wyświetlane... może?
 
 
 
@@ -84,17 +83,8 @@ Zadanie do wykonania
 Przejdźmy do `app.component.html` i podmieńmy tagi komponentów by zacząć używać `<app-recipe-reactive-form #recipeReactiveForm></app-recipe-reactive-form>`
 Następnie przejdźmy do `app.component.ts` i zaimportujmy nasz nowy komponent
 
-3,5. Dodałeś nowy import czy podmieniłeś na nowy? Jest to bardzo istotne, nie importujmy rzeczy których nie używamy.
-                                    ###########  dopisz coś mądrego   ###########
-
-
-
-
-
-
-                                                                    ###########  czy na pewno?   ###########
 4. Teraz dodajmy formularz
-    * Do listy importów w `app-recipe-reactive-form.component.ts` dorzuć FormModule oraz ReactiveFormModule, te moduły są potrzebne do pełnej obsługi formularzy Angular opartych na reaktywności.
+    * Do listy importów w `app-recipe-reactive-form.component.ts` dorzuć ReactiveFormModule, moduł potrzebny do pełnej obsługi formularzy Angular opartych na modelu.
     * W pliku `template-code.html` znajdziesz kod potrzebny do stworzenia widoku. Komentarze zawierają opis potrzebny do zrozumienia wykorzystanych mechanizmów. W razie niezrozumienia, śmiało pytaj trenera :)
     * Gdy dodasz kod szablonu, kompilator poimformuje Cię o blądach, rozwiążesz je dodając logikę komponentu, znajdziesz ją w `component-code.ts` Komentarze zawierają wyjaśnienia użytych mechanizmów.
 
@@ -102,7 +92,6 @@ Teraz w przeglądarce zobaczysz przycisk dodaj nowy przepis, a po kliknięciu zo
 
 Zadanie do wykonania
   * Dodaj kontrolki do obsługi poziomu trudności wykonania oraz czas przygotowania dania z przepisu.
-  * Spraw by składniki były wyświetlane... może?
 
 
 
