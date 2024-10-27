@@ -144,6 +144,4 @@ W tym module:
 Mieliśmy okazję poznać oba sposoby na tworzenie formularzy w Angularze.
 * Template-Driven Forms są prostsze do wdrożenia, ale mniej elastyczne. Świetnie sprawdzają się w małych formularzach.
 * Reactive Forms dają większą kontrolę nad logiką formularza, są bardziej złożone, ale umożliwiają skomplikowaną walidację i łatwą integrację z innymi częściami aplikacji.
-
-
-Zadanie dla chętnych
+* Dowiedzieliśmy się czym są biblioteki komponentów UI i jak ich użyć w projekcie na przykładzie Angular Material
