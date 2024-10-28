@@ -48,6 +48,11 @@ export class RecipeService {
     return this.recipes;
   }
 
+  // Metoda pobierająca przepis po id
+  getRecipeById(id: number): RecipeModel | undefined {
+    return this.recipes.find(r => r.id === id);
+  }
+
   // Metoda usuwająca przepis
   deleteRecipe(id: number): void {
     this.recipes = this.recipes.filter(r => r.id !== id);

@@ -26,22 +26,49 @@
 
 /* Stylizacja tytułu karty */
 mat-card-title {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   font-weight: bold;
-  color: #333;
+  text-align: center;
+  color: #3f51b5; /* Kolor akcentu */
+  margin: 1rem 1rem;
 }
 
 /* Stylizacja treści (składników) */
-mat-card-content p {
-  color: #666;
-  margin: 0.5rem 0;
+mat-card-content {
+  p {
+    font-size: 1rem;
+    color: #333;
+    margin: 0.75rem 0;
+    line-height: 1.6;
+  }
+
+  strong {
+    color: #3f51b5;
+  }
 }
 
 /* Stylizacja przycisków */
 mat-card-actions {
-  align-self: center;
+  margin: 10px;
+  display: flex;
+  justify-content: space-between;
 
-    button {
-    margin-right: 0.5rem;
+  button {
+    font-size: 1rem;
+  }
+
+  /* Stylowanie przycisków edycji i powrotu */
+  button[color="accent"] {
+    background-color: #ff4081;
+    color: #ffffff;
+  }
+
+  button[color="primary"] {
+    background-color: #3f51b5;
+    color: #ffffff;
+  }
+  
+  button[color="primary"]:hover, button[color="accent"]:hover {
+    filter: brightness(0.9); /* Przyciemnia kolor przycisku na hover */
   }
 }

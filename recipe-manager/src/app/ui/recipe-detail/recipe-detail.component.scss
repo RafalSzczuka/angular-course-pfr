@@ -1,17 +1,72 @@
-.container {
-    &--selected{
-        border: 2px dashed #000000;
-        margin: 10px 0;
-        padding: 15px;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
-    }
-    p {
-        color: #555;
-      }
+/* Kontener główny karty, ustawiony na pełną szerokość i wysokość */
+:host {
+  display: flex;
+  justify-content: center; /* Wycentrowanie karty na środku */
+  align-items: center;
+}
 
-    h2 {
-        color: #555;
-        font-size: 1.5em;
-      }
+/* Karta z przepisem */
+mat-card {
+  max-width: 600px; /* Maksymalna szerokość karty */
+  width: 90%; /* Ustawia szerokość karty do 90% ekranu */
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Dodanie cienia */
+  border-radius: 8px;
+  background-color: #ffffff;
+  transition: transform 0.3s ease; /* Animacja dla efektu hover */
+
+  &:hover {
+    transform: scale(1.02); /* Delikatne powiększenie na hover */
+  }
+}
+
+/* Tytuł przepisu */
+mat-card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  color: #3f51b5; /* Kolor akcentu */
+  margin-bottom: 1rem;
+}
+
+/* Sekcja treści - stylizowanie składników i opisu */
+mat-card-content {
+  font-size: 1rem;
+  color: #333;
+
+  p {
+    margin: 0.75rem 0;
+    line-height: 1.6;
+  }
+
+  strong {
+    color: #3f51b5;
+  }
+}
+
+/* Stylizacja przycisków akcji */
+mat-card-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+
+  button {
+    font-size: 1rem;
+    padding: 0.5rem 1.5rem;
+  }
+
+  /* Stylowanie przycisków edycji i powrotu */
+  button[color="accent"] {
+    background-color: #ff4081;
+    color: #ffffff;
+  }
+
+  button[color="primary"] {
+    background-color: #3f51b5;
+    color: #ffffff;
+  }
+  
+  button[color="primary"]:hover, button[color="accent"]:hover {
+    filter: brightness(0.9); /* Przyciemnia kolor przycisku na hover */
+  }
 }
