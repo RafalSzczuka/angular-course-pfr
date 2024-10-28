@@ -1,0 +1,63 @@
+/* Styl kontenera głównego */
+.container {
+    min-height: 100vh; /*  zapewnia, że kontener rozciąga się na całą wysokość okna przeglądarki. */
+    display: flex; /* flexbox layout by poukładać elementy na stronie */
+    flex-direction: column; /* kierunek układania się elementów */
+  }
+  
+  /* Styl nawigacji */
+  nav {
+    width: 100%;
+    padding: 2rem 0;
+    display: flex;
+    justify-content: flex-start; /* Wyśrodkowanie elementów w poziomie */
+    gap: 8rem; /* przerwa między blokami */
+
+    span {
+        margin: 0;
+        padding: 0;
+        text-decoration: none;
+        color: #333;
+        font-size: 1.1rem;
+        transition: color 0.3s ease, text-decoration 0.3s ease;
+        align-self: flex-start;
+    }
+  
+    ul {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem; /* Odstęp między linkami */
+      margin: 0;
+      padding: 0;
+    }
+  
+    li {
+      a {
+        text-decoration: none;
+        color: #333;
+        font-size: 1.1rem;
+        transition: color 0.3s ease, text-decoration 0.3s ease;
+  
+        &:hover {
+          cursor: pointer;
+          text-decoration: underline; /* Podkreślenie na hover */
+          color: #007bff; /* Akcentowany kolor na hover */
+        }
+      }
+    }
+  }
+  
+  /* Styl głównej sekcji (main) */
+  main {
+    flex: 1; /* Wypełnia całą dostępną przestrzeń pionową */
+    padding: 2rem;
+  }
+
+  /* Styl stopki */
+footer {
+  margin-top: auto;
+  padding: 1rem 0;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #666;
+}

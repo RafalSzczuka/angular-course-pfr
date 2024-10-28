@@ -1,20 +1,47 @@
-.header {
+/* Styl głównego kontenera dla kart przepisów */
+:host {
+  display: block;
+  padding: 1rem;
+}
+
+/* Stylizujemy kontener kart jako siatkę */
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 kolumny o równych szerokościach */
+  gap: 1.5rem; /* Odstęp między kartami */
+}
+
+/* Styl karty przepisu */
+.recipe-card {
   text-align: center;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  min-height: 350px;
+
+  /* Efekt hover: cień wokół karty */
+  &:hover {
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px); /* Uniesienie karty na hover */
+  }
 }
 
-li {
-  background-color: #fff;
-  border: 1px solid #ddd;
-  margin: 10px 0;
-  padding: 15px;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
+/* Stylizacja tytułu karty */
+mat-card-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #333;
 }
 
-li:hover {
-  background-color: #7f7f7f;
+/* Stylizacja treści (składników) */
+mat-card-content p {
+  color: #666;
+  margin: 0.5rem 0;
 }
 
-.element-selected {
-  background-color: #7f7f7f;
+/* Stylizacja przycisków */
+mat-card-actions {
+  align-self: center;
+
+    button {
+    margin-right: 0.5rem;
+  }
 }

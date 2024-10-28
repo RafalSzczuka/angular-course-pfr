@@ -3,11 +3,14 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { RecipeListElementComponent } from '../recipe-list-element/recipe-list-element.component';
 import { RecipeService } from '../../core/recipe/service/recipe.service';
 import { EventRecipeModel, RecipeModel } from '../../core/recipe/model';
+import { RouterLink } from '@angular/router';
+import {MatCardModule} from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-recipe-list',
   standalone: true,
-  imports: [CommonModule, RecipeListElementComponent],
+  imports: [CommonModule, RecipeListElementComponent, RouterLink, MatCardModule, MatButtonModule],
   templateUrl: './recipe-list.component.html',
   styleUrl: './recipe-list.component.scss'
 })

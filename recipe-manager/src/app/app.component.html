@@ -1,9 +1,17 @@
-<app-recipe-list (recipeSelected)="onRecipeSelected($event)"></app-recipe-list>
-<app-recipe-detail [selectedRecipe]="selectedRecipe"></app-recipe-detail>
-
-<button mat-raised-button color="primary" (click)="recipeReactiveForm.toggleForm()">
-    {{ recipeReactiveForm.showForm ? 'Ukryj formularz' : 'Dodaj nowy przepis' }}
-</button>
-
-<!-- Dodaj formularz do komponentu -->
-<app-recipe-template-form #recipeReactiveForm></app-recipe-template-form>
+<section class="container">
+    <nav>
+        <span><strong>Recipe Manager</strong></span>
+        <ul>
+            <!-- dyrektywa Angulara, która ustawia trasę na odpowiedni widok. -->
+            <li><a routerLink="/recipes">Lista Przepisów</a></li>
+            <li><a routerLink="/recipe/add">Dodaj Nowy Przepis</a></li>
+        </ul>
+    </nav>
+    <main>
+        <!-- miejsce w szablonie, gdzie Angular Router ładuje komponenty zależnie od bieżącej ścieżki. -->
+        <router-outlet></router-outlet>
+    </main>
+    <footer>
+        &reg;Angular - poziom podstawowy
+    </footer>
+</section>
