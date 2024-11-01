@@ -17,10 +17,10 @@ Zbudujemy formularz umożliwiający dodawanie i edytowanie przepisów kulinarnyc
 2. Do komponentu zaimporujmy CommonModule. Następnie przejdźmy do implementacji logiki która pozwoli nam na pokazanie oraz ukrycie komponentu.
     * Przejdź do `recipe-template-form.component.ts`, dodaj tam zmienną showForm: boolean = false
         zmienna posłuży jako swojego rodzaju stan, odniesienie do tego czy widzimy komponent czy nie.
-    * W komponencie zdefiniuj metodę toggleForm(): void - ta ma manipulować stanem showForm
-        {
-            this.showForm = !this.showForm;
-        }
+    * W komponencie zdefiniuj metodę `toggleForm(): void` - ta ma manipulować stanem showForm
+        `{`
+        `    this.showForm = !this.showForm;`
+        `}`
     * Przejdźmy do `recipe-template-form.component.html`, Dodajmy tam początkową formę kodu widoku naszego komponentu
         `<div *ngIf="showForm">`
         `<h2>Dodaj nowy przepis</h2>`
@@ -45,7 +45,7 @@ Zbudujemy formularz umożliwiający dodawanie i edytowanie przepisów kulinarnyc
 4. Mamy już mechanikę ukrywania i odkrywania komponentu z formularzem którego użyjemy przy dodawaniu nowych przepisów.
 Teraz dodajmy formularz
     * Do listy importów w `app-recipe-template-form.component.ts` dorzuć FormModule, to moduł który zawiera wszystkie podstawowe zasoby potrzebne do obsługi formularza opartego na szablonach.
-    * W pliku `template-code.html` znajdziesz kod potrzebny do stworzenia widoku. Komentarze zawierają opis potrzebny do zrozumienia wykorzystanych mechanizmów. W razie niezrozumienia, śmiało pytaj trenera :)
+    * W pliku `template-code.html` znajdziesz kod potrzebny do stworzenia widoku. Komentarze zawierają opis potrzebny do zrozumienia wykorzystanych mechanizmów. W razie niezrozumienia, śmiało pytaj :)
     * Gdy dodasz kod szablonu, kompilator poimformuje Cię o blądach, rozwiążesz je dodając logikę komponentu, znajdziesz ją w `component-code.ts` Komentarze zawierają wyjaśnienia użytych mechanizmów.
 
 Teraz w przeglądarce zobaczysz przycisk dodaj nowy przepis, a po kliknięciu zobaczysz komponent odpowiedzialny za dodanie przepisu!  🎉
@@ -83,7 +83,7 @@ Zadanie do wykonania
 Przejdźmy do `app.component.html` i podmieńmy tagi komponentów by zacząć używać `<app-recipe-reactive-form #recipeReactiveForm></app-recipe-reactive-form>`
 Następnie przejdźmy do `app.component.ts` i zaimportujmy nasz nowy komponent
 
-4. Teraz dodajmy formularz
+1. Teraz dodajmy formularz
     * Do listy importów w `app-recipe-reactive-form.component.ts` dorzuć ReactiveFormModule, moduł potrzebny do pełnej obsługi formularzy Angular opartych na modelu.
     * W pliku `template-code.html` znajdziesz kod potrzebny do stworzenia widoku. Komentarze zawierają opis potrzebny do zrozumienia wykorzystanych mechanizmów. W razie niezrozumienia, śmiało pytaj trenera :)
     * Gdy dodasz kod szablonu, kompilator poimformuje Cię o blądach, rozwiążesz je dodając logikę komponentu, znajdziesz ją w `component-code.ts` Komentarze zawierają wyjaśnienia użytych mechanizmów.
