@@ -11,7 +11,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 export class RecipeListComponent {
   recipes = [
     { title: 'Spaghetti Carbonara', description: 'Klasyczne włoskie danie.' },
-    { title: 'Pancakes', description: 'Puszyste naleśniki z syropem klonowym.' },
+    { title: 'Pancakes', description: 'Puszyste naleśniki z miodem.' },
     { title: 'Tacos', description: 'Meksykańskie tacos z wołowiną i salsą.' }
   ];
 
