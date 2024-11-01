@@ -14,7 +14,7 @@ export class RecipeListComponent {
   selectedRecipeTitle: string = '';
   recipes: RecipeModel[] = [
     { title: 'Spaghetti Carbonara', description: 'Klasyczne włoskie danie.' },
-    { title: 'Pancakes', description: 'Puszyste naleśniki z syropem klonowym.' },
+    { title: 'Pancakes', description: 'Puszyste naleśniki z miodem.' },
     { title: 'Tacos', description: 'Meksykańskie tacos z wołowiną i salsą.' }
   ];
 
