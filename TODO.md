@@ -1,136 +1,105 @@
-**Moduł 4 - Formularze i walidacja - Dodawanie oraz edytowanie przepisów:**
-W tym module uczestnicy nauczą się, jak tworzyć formularze w Angularze z użyciem dwóch podejść:
-  * Template-driven Forms (formularze oparte na szablonach)
-  * Reactive Forms (formularze reaktywne)
-Zbudujemy formularz umożliwiający dodawanie i edytowanie przepisów kulinarnych, z walidacją pól. Na głównej stronie umieścimy przycisk, który będzie pokazywał i ukrywał formularz. Na koniec omówimy walidację formularzy, np. wymagana nazwa przepisu i minimalna liczba składników.
-
-**CZĘŚĆ Template-driven Forms**
-1. Zacznijmy od utworzenia komponentu, który będzie odpowiedzialny za formularz dodawania i edytowania przepisu.
-    * W terminalu w katalogu projektu utwórz nowy komponent za pomocą `ng generate component ui/recipe-template-form`
-
-    >To polecenie utworzy pliki:
-    >
-    >    `recipe-template-form.component.ts`
-    >    `recipe-template-form.component.html`
-    >    `recipe-template-form.component.scss`
-
-2. Do komponentu zaimporujmy CommonModule. Następnie przejdźmy do implementacji logiki która pozwoli nam na pokazanie oraz ukrycie komponentu.
-    * Przejdź do `recipe-template-form.component.ts`, dodaj tam zmienną showForm: boolean = false
-        zmienna posłuży jako swojego rodzaju stan, odniesienie do tego czy widzimy komponent czy nie.
-    * W komponencie zdefiniuj metodę toggleForm(): void - ta ma manipulować stanem showForm
-        {
-            this.showForm = !this.showForm;
-        }
-    * Przejdźmy do `recipe-template-form.component.html`, Dodajmy tam początkową formę kodu widoku naszego komponentu
-        `<div *ngIf="showForm">`
-        `<h2>Dodaj nowy przepis</h2>`
-        `</div>`
-
-3. Przejdzmy do komponentu głownego (w naszym wypadku `app.component`) i dodajmy nasz nowo utworzony komponent.
-    * Zaimportujmy `RecipeTemplateFormComponent`
-    * dodajmy następujący kod do `recipe-template-form.component.html`
-
-    `<button (click)="recipeTemplateForm.toggleForm()">`
-    `{{ recipeTemplateForm.showForm ? 'Ukryj formularz' : 'Dodaj nowy przepis' }}`
-    `</button>`
-
-    `<!-- Dodaj formularz do komponentu -->`
-    `<app-recipe-template-form #recipeTemplateForm></app-recipe-template-form>`
-
-    > #recipeTemplateForm to zmienna (template variable) dzięki niej możemy się dostać do instancji klasy komponentu.
-    > Użycie jest widoczne w (click) naszego buttona.
-    > Dzięki template variable bezpośrednio możemy się odwołać do metody zdefiniowanej w ramach komponentu.
+**Moduł 5: Routing i nawigacja**
+* Routing: tworzenie wielostronicowej aplikacji.
+* Dodanie widoków dla różnych części aplikacji, takich jak: lista przepisów, szczegóły przepisu, formularz dodawania/edycji przepisu.
+* Widok szczegółowy przepisu: wyświetlanie składników i instrukcji po kliknięciu na dany przepis.
+  
+_Moduł 5 jest ważnym krokiem w zrozumieniu, jak organizować wielostronicową aplikację w Angularze za pomocą routingu, co pozwala użytkownikom przemieszczać się między różnymi sekcjami aplikacji. W ramach tego modułu dowiemy się, jak ustawić routing dla listy przepisów, widoku szczegółowego oraz formularza dodawania/edycji przepisów._
 
 
-4. Mamy już mechanikę ukrywania i odkrywania komponentu z formularzem którego użyjemy przy dodawaniu nowych przepisów.
-Teraz dodajmy formularz
-    * Do listy importów w `app-recipe-template-form.component.ts` dorzuć FormModule, to moduł który zawiera wszystkie podstawowe zasoby potrzebne do obsługi formularza opartego na szablonach.
-    * W pliku `template-code.html` znajdziesz kod potrzebny do stworzenia widoku. Komentarze zawierają opis potrzebny do zrozumienia wykorzystanych mechanizmów. W razie niezrozumienia, śmiało pytaj trenera :)
-    * Gdy dodasz kod szablonu, kompilator poimformuje Cię o blądach, rozwiążesz je dodając logikę komponentu, znajdziesz ją w `component-code.ts` Komentarze zawierają wyjaśnienia użytych mechanizmów.
+1. Konfiguracja Angular Router
+  Angular Router umożliwia nawigację między widokami w aplikacji. Najpierw zainstalujemy podstawową konfigurację routingu w głównym module aplikacji.
 
-Teraz w przeglądarce zobaczysz przycisk dodaj nowy przepis, a po kliknięciu zobaczysz komponent odpowiedzialny za dodanie przepisu!  🎉
+   * Przejdź do `app.config.ts` i upewnij się że masz `provideRouter(routes)` w liście providers.
+   * Przejdź do `app.routes.ts` i zdefiuniuj tablice routingu tak by zawierała:
+     * trasy do widoków listy przepisów,
+     * szczegółów przepisu,
+     * widoku dodania / edycji przepisu. 
+     * Powinna też zawierać przekierowanie do komponentu listy dla pustych tras.
+   Widok edycji i szczegółów przepisu powinna zawierać parametr **id** by móc określić o jaki przepis chodzi.
+   Kod znajdziesz w `component-code.ts` - krok 1.
 
-Zadanie do wykonania
-  * Dodaj kontrolki do obsługi poziomu trudności wykonania oraz czas przygotowania dania z przepisu.
+
+   brakuje importu - pułapka?
 
 
 
-**CZĘŚĆ Reactive Forms**
+2. Tworzenie Linków do Nawigacji Między Widokami
+   Teraz utworzymy linki w menu, które umożliwią użytkownikowi nawigację po aplikacji
 
-1. Zacznijmy od utworzenia komponentu, który będzie odpowiedzialny za formularz dodawania i edytowania przepisu.
-    * W terminalu w katalogu projektu utwórz nowy komponent za pomocą `ng generate component ui/recipe-reactive-form`
+    * Przejdź do `app.component.html` i zastąp obecny kod tym z `template-code.html` - krok 1
+    * Następnie przejdź do `app.component.ts` i pozbądź się niepotrzebnego kodu:
+        > `selectedRecipe: RecipeModel | null = null;`
+        >
+        > `onRecipeSelected(recipe: RecipeModel | null) {`
+        > `  this.selectedRecipe = recipe;`
+        > `}`
+    * Przejdź teraz do `app.component.scss` i podmień zawartość na style z pliku `component-style.scss` krok 2.
+    * Pozbądź się też zaimportowanych, nie używanych zależności z listy imports oraz dodaj RouterOutlet
 
-    >To polecenie utworzy pliki:
-    >
-    >    `recipe-reactive-form.component.ts`
-    >    `recipe-reactive-form.component.html`
-    >    `recipe-reactive-form.component.scss`
+**Tworzenie Widoków dla Każdej Ścieżki**
+_Teraz utworzymy widoki, które użytkownik zobaczy korzystająć z nawigacji po aplikacji_
 
-2. Przejdź do `recipe-template-form.component.ts`
-    * Zaimporuj CommonModule
-    * Dodaj zmienną `showForm: boolean = false`
-    * Zdefiniuj metodę
-        toggleForm(): void
-            {
-                this.showForm = !this.showForm;
-            }
-    * Przejdźmy do `recipe-template-form.component.html`, Dodajmy tam początkową formę kodu widoku naszego komponentu
-        `<div *ngIf="showForm">`
-        `<h2>Dodaj nowy przepis</h2>`
-        `</div>`
+3. Widok Listy Przepisów (RecipeListComponent)
+  * Otwórz `recipe-list.component.html` i upewnij się, że każdy przepis ma link, który prowadzi do widoku szczegółowego.
+    * Dodajmy przycisk "Zobacz szczegóły".
+      Kod znajdziesz w pliku `template-code.html` - krok 3.
+  * Przejdź do `recipe-list.component.ts`, a następnie:
+    * pozbądź się metody `onRecipeClick()` gdyż nie jest już potrzebna
+    * dodaj `MatButtonModule` do listy import 
+  * Przejdź do `recipe-list.component.scss`, a następnie:
+    * dodaj style z pliku `component-style.scss` - krok 3
 
-3. Logikę odpowiedzialną za wyświetlenie oraz ukrycie już mamy.
-Przejdźmy do `app.component.html` i podmieńmy tagi komponentów by zacząć używać `<app-recipe-reactive-form #recipeReactiveForm></app-recipe-reactive-form>`
-Następnie przejdźmy do `app.component.ts` i zaimportujmy nasz nowy komponent
+4. Widok Szczegółów Przepisu (RecipeDetailComponent)
+   * Przejdź do `recipe-details-component.ts`, gdzie musimy:
+    * zadbać by ten komponent sam zdobył sobie przepis. 
+        Podanie go przez Input'a już nie wchodzi w grę.
+        To czego będziemy potrzebowali to:
+          * **id** przepisu, weźmiemy go sobie z adresu URL,
+          * serwis `RecipeService`, który dostarczy nam przpis na podstawie **id**
+    * Podmień klase komponentu na tę z pliku `component-code.ts` - krok 4
+    * Podmień listę importów komponentu na `CommonModule, RouterLink, MatCardModule, MatButtonModule`.
 
-4. Teraz dodajmy formularz
-    * Do listy importów w `app-recipe-reactive-form.component.ts` dorzuć ReactiveFormModule, moduł potrzebny do pełnej obsługi formularzy Angular opartych na modelu.
-    * W pliku `template-code.html` znajdziesz kod potrzebny do stworzenia widoku. Komentarze zawierają opis potrzebny do zrozumienia wykorzystanych mechanizmów. W razie niezrozumienia, śmiało pytaj trenera :)
-    * Gdy dodasz kod szablonu, kompilator poimformuje Cię o blądach, rozwiążesz je dodając logikę komponentu, znajdziesz ją w `component-code.ts` Komentarze zawierają wyjaśnienia użytych mechanizmów.
+**Zadanie do wykonania:**
+  * Kompilator po skopiowaniu wcześniejszego kodu, na pewno krzyknie, że brakuje mu implementacji metody `getRecipeById`, napisz ją.
 
-Teraz w przeglądarce zobaczysz przycisk dodaj nowy przepis, a po kliknięciu zobaczysz komponent odpowiedzialny za dodanie przepisu!  🎉
+   Gdy implementacja `getRecipeById` jest już gotowa,
+   * przejdźmy do `recipe-details-component.html` a następnie:
+     * musimy go trochę dostosować. Podmień kod na ten z `template-code.html` krok 4
 
-Zadanie do wykonania
-  * Dodaj kontrolki do obsługi poziomu trudności wykonania oraz czas przygotowania dania z przepisu.
+   * Następnie przejdź do `recipe-details-component.scss` i:
+     * podmień style na te z `component-style.scss` - krok 4
+
+5. Widok edycji/dodania przepisu (RecipeReactiveFormComponent)
+  Musimy zadbać by nasz komponent obsługiwał zerówno dodawanie przepisu jak i edycje.
+  Logikę oprzemy o parametr id pochodzący ze ścieżki (route).
+
+  * Przejdź do `recipe-reactive-form-component.ts`.
+    * Wstrzyknijmy do konstruktora zależnośc  `Router` oraz `ActivatedRoute`
+    * Następnie edytujmy ngOnInit tak by pobierał i ustawiał sobie przepis na podstawie **id** pochodzącego ze ścieżki route.
+    * Zostaje metoda `onSubmit()`, która posłuży nam do zapisania zmian i powrotu do listy przepisów.
+    > `onSubmit(): void {`
+    > `  if (this.recipeFormGroup.valid) {`
+    > `    const recipe: RecipeModel = this.recipeFormGroup.value; // Zbieramy dane formularza`
+    > `    if (this.isEditMode) {`
+    > `      this.recipeService.editRecipe(recipe) // Wysyłanie danych do serwisu w postaci edycji istniejącego przepisu`
+    > `    } else {`
+    > `    this.recipeService.addRecipe(recipe); // Wysyłanie danych do serwisu w postaci nowego przepisu`
+    > `    }`
+    > 
+    > `    this.router.navigate(['/recipes']); // Powrót do listy przepisów`
+    > `  }`
+    > `}`
 
 
+**Zadanie do wykonania:**
+  * Brakuje nam **id** w modelu który przesyłamy do serwisu.
 
-
-**CZĘŚĆ Angular Material**
-
-1. Instalacja Angular Material, Angular CDK oraz Angular Animations
-    * W terminalu przejdź do lokalizacji swojego projektu i uruchom polecenie: `ng add @angular/material`
-    > Konfiguracja stylów Angular Material:
-    > Po wykonaniu powyższego polecenia, Angular Material poprosi o wybór opcji, które zainstalują style, czcionki i animacje dla projektu:
-    > * Theme: Wybierz Azure/Blue.
-    > * Global Typography Styles: Wybierz Yes.
-    > * Animations: Wybierz Yes (dzięki temu animacje Angular Material będą działały poprawnie).
-
-    * Po wykonaniu tego polecenia część plików została edytowana....
-
-2. Użycie komponentów UI pochodzących z biblioteki Angular Material
-   * Po instalacji zaszły pewne zmiany w projekcie, m.in dostaliśmy predefiniowany zestaw styli globalnych, przejdźmy teraz do pliku `global-styles.scss` i skopiujmy temte style i podmieńmy w pliku `styles.scss`
-
-   * Dodając bibliotekę zaznaczyliśmy że chcemy korzystać z animacji, a więc przejdźmy do ustawień głównych aplikacji `app.config.ts` i upewnijmy się że na liście provide jest `provideAnimationsAsync()`
-
-   * Przejdźmy teraz do obecnie używanego komponentu dodawania i edytowania przepisów `app-recipe-reactive-form.component.ts` i dodajmy do listy importów `MatFormFieldModule, MatInputModule, MatButtonModule, MatSelectModule`
-   * Gdy już importy mamy ograne, czas na edycje widoku. Przejdź do `template-code.html` znajdź tam część dotyczącą Angular Material, krok drugi i skopiuj kod a następnie podmień na ten znajdujący się w `app-recipe-reactive-form.component.ts`
-   * Dorzućmy style z `component.style.scss` do `app-recipe-reactive-form.component.scss` by trochę wyrównać nasze kontenery na kontrolki jak i sam formularz
-   Gdybyś się zastanawiał co to jest @if, @for to są to alternatywy dla dyrektyw *ngIf *ngFor pochodzące z nowego "control flow" - dopytaj trenera
-
-Zadanie do wykonania
-  * Kontrolka składników jest obsługiwana przez texarea, fajnie byłoby gdyby urzytkownik nie musiał wpisywać ich z palca a mógł wybrać z listy wielokrotnego wyboru. Zaimplementuj to w oparciu o `https://material.angular.io/components/select/overview#multiple-selection`
-  Dorzućmy też wyświetlanie składników po wyborze przepisu.
-  Podpowiedź: Potrzebna będzie lista składników by móc po niej iterować, przykładową znajdziesz w `component-code.ts`
-
-Zadanie dodatkowe
-    * Przerób komponent `recipe-template-form` tak by używał Angular Material komponentów UI
-    * Przerób reszte komponentów, tak by używały Angular Material komponentów UI
 
 ##### Podsumowanie Modułu:
 W tym module:
 
-Mieliśmy okazję poznać oba sposoby na tworzenie formularzy w Angularze.
-* Template-Driven Forms są prostsze do wdrożenia, ale mniej elastyczne. Świetnie sprawdzają się w małych formularzach.
-* Reactive Forms dają większą kontrolę nad logiką formularza, są bardziej złożone, ale umożliwiają skomplikowaną walidację i łatwą integrację z innymi częściami aplikacji.
-* Dowiedzieliśmy się czym są biblioteki komponentów UI i jak ich użyć w projekcie na przykładzie Angular Material
+Mieliśmy okazję poznać czym jest Angular Router oraz podstawowe zasady działania.
+* Utworzyliśmy RecipeReactiveFormComponent, który obsługuje widok dodawania i edytowania przepisów za pomocą Reactive Forms.
+* Dodaliśmy logikę umożliwiającą dynamiczne zarządzanie listą składników.
+* Stworzyliśmy przyjazny dla użytkownika widok formularza z intuicyjną walidacją pól.
+* Użyliśmy Angular Material do stylizacji formularzy, co wzmacnia spójność i wygląd aplikacji.
