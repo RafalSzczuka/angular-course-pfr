@@ -20,16 +20,7 @@ export class RecipeReactiveFormComponent {
   @Input() currentRecipe: RecipeModel | null = null;
   showForm = false;
   recipeFormGroup!: FormGroup;
-
-   // Lista popularnych składników
-   popularIngredients: string[] = [
-    'Tomatoes', 'Onions', 'Garlic', 'Potatoes', 'Carrots', 'Olive oil', 'Butter',
-    'Chicken', 'Beef', 'Pork', 'Salt', 'Pepper', 'Paprika', 'Basil', 'Parsley',
-    'Oregano', 'Lemon', 'Sugar', 'Flour', 'Eggs', 'Milk', 'Cheese', 'Cream',
-    'Bread', 'Rice', 'Pasta', 'Beans', 'Lettuce', 'Spinach', 'Broccoli', 'Mushrooms',
-    'Fish', 'Shrimp', 'Soy sauce', 'Vinegar', 'Honey', 'Peppers', 'Zucchini', 'Cucumber',
-    'Corn', 'Chili powder'
-  ];
+  popularIngredients: string[] = [];
 
   constructor(private fb: FormBuilder, private recipeService: RecipeService) {}
 
@@ -41,6 +32,8 @@ export class RecipeReactiveFormComponent {
       preparationTime: ['', Validators.required],
       difficulty: ['', Validators.required]
     });
+
+    this.popularIngredients = this.recipeService.getPopularIngredients();
 
     if (this.currentRecipe) {
       this.recipeFormGroup.patchValue(this.currentRecipe);
