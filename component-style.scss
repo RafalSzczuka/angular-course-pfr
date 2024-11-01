@@ -1,13 +1,289 @@
-// CZĘŚĆ Angular Material
+// ######################### app.component.scss - krok 2 #########################
 
-// KROK 2 - recipe-reactive-form.component.scss
+/* Styl kontenera głównego */
+.container {
+  min-height: 100vh;
+  /*  zapewnia, że kontener rozciąga się na całą wysokość okna przeglądarki. */
+  display: flex;
+  /* flexbox layout by poukładać elementy na stronie */
+  flex-direction: column;
+  /* kierunek układania się elementów */
+}
 
-.reactive-form {
-    min-width: 150px;
-    max-width: 500px;
-    width: 100%;
+/* Styl nawigacji */
+nav {
+  width: 100%;
+  padding: 2rem 0;
+  display: flex;
+  justify-content: flex-start;
+  /* Wyśrodkowanie elementów w poziomie */
+  gap: 8rem;
+  /* przerwa między blokami */
+
+  span {
+      margin: 0;
+      padding: 0;
+      text-decoration: none;
+      transition:
+          color 0.3s ease,
+          text-decoration 0.3s ease;
+      align-self: flex-start;
+
+      strong {
+          color: #3f51b5;
+          font-size: 2rem;
+      }
   }
-  
-  .form-control-full-width {
-    width: 100%;
+
+  ul {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+      /* Odstęp między linkami */
+      margin: 0;
+      padding: 0;
   }
+
+  li {
+      a {
+          text-decoration: none;
+          color: #333;
+          font-size: 1.1rem;
+          transition:
+              color 0.3s ease,
+              text-decoration 0.3s ease;
+
+          &:hover {
+              cursor: pointer;
+              text-decoration: underline;
+              /* Podkreślenie na hover */
+              color: #007bff;
+              /* Akcentowany kolor na hover */
+          }
+      }
+  }
+}
+
+/* Styl głównej sekcji (main) */
+main {
+  flex: 1;
+  /* Wypełnia całą dostępną przestrzeń pionową */
+  padding: 2rem;
+}
+
+/* Styl stopki */
+footer {
+  margin-top: auto;
+  padding: 1rem 0;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+
+// ######################### #########################
+
+
+
+// ######################### recipe-list.component.scss - krok 3 #########################
+
+/* Styl głównego kontenera dla kart przepisów */
+:host {
+  display: block;
+  padding: 1rem;
+}
+
+/* Stylizujemy kontener kart jako siatkę */
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  /* 3 kolumny o równych szerokościach */
+  gap: 1.5rem;
+  /* Odstęp między kartami */
+}
+
+/* Styl karty przepisu */
+.recipe-card {
+  text-align: center;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  min-height: 350px;
+
+  /* Efekt hover: cień wokół karty */
+  &:hover {
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+      transform: translateY(-2px);
+      /* Uniesienie karty na hover */
+  }
+}
+
+/* Stylizacja tytułu karty */
+mat-card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  color: #3f51b5;
+  margin: 1rem 1rem;
+}
+
+/* Stylizacja treści (składników) */
+mat-card-content {
+  p {
+      font-size: 1rem;
+      color: #333;
+      margin: 0.75rem 0;
+      line-height: 1.6;
+  }
+
+  strong {
+      color: #3f51b5;
+  }
+}
+
+/* Stylizacja przycisków */
+mat-card-actions {
+  margin: 10px;
+  display: flex;
+  justify-content: space-between;
+
+  button {
+      font-size: 1rem;
+  }
+
+  /* Stylowanie przycisków edycji i powrotu */
+  button[color="accent"] {
+      background-color: #ff4081;
+      color: #ffffff;
+  }
+
+  button[color="primary"] {
+      background-color: #3f51b5;
+      color: #ffffff;
+  }
+
+  button[color="primary"]:hover,
+  button[color="accent"]:hover {
+      filter: brightness(0.9);
+      /* Przyciemnia kolor przycisku na hover */
+  }
+}
+
+// ######################### #########################
+
+
+// ######################### recipe-details-component.scss - krok 4 #########################
+
+/* Kontener główny karty, ustawiony na pełną szerokość i wysokość */
+:host {
+  display: flex;
+  justify-content: center; /* Wycentrowanie karty na środku */
+  align-items: center;
+}
+> 
+/* Karta z przepisem */
+mat-card {
+  max-width: 600px; /* Maksymalna szerokość karty */
+  width: 90%; /* Ustawia szerokość karty do 90% ekranu */
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Dodanie cienia */
+  border-radius: 8px;
+  background-color: #ffffff;
+  transition: transform 0.3s ease; /* Animacja dla efektu hover */
+> 
+  &:hover {
+    transform: scale(1.02); /* Delikatne powiększenie na hover */
+  }
+}
+> 
+/* Tytuł przepisu */
+mat-card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  color: #3f51b5; /* Kolor akcentu */
+  margin-bottom: 1rem;
+}
+> 
+/* Sekcja treści - stylizowanie składników i opisu */
+mat-card-content {
+  font-size: 1rem;
+  color: #333;
+> 
+  p {
+    margin: 0.75rem 0;
+    line-height: 1.6;
+  }
+> 
+  strong {
+    color: #3f51b5;
+  }
+}
+> 
+/* Stylizacja przycisków akcji */
+mat-card-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+> 
+  button {
+    font-size: 1rem;
+    padding: 0.5rem 1.5rem;
+  }
+> 
+  /* Stylowanie przycisków edycji i powrotu */
+  button[color="accent"] {
+    background-color: #ff4081;
+    color: #ffffff;
+  }
+> 
+  button[color="primary"] {
+    background-color: #3f51b5;
+    color: #ffffff;
+  }
+> 
+  button[color="primary"]:hover, button[color="accent"]:hover {
+    filter: brightness(0.9); /* Przyciemnia kolor przycisku na hover */
+  }
+}
+
+// ######################### #########################
+
+
+
+// ######################### recipe-reactive-form-component.scss - krok 5 #########################
+
+.form-card {
+width: 100%;
+max-width: 600px;
+margin: 2rem auto;
+padding: 2rem;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+mat-form-field {
+width: 100%;
+margin-bottom: 1.5rem;
+}
+
+.ingredients-section {
+display: flex;
+flex-wrap: wrap;
+gap: 10px;
+margin-top: 1rem;
+background-color: #f5f5f5;
+padding: 1rem;
+border-radius: 8px;
+
+mat-checkbox {
+  flex: 1 1 30%;
+}
+}
+
+button {
+margin-top: 1rem;
+
+&:first-of-type {
+  margin-right: 1rem;
+}
+}
+
+// ######################### #########################
