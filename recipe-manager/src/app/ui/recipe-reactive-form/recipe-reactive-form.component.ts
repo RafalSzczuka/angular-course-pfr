@@ -1,71 +1,72 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, FormArray, FormControl } from '@angular/forms';
 import { RecipeModel } from '../../core/recipe/model';
 import { RecipeService } from '../../core/recipe/service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-recipe-reactive-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatSelectModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatSelectModule],
   templateUrl: './recipe-reactive-form.component.html',
   styleUrl: './recipe-reactive-form.component.scss'
 })
 export class RecipeReactiveFormComponent {
-  @Input() isEditMode = false;
-  @Input() currentRecipe: RecipeModel | null = null;
-  showForm = false;
+  isEditMode = false;
+  currentRecipe: RecipeModel | undefined;
   recipeFormGroup!: FormGroup;
+  popularIngredients: string[] = [];
 
-   // Lista popularnych składników
-   popularIngredients: string[] = [
-    'Tomatoes', 'Onions', 'Garlic', 'Potatoes', 'Carrots', 'Olive oil', 'Butter',
-    'Chicken', 'Beef', 'Pork', 'Salt', 'Pepper', 'Paprika', 'Basil', 'Parsley',
-    'Oregano', 'Lemon', 'Sugar', 'Flour', 'Eggs', 'Milk', 'Cheese', 'Cream',
-    'Bread', 'Rice', 'Pasta', 'Beans', 'Lettuce', 'Spinach', 'Broccoli', 'Mushrooms',
-    'Fish', 'Shrimp', 'Soy sauce', 'Vinegar', 'Honey', 'Peppers', 'Zucchini', 'Cucumber',
-    'Corn', 'Chili powder'
-  ];
-
-  constructor(private fb: FormBuilder, private recipeService: RecipeService) {}
+  constructor(private fb: FormBuilder, private recipeService: RecipeService, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.recipeFormGroup = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
       description: ['', Validators.required],
-      ingredients: ['', Validators.required],
+      ingredients: [[], Validators.required],
       preparationTime: ['', Validators.required],
       difficulty: ['', Validators.required]
     });
 
+    this.popularIngredients = this.recipeService.getPopularIngredients();
+
+    // jeżeli istnieje przepis to go ustawiamy - tryb edycji
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      // ustawiamy edit mode
+      this.isEditMode = true;
+      this.currentRecipe = this.recipeService.getRecipeById(+id);
+      if (this.currentRecipe) {
+        this.currentRecipe.id = +id;
+      }
+    }
+
+    // jeżeli jest przepis, ustawiamy obecne wartości w formularzu
     if (this.currentRecipe) {
+      // zadziała dla niemal wszystkich typów kontrolek, nie zadziała dla formArray
       this.recipeFormGroup.patchValue(this.currentRecipe);
     }
   }
 
-  toggleForm(): void {
-    this.showForm = !this.showForm;
-  }
-
   onSubmit(): void {
     if (this.recipeFormGroup.valid) {
-      const newRecipe: RecipeModel = {
-        id: this.isEditMode ? this.currentRecipe!.id : Date.now(),
-        ...this.recipeFormGroup.value,
-      };
-
+      const recipe: RecipeModel = this.recipeFormGroup.value; // Zbieramy dane formularza
       if (this.isEditMode) {
-        this.recipeService.editRecipe(newRecipe);
+        if (this.currentRecipe) {
+          recipe.id = this.currentRecipe?.id;
+        }
+        this.recipeService.editRecipe(recipe) // Wysyłanie danych do serwisu w postaci edycji istniejącego przepisu
       } else {
-        this.recipeService.addRecipe(newRecipe);
+      this.recipeService.addRecipe(recipe); // Wysyłanie danych do serwisu w postaci nowego przepisu
       }
 
-      this.recipeFormGroup.reset();
-      this.showForm = false;
+      this.router.navigate(['/recipes']); // Powrót do listy przepisów
     }
   }
 }

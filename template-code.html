@@ -1,187 +1,144 @@
-<!-- CZĘŚĆ Template Driven Forms -->
+<!-- ######################### app.component.html - krok 1 ######################### -->
 
-<!-- KROK 4 - recipe-template-form.component.html -->
+<section class="container">
+    <nav>
+        <span><strong>Recipe Manager</strong></span>
+        <ul>
+            <!-- dyrektywa Angulara, która ustawia trasę na odpowiedni widok. -->
+            <li><a routerLink="/recipes">Lista Przepisów</a></li>
+            <li><a routerLink="/recipe/add">Dodaj Nowy Przepis</a></li>
+        </ul>
+    </nav>
+    <main>
+        <!-- miejsce w szablonie, gdzie Angular Router ładuje komponenty zależnie od bieżącej ścieżki. -->
+        <router-outlet></router-outlet>
+    </main>
+    <footer>
+        &reg;Angular - poziom podstawowy
+    </footer>
+</section>
 
-<div *ngIf="showForm">
-    <!-- Nagłówek który wykorzystuje Conditional (ternary) operator do wyświetlania odpowiedniego tekstu-->
-    <h2>{{ isEditMode ? 'Edytuj przepis' : 'Dodaj nowy przepis' }}</h2>
+<!-- ######################### ######################### -->
 
-    <!-- znacznik (tag) form z dołączoną template variable i przypisaną ngForm, dzięki tego zostanie stworzona nadrzędna instancja grupy kontrolek formularza-->
-    <!-- jest też dorzucona obsługa mechanizmu potwierdzania formularza -->
-    <!-- Na końcu widzimy artybut novalidate, Angular w ten sposób wyłącza defaultową, natywną walidacje formularza pochodzącą z natywneg formularza HTML ... -->
-    <form #recipeForm="ngForm" (ngSubmit)="onSubmit(recipeForm)" novalidate>
-        <!-- Tytuł -->
-        <div>
-            <!-- tytuł inputa, dyrektywa for oraz nam służy do połączenia taga label z tagiem input -->
-            <label for="title">Tytuł przepisu:</label>
-            <!-- type określa typ danych które będą wprowadzane do inputa -->
-            <!-- required oraz minlength to walidatory natywnie zdefiniowane w formularzu HTML, które dorzycają mechanizm walidacji pod kątem wymagalności i długości wprowadonych danych -->
-            <!-- #title to template variable, przypisujemy do niej ngModel, dzięki temu zostanie stworzona instancja kontrolki formularza Angular - FormControl -->
-            <input type="text" name="title" ngModel required
-                minlength="3" #title="ngModel" />
-            <!-- Poniższy kontener to ta treść którą zobaczymy gdy kontrolka będzie błędna oraz już dotknięta przez użytkownika -->
-            <div *ngIf="title.invalid && title.touched">
-                <!-- Tę treść zobaczymy gdy użytkownik dotknie kontrolki ale nie wprowadzi żadnych danych, lub gdy usunie wszystko co zawierała kontrolka i zostawi puste - wymagane (required) -->
-                <small *ngIf="title.errors?.required">Tytuł jest
-                    wymagany</small>
-                <!-- Tę treść zobaczymy gdy użytkonik wprowadzi tekst ktrótszy niż wymagany (3 znaki) -->
-                <small *ngIf="title.errors?.minlength">Tytuł musi mieć co
-                    najmniej 3 znaki</small>
-            </div>
-        </div>
+<!-- ######################### recipe-list.component.html - krok 3 ######################### -->
 
-        <!-- Opis -->
-        <div>
-            <label for="description">Opis przepisu:</label>
-            <textarea name="description" ngModel></textarea>
-        </div>
-
-        <!-- Składniki -->
-        <div>
-            <label for="ingredients">Składniki (minimum 2):</label>
-            <input type="text" name="ingredients" ngModel
-                required #ingredients="ngModel" />
-            <div *ngIf="ingredients.invalid && ingredients.touched">
-                <small *ngIf="ingredients.errors?.required">Składniki są
-                    wymagane</small>
-            </div>
-        </div>
-
-        <!-- Przycisk wysyłający -->
-        <button type="submit" [disabled]="recipeForm.invalid">
-            {{ isEditMode ? 'Zapisz zmiany' : 'Dodaj przepis' }}
-        </button>
-    </form>
+<div class="container">
+    <mat-card class="recipe-card" *ngFor="let recipe of recipes">
+        <mat-card-title>{{ recipe.title }}</mat-card-title>
+        <mat-card-content>
+            <p><strong>Składniki:</strong>{{ recipe.ingredients.join(', ')
+                }}</p>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-button color="primary"
+                [routerLink]="[' /recipe', recipe.id]">Zobacz
+                szczegóły</button>
+            <button mat-button color="accent"
+                [routerLink]="['/recipe/edit', recipe.id]">Edytuj</button>
+            <button mat-button color="warn"
+                (click)="onDeleteRecipe(recipe.id)">Usuń</button>
+        </mat-card-actions>
+    </mat-card>
 </div>
 
-<!-- CZĘŚĆ Reactive Forms -->
+<!-- ######################### ######################### -->
 
-<!-- KROK 4 - recipe-reactive-form.component.html -->
+<!-- ######################### recipe-details-component.html - krok 4 ######################### -->
 
-<div *ngIf="showForm">
-    <h2>{{ isEditMode ? 'Edytuj przepis' : 'Dodaj nowy przepis' }}</h2>
+<mat-card *ngIf="recipe">
+    <mat-card-title>{{ recipe.title }}</mat-card-title>
+    <mat-card-content>
+        <p><strong>Składniki:</strong> {{ recipe.ingredients.join(', ')
+            }}</p>
+        <p><strong>Opis:</strong> {{ recipe.description }}</p>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-button color="accent"
+            [routerLink]="['/recipe/edit', recipe.id]">Edytuj</button>
+        <button mat-button color="primary" routerLink="/recipes">Powrót do
+            listy</button>
+    </mat-card-actions>
+</mat-card>
 
-    <form [formGroup]="recipeFormGroup" (ngSubmit)="onSubmit()" novalidate>
-        <!-- Tytuł -->
-        <div>
-            <label for="title">Tytuł przepisu:</label>
-            <input type="text" formControlName="title" />
-            <div
-                *ngIf="recipeFormGroup.get('title')?.invalid && recipeFormGroup.get('title')?.touched">
-                <small
-                    *ngIf="recipeFormGroup.get('title')?.errors?.required">Tytuł
-                    jest wymagany</small>
-                <small
-                    *ngIf="recipeFormGroup.get('title')?.errors?.minlength">Tytuł
-                    musi mieć co najmniej 3 znaki</small>
-            </div>
-        </div>
+<!-- ######################### ######################### -->
 
-        <!-- Składniki -->
-        <div>
-            <label for="ingredients">Składniki (minimum 2):</label>
-            <input type="text" formControlName="ingredients" />
-            <div
-                *ngIf="recipeFormGroup.get('ingredients')?.invalid && recipeFormGroup.get('ingredients')?.touched">
-                <small
-                    *ngIf="recipeFormGroup.get('ingredients')?.errors?.required">Składniki
-                    są wymagane</small>
-            </div>
-        </div>
+<!-- ######################### recipe-reactive-form-component.html - krok 5 ######################### -->
 
-        <button type="submit" [disabled]="recipeFormGroup.invalid">
-            {{ isEditMode ? 'Zapisz zmiany' : 'Dodaj przepis' }}
-        </button>
-    </form>
-</div>
+<mat-card class="form-card">
+    <mat-card-title>{{ recipeFormGroup.get('title')?.value ? 'Edytuj Przepis' :
+        'Dodaj Nowy Przepis' }}</mat-card-title>
+    <form [formGroup]="recipeFormGroup" (ngSubmit)="onSubmit()">
+        <!-- Tytuł przepisu -->
+        <mat-form-field class="form-control-full-width">
+            <mat-label>Tytuł przepisu</mat-label>
+            <input matInput type="text" formControlName="title" />
+            <mat-error
+                *ngIf="recipeFormGroup.get('title')?.hasError('required')">
+                Tytuł jest wymagany
+            </mat-error>
+            <mat-error
+                *ngIf="recipeFormGroup.get('title')?.hasError('minlength')">
+                Tytuł musi mieć co najmniej 3 znaki
+            </mat-error>
+        </mat-form-field>
 
-<!-- CZĘŚĆ Angular Material -->
-
-<!-- KROK 2 - recipe-reactive-form.component.html -->
-
-<div *ngIf="showForm">
-    <h2>{{ isEditMode ? 'Edytuj przepis' : 'Dodaj nowy przepis' }}</h2>
-
-    <form [formGroup]="recipeFormGroup" (ngSubmit)="onSubmit()"
-        class="reactive-form" novalidate>
-        <!-- Tytuł -->
-        <div>
-            <mat-form-field class="form-control-full-width">
-                <mat-label>Tytuł przepisu</mat-label>
-                <input matInput type="text" formControlName="title" />
-                <mat-error
-                    *ngIf="recipeFormGroup.get('title')?.hasError('required')">
-                    Tytuł jest wymagany
-                </mat-error>
-                <mat-error
-                    *ngIf="recipeFormGroup.get('title')?.hasError('minlength')">
-                    Tytuł musi mieć co najmniej 3 znaki
-                </mat-error>
-            </mat-form-field>
-        </div>
-
-        <!-- Opis -->
-        <div>
-            <mat-form-field class="form-control-full-width">
-                <mat-label>Opis: </mat-label>
-                <textarea matInput
-                    cdkTextareaAutosize
-                    #autosize="cdkTextareaAutosize"
-                    cdkAutosizeMinRows="1"
-                    cdkAutosizeMaxRows="5" type="text"
-                    formControlName="description"></textarea>
-                <mat-error
-                    *ngIf="recipeFormGroup.get('description')?.errors?.required">Składniki
-                    są wymagane
-                </mat-error>
-            </mat-form-field>
-        </div>
+        <!-- Opis przepisu -->
+        <mat-form-field class="form-control-full-width">
+            <mat-label>Opis: </mat-label>
+            <textarea matInput
+                cdkTextareaAutosize
+                #autosize="cdkTextareaAutosize"
+                cdkAutosizeMinRows="1"
+                cdkAutosizeMaxRows="5" type="text"
+                formControlName="description"></textarea>
+            <mat-error
+                *ngIf="recipeFormGroup.get('description')?.errors?.required">Składniki
+                są wymagane
+            </mat-error>
+        </mat-form-field>
 
         <!-- Składniki -->
-        <div>
-            <mat-form-field class="form-control-full-width">
-                <mat-label>Składniki (minimum 2):</mat-label>
-                <textarea matInput
-                    cdkTextareaAutosize
-                    #autosize="cdkTextareaAutosize"
-                    cdkAutosizeMinRows="1"
-                    cdkAutosizeMaxRows="5" type="text"
-                    formControlName="ingredients"></textarea>
-                <mat-error
-                    *ngIf="recipeFormGroup.get('ingredients')?.errors?.required">Składniki
-                    są wymagane
-                </mat-error>
-            </mat-form-field>
-        </div>
+        <mat-form-field class="form-control-full-width">
+            <mat-label>Składniki (minimum 2):</mat-label>
+            <mat-select
+                formControlName="ingredients" multiple>
+                @for (popularIngredient of popularIngredients; track
+                popularIngredient) {
+                <mat-option
+                    [value]="popularIngredient">{{popularIngredient}}</mat-option>
+                }</mat-select>
+            <mat-error
+                *ngIf="recipeFormGroup.get('ingredients')?.errors?.required">Składniki
+                są wymagane
+            </mat-error>
+        </mat-form-field>
 
         <!-- Poziom trudności -->
-        <div>
-            <mat-form-field class="form-control-full-width">
-                <mat-label>Poziom trudności wykonania :</mat-label>
-                <select matNativeControl required formControlName="difficulty">
-                    <option value="hard">hard</option>
-                    <option value="medium">medium</option>
-                    <option value="easy">easy</option>
-                </select>
-            </mat-form-field>
-        </div>
+        <mat-form-field class="form-control-full-width">
+            <mat-label>Poziom trudności wykonania :</mat-label>
+            <select matNativeControl required formControlName="difficulty">
+                <option value="hard">hard</option>
+                <option value="medium">medium</option>
+                <option value="easy">easy</option>
+            </select>
+        </mat-form-field>
 
         <!-- Czas przygotowania -->
-        <div>
-            <mat-form-field class="form-control-full-width">
-                <mat-label>Czas wykonania (w minutach):</mat-label>
-                <input matInput type="text"
-                    formControlName="preparationTime" />
-                <mat-error
-                    *ngIf="recipeFormGroup.get('preparationTime')?.errors?.required">Czas
-                    wykonania jest wymagany
-                </mat-error>
-            </mat-form-field>
-        </div>
+        <mat-form-field class="form-control-full-width">
+            <mat-label>Czas wykonania (w minutach):</mat-label>
+            <input matInput type="text"
+                formControlName="preparationTime" />
+            <mat-error
+                *ngIf="recipeFormGroup.get('preparationTime')?.errors?.required">Czas
+                wykonania jest wymagany
+            </mat-error>
+        </mat-form-field>
 
         <button mat-raised-button color="primary" type="submit"
-            [disabled]="recipeFormGroup.invalid">
-            {{ isEditMode ? 'Zapisz zmiany' : 'Dodaj przepis' }}
-        </button>
+            [disabled]="recipeFormGroup.invalid">Zapisz</button>
+        <button mat-button color="warn" type="button"
+            routerLink="/recipes">Anuluj</button>
     </form>
-</div>
+</mat-card>
+
+<!-- ######################### ######################### -->

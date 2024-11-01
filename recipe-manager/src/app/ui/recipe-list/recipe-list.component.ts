@@ -27,14 +27,6 @@ export class RecipeListComponent implements OnInit{
     this.recipes =  this.recipeService.getRecipes();
   }
 
-  onRecipeClick(listElement: EventRecipeModel | null) {
-    if (listElement) {
-      this.selectedRecipeTitle = listElement.selectedRecipeTitle;
-    }
-    this.recipeSelected.emit(listElement);
-    
-  }
-
   onDeleteRecipe(id: number): void {
     this.recipeService.deleteRecipe(id);  // Usuwanie przepisu
     this.recipes = this.recipeService.getRecipes();  // Odśwież listę
