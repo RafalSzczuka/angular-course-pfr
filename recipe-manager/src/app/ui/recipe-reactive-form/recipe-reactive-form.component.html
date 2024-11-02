@@ -3,7 +3,7 @@
         'Dodaj Nowy Przepis' }}</mat-card-title>
     <form [formGroup]="recipeFormGroup" (ngSubmit)="onSubmit()">
         <!-- Tytuł przepisu -->
-        <mat-form-field class="form-control-full-width">
+        <mat-form-field>
             <mat-label>Tytuł przepisu</mat-label>
             <input matInput type="text" formControlName="title" />
             <mat-error
@@ -17,7 +17,7 @@
         </mat-form-field>
 
         <!-- Opis przepisu -->
-        <mat-form-field class="form-control-full-width">
+        <mat-form-field>
             <mat-label>Opis: </mat-label>
             <textarea matInput
                 cdkTextareaAutosize
@@ -32,7 +32,7 @@
         </mat-form-field>
 
         <!-- Składniki -->
-        <mat-form-field class="form-control-full-width">
+        <mat-form-field>
             <mat-label>Składniki (minimum 2):</mat-label>
             <mat-select
                 formControlName="ingredients" multiple>
@@ -48,7 +48,7 @@
         </mat-form-field>
 
         <!-- Poziom trudności -->
-        <mat-form-field class="form-control-full-width">
+        <mat-form-field>
             <mat-label>Poziom trudności wykonania :</mat-label>
             <select matNativeControl required formControlName="difficulty">
                 <option value="hard">hard</option>
@@ -58,7 +58,7 @@
         </mat-form-field>
 
         <!-- Czas przygotowania -->
-        <mat-form-field class="form-control-full-width">
+        <mat-form-field>
             <mat-label>Czas wykonania (w minutach):</mat-label>
             <input matInput type="text"
                 formControlName="preparationTime" />

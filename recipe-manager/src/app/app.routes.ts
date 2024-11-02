@@ -1,7 +1,8 @@
 import { Routes } from '@angular/router';
 import { RecipeDetailComponent } from './ui/recipe-detail';
 import { RecipeListComponent } from './ui/recipe-list';
-import { RecipeReactiveFormComponent } from './ui/recipe-reactive-form/recipe-reactive-form.component';
+import { RecipeTemplateFormComponent } from './ui/recipe-template-form';
+import { RecipeReactiveFormComponent } from './ui/recipe-reactive-form';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/recipes', pathMatch: 'full' }, // domyślna ścieżka, która przekierowuje na /recipes jeśli nie ma podanej innej ścieżki.
@@ -9,4 +10,4 @@ export const routes: Routes = [
     { path: 'recipe/add', component: RecipeReactiveFormComponent }, // ścieżka do formularza dodawania nowego przepisu.
     { path: 'recipe/edit/:id', component: RecipeReactiveFormComponent }, // ścieżka do formularza edycji przepisu, gdzie :id jest dynamicznym parametrem.
     { path: 'recipe/:id', component: RecipeDetailComponent } //  ścieżka do szczegółów wybranego przepisu.
-    ];
+];

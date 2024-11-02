@@ -1,8 +1,8 @@
 export interface RecipeModel {
-    id: number;
+    id?: number;
     title: string;
     description: string;
     ingredients: string[];
-    preparationTime: number;  // w minutach
-    difficulty: 'easy' | 'medium' | 'hard';
+    preparationTime?: number;  // w minutach
+    difficulty?: 'easy' | 'medium' | 'hard';
 }

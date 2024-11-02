@@ -23,7 +23,7 @@ export class RecipeReactiveFormComponent {
   recipeFormGroup!: FormGroup;
   popularIngredients: string[] = [];
 
-  constructor(private fb: FormBuilder, private recipeService: RecipeService, private router: Router, private route: ActivatedRoute) {}
+  constructor(private fb: FormBuilder, private recipeService: RecipeService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.recipeFormGroup = this.fb.group({
@@ -41,16 +41,15 @@ export class RecipeReactiveFormComponent {
     if (id) {
       // ustawiamy edit mode
       this.isEditMode = true;
+      // pobieramy edytowany przepis
       this.currentRecipe = this.recipeService.getRecipeById(+id);
+
+      // jeżeli jest przepis, ustawiamy obecne wartości w formularzu
       if (this.currentRecipe) {
         this.currentRecipe.id = +id;
+        // zadziała dla niemal wszystkich typów kontrolek, nie zadziała dla formArray
+        this.recipeFormGroup.patchValue(this.currentRecipe);
       }
-    }
-
-    // jeżeli jest przepis, ustawiamy obecne wartości w formularzu
-    if (this.currentRecipe) {
-      // zadziała dla niemal wszystkich typów kontrolek, nie zadziała dla formArray
-      this.recipeFormGroup.patchValue(this.currentRecipe);
     }
   }
 
@@ -63,7 +62,7 @@ export class RecipeReactiveFormComponent {
         }
         this.recipeService.editRecipe(recipe) // Wysyłanie danych do serwisu w postaci edycji istniejącego przepisu
       } else {
-      this.recipeService.addRecipe(recipe); // Wysyłanie danych do serwisu w postaci nowego przepisu
+        this.recipeService.addRecipe(recipe); // Wysyłanie danych do serwisu w postaci nowego przepisu
       }
 
       this.router.navigate(['/recipes']); // Powrót do listy przepisów
