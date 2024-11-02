@@ -10,15 +10,15 @@ export class RecipeService {
       id: 1,
       title: 'Spaghetti Carbonara',
       description: 'Klasyczne włoskie danie.',
-      ingredients: ['makaron', 'jajka', 'boczek', 'ser', 'pieprz'],
+      ingredients: ['Pasta', 'Eggs', 'Pork', 'Cheese', 'Pepper'],
       preparationTime: 30,
       difficulty: 'easy'
     },
     {
       id: 2,
       title: 'Pancakes',
-      description: 'Puszyste naleśniki z syropem klonowym.',
-      ingredients: ['mąka', 'mleko', 'jajka', 'syrop klonowy'],
+      description: 'Puszyste naleśniki z miodem.',
+      ingredients: ['Flour', 'Milk', 'Eggs', 'Honey'],
       preparationTime: 20,
       difficulty: 'medium'
     },
@@ -26,7 +26,7 @@ export class RecipeService {
       id: 3,
       title: 'Tacos',
       description: 'Meksykańskie tacos z wołowiną i salsą.',
-      ingredients: ['mąka', 'mleko', 'jajka', 'wołowina', 'salsa'],
+      ingredients: ['Flour', 'Milk', 'Eggs', 'Beef', 'Salt'],
       preparationTime: 60,
       difficulty: 'hard'
     }

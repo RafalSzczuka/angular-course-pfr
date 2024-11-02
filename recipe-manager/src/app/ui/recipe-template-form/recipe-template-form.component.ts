@@ -22,16 +22,7 @@ export class RecipeTemplateFormComponent implements OnInit {
 
   @Input() isEditMode = false;
   @Input() currentRecipe: RecipeModel | null = null;
-
-     // Lista popularnych składników
-     popularIngredients: string[] = [
-      'Tomatoes', 'Onions', 'Garlic', 'Potatoes', 'Carrots', 'Olive oil', 'Butter',
-      'Chicken', 'Beef', 'Pork', 'Salt', 'Pepper', 'Paprika', 'Basil', 'Parsley',
-      'Oregano', 'Lemon', 'Sugar', 'Flour', 'Eggs', 'Milk', 'Cheese', 'Cream',
-      'Bread', 'Rice', 'Pasta', 'Beans', 'Lettuce', 'Spinach', 'Broccoli', 'Mushrooms',
-      'Fish', 'Shrimp', 'Soy sauce', 'Vinegar', 'Honey', 'Peppers', 'Zucchini', 'Cucumber',
-      'Corn', 'Chili powder'
-    ];
+  popularIngredients: string[] = [];
   
   constructor(private recipeService: RecipeService) {}
 
@@ -39,6 +30,7 @@ export class RecipeTemplateFormComponent implements OnInit {
     if (this.currentRecipe) {
       // Jeśli edytujemy, wypełnij formularz danymi przepisu
     }
+    this.popularIngredients = this.recipeService.getPopularIngredients();
   }
 
   // Metoda do pokazania/ukrycia formularza
