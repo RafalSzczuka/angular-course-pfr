@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { RecipeListComponent } from './ui/recipe-list';
 import { RecipeDetailComponent } from './ui/recipe-detail/';
 import { RecipeModel } from './core/recipe/model';
-import { RecipeTemplateFormComponent } from './ui/recipe-template-form/recipe-template-form.component';
+import { RecipeTemplateFormComponent } from './ui/recipe-template-form';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
