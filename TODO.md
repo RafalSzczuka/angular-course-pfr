@@ -3,7 +3,8 @@
 * Dodanie widoków dla różnych części aplikacji, takich jak: lista przepisów, szczegóły przepisu, formularz dodawania/edycji przepisu.
 * Widok szczegółowy przepisu: wyświetlanie składników i instrukcji po kliknięciu na dany przepis.
   
-_Moduł 5 jest ważnym krokiem w zrozumieniu, jak organizować wielostronicową aplikację w Angularze za pomocą routingu, co pozwala użytkownikom przemieszczać się między różnymi sekcjami aplikacji. W ramach tego modułu dowiemy się, jak ustawić routing dla listy przepisów, widoku szczegółowego oraz formularza dodawania/edycji przepisów._
+_Moduł 5 jest ważnym krokiem w zrozumieniu, jak organizować wielostronicową aplikację w Angularze za pomocą routingu, co pozwala użytkownikom przemieszczać się między różnymi sekcjami aplikacji._
+_W ramach tego modułu dowiemy się, jak ustawić routing dla listy przepisów, widoku szczegółowego oraz formularza dodawania/edycji przepisów._
 
 
 1. Konfiguracja Angular Router
@@ -24,7 +25,7 @@ _Moduł 5 jest ważnym krokiem w zrozumieniu, jak organizować wielostronicową 
 
 
 2. Tworzenie Linków do Nawigacji Między Widokami
-   Teraz utworzymy linki w menu, które umożliwią użytkownikowi nawigację po aplikacji
+   Teraz utworzymy header naszej aplikacji a w nim menu z linkami, które umożliwią użytkownikowi nawigację po aplikacji.
 
     * Przejdź do `app.component.html` i zastąp obecny kod tym z `template-code.html` - krok 1
     * Następnie przejdź do `app.component.ts` i pozbądź się niepotrzebnego kodu:
@@ -34,12 +35,13 @@ _Moduł 5 jest ważnym krokiem w zrozumieniu, jak organizować wielostronicową 
         > `  this.selectedRecipe = recipe;`
         > `}`
     * Przejdź teraz do `app.component.scss` i podmień zawartość na style z pliku `component-style.scss` krok 2.
-    * Pozbądź się też zaimportowanych, nie używanych zależności z listy imports oraz dodaj RouterOutlet
+    * Pozbądź się też zaimportowanych, nie używanych zależności z listy imports oraz dodaj `RouterOutlet`
+
 
 **Tworzenie Widoków dla Każdej Ścieżki**
-_Teraz utworzymy widoki, które użytkownik zobaczy korzystająć z nawigacji po aplikacji_
+Teraz utworzymy widoki, które użytkownik zobaczy korzystająć z nawigacji po aplikacji
 
-3. Widok Listy Przepisów (RecipeListComponent)
+1. Widok Listy Przepisów (RecipeListComponent)
   * Otwórz `recipe-list.component.html` i upewnij się, że każdy przepis ma link, który prowadzi do widoku szczegółowego.
     * Dodajmy przycisk "Zobacz szczegóły".
       Kod znajdziesz w pliku `template-code.html` - krok 3.
@@ -49,7 +51,7 @@ _Teraz utworzymy widoki, które użytkownik zobaczy korzystająć z nawigacji po
   * Przejdź do `recipe-list.component.scss`, a następnie:
     * dodaj style z pliku `component-style.scss` - krok 3
 
-4. Widok Szczegółów Przepisu (RecipeDetailComponent)
+2. Widok Szczegółów Przepisu (RecipeDetailComponent)
    * Przejdź do `recipe-details-component.ts`, gdzie musimy:
     * zadbać by ten komponent sam zdobył sobie przepis. 
         Podanie go przez Input'a już nie wchodzi w grę.
@@ -60,12 +62,11 @@ _Teraz utworzymy widoki, które użytkownik zobaczy korzystająć z nawigacji po
     * Podmień listę importów komponentu na `CommonModule, RouterLink, MatCardModule, MatButtonModule`.
 
 **Zadanie do wykonania:**
-  * Kompilator po skopiowaniu wcześniejszego kodu, na pewno krzyknie, że brakuje mu implementacji metody `getRecipeById`, napisz ją.
+  * Kompilator po skopiowaniu wcześniejszego kodu, na pewno krzyknie, że brakuje mu implementacji metody `getRecipeById` - napisz ją.
 
-   Gdy implementacja `getRecipeById` jest już gotowa,
+  Gdy implementacja `getRecipeById` jest już gotowa:
    * przejdźmy do `recipe-details-component.html` a następnie:
      * musimy go trochę dostosować. Podmień kod na ten z `template-code.html` krok 4
-
    * Następnie przejdź do `recipe-details-component.scss` i:
      * podmień style na te z `component-style.scss` - krok 4
 
@@ -93,7 +94,16 @@ _Teraz utworzymy widoki, które użytkownik zobaczy korzystająć z nawigacji po
 
 **Zadanie do wykonania:**
   * Brakuje nam **id** w modelu który przesyłamy do serwisu.
+  * Gdy już mamy gotową implementacje `recipe-reactive-form.component.ts` podmień w głównej tablicy routingu
+    `app.routes.ts` gotowy komponent na `recipe-template-form.component` i samodzielnie doprowadź go do analogicznego stanu.
 
+
+
+6. Możesz się zastanawiać co gdy widoki są bardziej skomplikowane, może potrzebują dodatkowych danych co spowodowałoby opóźnienie w wyświetleniu strony. W takiej sytuacji warto mieć komponent który wyświetli w tym czasie loader.
+  * ...
+
+7. Lazy loading widoków
+  * ...
 
 ##### Podsumowanie Modułu:
 W tym module:
