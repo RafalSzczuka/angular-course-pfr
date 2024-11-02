@@ -99,11 +99,59 @@ Teraz utworzymy widoki, które użytkownik zobaczy korzystająć z nawigacji po 
 
 
 
-6. Możesz się zastanawiać co gdy widoki są bardziej skomplikowane, może potrzebują dodatkowych danych co spowodowałoby opóźnienie w wyświetleniu strony. W takiej sytuacji warto mieć komponent który wyświetli w tym czasie loader.
-  * ...
+6. Możesz się zastanawiać co gdy widoki są bardziej skomplikowane - potrzebują dodatkowych danych co spowoduje opóźnienie w wyświetleniu strony.
+   W takiej sytuacji warto wyświetlić loader (spinner) by użytkownik Naszej aplikacji wiedział, że coś się dzieje. Dodajmy go zatem - użyjemy gotowego komponentu pochodzącego z dodanej przez Nas wcześniej biblioteki komponentów Angular Material (https://material.angular.io/components/progress-spinner/overview)
+  * Przejdźmy do `app.component.ts` i zaimportujmy `MatProgressSpinnerModule`
+  * Następnie przejdźmy do `app.component.html` i dodajmy go w widoku pod `<router-outlet></router-outlet>`
+  * Fajnie żeby był na środku strony i trochę odsunięty od headera. Dodajmy potrzebne style.
+    > `mat-spinner {`
+    > `place-self: center;`
+    > `margin-top: 10rem;`
+    > `}`
+  * Teraz zostaje nam już tylko logika która wyświetli spinner w odpowiednim momencie jak również go ukryje.
+    Tu do gry wchodzą eventy pochodzące z routera, które powiedzą nam w jakim stanie jest router naszej aplikacji.
+      * Przejdźmy do `app.component.ts`
+      * Dodaj konstruktor i wstrzyknij `Router`.
+      * Dodaj zmienną `isLoading: boolean = false`
+      * Następnie do ciała konstruktora dodaj
+        > `constructor(private router: Router) {`
+        > `  this.router.events.subscribe(e => { // subskrybujemy się do strumienia events`
+        > `    if (e instanceof NavigationStart) { // sprawdzamy instancje`
+        > `      this.isLoading = true // gdy nawigacja startuje chcemy widzieć loader`
+        > `    }`
+        > `    if (e instanceof NavigationEnd) {`
+        > `      this.isLoading = false // w każdym innym przypadku chcemy go wyłączyć`
+        > `    }`
+        > `    if (e instanceof NavigationCancel) {`
+        > `      this.isLoading = false`
+        > `    }`
+        > `    if (e instanceof NavigationError) {`
+        > `      this.isLoading = false`
+        > `    }`
+        > `  })`
+        > `}`
+      * Dorzuć dyrektywę `*ngIf` do widoku Naszego spinnera oraz do naszego `router-outlet`, powinieneś mieć
+        > `<router-outlet *ngIf="!isLoading"></router-outlet>`
+        > `<mat-spinner *ngIf="isLoading"></mat-spinner>`
+      * Nie zapomnij o imporcie dyrektywy do komponentu.
 
-7. Lazy loading widoków
-  * ...
+**Zagadka**
+   Czy domyślasz się dlaczego umieszczamy spinner w tym a nie w innym miejscu?
+
+
+
+  * Gdy wszystko już niemal gotowe - przydałoby się coś co opóźni wyświetlanie którejś ze stron by sprawdzić czy spinner zadziała. Użyjmy `Resolver` a w nim dodamy timmer który opóźni wyświetlenie strony. Zaimplementujmy go więc.
+    * Przejdźmy do terminala, będąc w projekcie wpisz `ng generate resolver core/recipe/resolvers/recipe-page`
+      Guardy można obsłużyć funkcyjnie, można też poprzez serwis.
+    * Przejdźmy do naszego nowo utworzonego resolvera `recipe-page.resolver.ts`
+    * linijkę z return'em zamień na
+    >  `return of(null).pipe( // of() tworzy strumień`
+    >  `  debounceTime(5000), // opóźni zwrotkę o 5 sekund`
+    >  `  map(() => true) // zmapuje zwrotkę do wartości true`
+    >  `);`
+    * Dodaj potrzebne importy. O strumieniach porozmawiamy sobie później, na razie nie przejmuj się, jeżeli nie rozumiesz kodu.
+    * Przejdźmy teraz do `app.routes.ts` i dodajmy nasz resolver do routa który obsługuje dodanie nowego przepisu
+      > `{ path: 'recipe/add', component: RecipeReactiveFormComponent, resolve: { recipePageResolver } },`
 
 ##### Podsumowanie Modułu:
 W tym module:
@@ -113,3 +161,4 @@ Mieliśmy okazję poznać czym jest Angular Router oraz podstawowe zasady dział
 * Dodaliśmy logikę umożliwiającą dynamiczne zarządzanie listą składników.
 * Stworzyliśmy przyjazny dla użytkownika widok formularza z intuicyjną walidacją pól.
 * Użyliśmy Angular Material do stylizacji formularzy, co wzmacnia spójność i wygląd aplikacji.
+* W oparciu o Event'y Router'a dodaliśmy spinner oraz logikę decydującą o momencie jego wyświetlenia

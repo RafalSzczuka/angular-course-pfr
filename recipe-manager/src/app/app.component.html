@@ -9,7 +9,8 @@
     </nav>
     <main>
         <!-- miejsce w szablonie, gdzie Angular Router ładuje komponenty zależnie od bieżącej ścieżki. -->
-        <router-outlet></router-outlet>
+        <router-outlet *ngIf="!isLoading"></router-outlet>
+        <mat-spinner *ngIf="isLoading"></mat-spinner>
     </main>
     <footer>
         &reg;Angular - poziom podstawowy
