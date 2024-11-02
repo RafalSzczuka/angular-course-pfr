@@ -36,7 +36,7 @@
             <button mat-button color="accent"
                 [routerLink]="['/recipe/edit', recipe.id]">Edytuj</button>
             <button mat-button color="warn"
-                (click)="onDeleteRecipe(recipe.id)">Usuń</button>
+                (click)="onDeleteRecipe(recipe?.id)">Usuń</button>
         </mat-card-actions>
     </mat-card>
 </div>

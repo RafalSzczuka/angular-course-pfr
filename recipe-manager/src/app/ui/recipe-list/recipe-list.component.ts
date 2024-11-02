@@ -4,7 +4,7 @@ import { RecipeListElementComponent } from '../recipe-list-element/recipe-list-e
 import { RecipeService } from '../../core/recipe/service/recipe.service';
 import { EventRecipeModel, RecipeModel } from '../../core/recipe/model';
 import { RouterLink } from '@angular/router';
-import {MatCardModule} from '@angular/material/card';
+import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
@@ -14,9 +14,9 @@ import { MatButtonModule } from '@angular/material/button';
   templateUrl: './recipe-list.component.html',
   styleUrl: './recipe-list.component.scss'
 })
-export class RecipeListComponent implements OnInit{
+export class RecipeListComponent implements OnInit {
   selectedRecipeTitle: string | null = '';
-  recipes: RecipeModel[]  = [];
+  recipes: RecipeModel[] = [];
 
   @Output() recipeSelected = new EventEmitter<RecipeModel | null>();
 
@@ -24,11 +24,13 @@ export class RecipeListComponent implements OnInit{
 
   }
   ngOnInit(): void {
-    this.recipes =  this.recipeService.getRecipes();
+    this.recipes = this.recipeService.getRecipes();
   }
 
-  onDeleteRecipe(id: number): void {
-    this.recipeService.deleteRecipe(id);  // Usuwanie przepisu
-    this.recipes = this.recipeService.getRecipes();  // Odśwież listę
+  onDeleteRecipe(id: number | undefined): void {
+    if (id) {
+      this.recipeService.deleteRecipe(id);  // Usuwanie przepisu
+      this.recipes = this.recipeService.getRecipes();  // Odśwież listę
+    }
   }
 }
