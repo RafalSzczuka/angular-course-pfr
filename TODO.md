@@ -94,6 +94,10 @@ _Teraz utworzymy widoki, które użytkownik zobaczy korzystająć z nawigacji po
 **Zadanie do wykonania:**
   * Brakuje nam **id** w modelu który przesyłamy do serwisu.
 
+6. Loader dla widoków - logikę oprzyj o router events
+
+....
+
 
 ##### Podsumowanie Modułu:
 W tym module:
