@@ -1,3 +1,5 @@
+// ######################### recipe-detail.component.ts - krok 6 #########################
+
 import { Component, Output, EventEmitter } from '@angular/core';
 
 @Component({
@@ -12,7 +14,7 @@ export class RecipeListComponent {
     { title: 'Tacos', description: 'Meksykańskie tacos z wołowiną i salsą.' }
   ];
 
-  // ####################  TAKE THIS (step 6)
+  // ####################  krok 6
   @Output() recipeSelected = new EventEmitter<{ title: string, description: string }>();
 
   onRecipeClick(recipe: { title: string, description: string }) {
@@ -22,7 +24,11 @@ export class RecipeListComponent {
   // ####################
 }
 
+// ######################### #########################
 
+
+
+// ######################### app.component.ts - krok 7 #########################
 
 import { Component } from '@angular/core';
 import { RecipeListComponent } from './recipe-list/recipe-list.component';
@@ -36,7 +42,7 @@ import { RecipeListComponent } from './recipe-list/recipe-list.component';
 })
 export class AppComponent {
   title = 'recipe-manager';
-  // ####################  TAKE THIS (step 7)
+  // ####################  krok 7
   selectedRecipe: { title: string, description: string } | null = null;
 
   onRecipeSelected(recipe: { title: string, description: string }) {
@@ -44,3 +50,5 @@ export class AppComponent {
   }
   // ####################
 }
+
+// ######################### #########################
