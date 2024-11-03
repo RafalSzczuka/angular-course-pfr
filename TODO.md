@@ -2,9 +2,10 @@
 
 1. **Instalacja Angular CLI.**
      * `npm install -g @angular/cli`
+
     **Wyjaśnienie:** Komenda npm install -g instaluje pakiet globalnie, co oznacza, że Angular CLI będzie dostępny z każdego katalogu na twoim komputerze. CLI to skrót od "Command Line Interface".
 
-    >Aby sprawdzić czy instalacja się powiodła, możesz wpisać `ng version`
+    > Aby sprawdzić czy instalacja się powiodła, możesz wpisać **`ng version`**
     Jeśli zobaczysz wersję Angular CLI, oznacza to, że narzędzie zostało zainstalowane prawidłowo.
 
 2. **Stworzenie projektu**
@@ -35,7 +36,7 @@
     **Wyjaśnienie:** Aplikacja będzie działać lokalnie na twoim komputerze pod domyślnym adresem localhost na porcie 4200. Teraz zobaczysz domyślną stronę startową Angulara.
 
     > Projekt defaultowo będzie dostępny pod adresem http://localhost:4200.
-    
+    >
     > package.json zawiera sekcje scripts, ng serve jest tam zdefiniowany jako **start**
     > 
     > Żeby użyć takiego skryptu wykonaj polecenie
@@ -65,29 +66,60 @@ Więcej o standalone komponentach powiemy sobie w dalszej części materiału.
 
 7. Tworzenie pierwszego komponentu: wyświetlanie listy przepisów kulinarnych.
 
-    * Na początek chciałbym żebyśmy trochę posprzątali, usuń zawartość szablonu w komponencie app.component oraz wyczyść tablice importowanych zależności komponentu. Znajdziesz ją wewnątrz dekoratora @Component. (metadane)
-    Usuń też test `should render title` z app.component.spec.ts
-    Do tematu testów wrócimy w dalszej części materiału.
+    * Na początek chciałbym żebyśmy trochę posprzątali:
+      * usuń zawartość szablonu w komponencie app.component
+      * wyczyść tablice importowanych zależności komponentu. Znajdziesz ją wewnątrz dekoratora @Component. (metadane)
+      * Usuń też test `should render title` z app.component.spec.ts
+        Do tematu testów wrócimy w dalszej części materiału.
+
     * Będąc w folderze projektu, w terminalu wpisz `ng generate component recipe-list`
     **Wyjaśnienie:** Komenda ng generate component automatycznie wygeneruje strukturę nowego komponentu w folderze `src/app/recipe-list/`.
-    * Otwórz plik `src/app/recipe-list/recipe-list.component.ts`. Znajdziesz tam domyślną klasę komponentu. Dodaj zmienną recipes, przypisz do zmiennej tablice, która zawiera 3 obiekty, kazdy obiekt powinien zawierać dwie "propercje"
-    **title** oraz **description**.
-    Każda jest typu string i zawiera przykładowy tekst.
+    * Otwórz plik `src/app/recipe-list/recipe-list.component.ts`. Znajdziesz tam domyślną klasę komponentu:
+      * Dodaj zmienną recipes, przypisz do zmiennej tablice, która zawiera 3 obiekty, kazdy obiekt powinien zawierać dwie "propercje" **title** oraz **description**. Każda jest typu string i zawiera przykładowy tekst.
+        > `recipes = [`
+        > `   { title: 'Spaghetti Carbonara', description: 'Klasyczne włoskie danie.' },`
+        > `   { title: 'Pancakes', description: 'Puszyste naleśniki z miodem.' },`
+        > `   { title: 'Tacos', description: 'Meksykańskie tacos z wołowiną i pieprzem.' }`
+        > ` ];`
     
-  * Otwórz plik `src/app/recipe-list/recipe-list.component.html` i dodaj kod HTML do wyświetlania listy przepisów.
-  W znaczniku H2 zawrzyj tekst "Lista Przepisów"
-  Użyj znaczników UL oraz LI do wyświetlenia listy.
-  Przeiteruj się po tablicy za pomocą dyrektywy *ngFor. Za pomocą znacznika H3 wyświetl tytuł a za pomocą znacznika P wyświetl opis produktu.
-  By iteracja po tablicy była możliwa musisz zaimportować dyrektywę ngFor, możesz to zrobić poprzez import CommonModule lub ngFor.
-  * Otwórz plik `src/app/app.component.ts`, zaimporuj stworzony komponent poprzez dodanie **RecipeListComponent** do listy importów.
-  * Teraz otwórz plik `src/app/app.component.html` i dodaj tag (selector) komponentu recipe-list, aby wyświetlić go na stronie głównej. `<app-recipe-list></app-recipe-list>`
+   * Otwórz plik `src/app/recipe-list/recipe-list.component.html` a następnie, dodaj kod HTML do wyświetlania listy przepisów:
+      * W znaczniku `<h2>` zawrzyj tekst `"Lista Przepisów"`
+      * Użyj znaczników `<ul>` oraz `<li>` do wyświetlenia listy.
+      * Przeiteruj się po tablicy za pomocą dyrektywy `*ngFor`
+      * Za pomocą znacznika `<h3>` wyświetl tytuł a za pomocą znacznika `<p>` wyświetl opis produktu.
+        > `<h2>Lista Przepisów</h2>`
+        > `<ul>`
+        > `  <li *ngFor="let recipe of recipes">`
+        > `    <h3>{{ recipe.title }}</h3>`
+        > `    <p>{{ recipe.description }}</p>`
+        > `  </li>`
+        > `</ul>`
+
+        **Wyjaśnienie**: Użyliśmy dyrektywy *ngFor, która iteruje po tablicy recipes i generuje elementy listy na podstawie danych. W Angularze {{ recipe.title }} i {{ recipe.description }} to przykład tzw. interpolacji.
+        
+      * By iteracja po tablicy była możliwa musisz zaimportować dyrektywę ngFor. Przejdź do `src/app/recipe-list/recipe-list.component.ts` i dodaj do listy importów `ngFor`
+        > `@Component({`
+        > `  selector: 'app-recipe-list',`
+        > `  standalone: true,`
+        > `  imports: [NgFor],`
+        > `  templateUrl: './recipe-list.component.html',`
+        > `  styleUrl: './recipe-list.component.scss'`
+        > `})`
+  * Otwórz plik `src/app/app.component.ts` a następnie: 
+    * zaimporuj stworzony komponent poprzez dodanie `RecipeListComponent` do listy importów.
+  * Teraz otwórz plik `src/app/app.component.html`, a następnie:
+    * dodaj tag (selector) komponentu recipe-list, aby wyświetlić go na stronie głównej
+        > `<app-recipe-list></app-recipe-list>`
+
+    **Wyjaśnienie**: Angular identyfikuje komponent RecipeListComponent dzięki jego selectorowi: `<app-recipe-list>`. Możemy go używać jako tagu HTML, aby wyświetlić zawartość komponentu.
+
   * Zapisz wszystkie zmiany i uruchom ponownie serwer, jeśli został zatrzymany `ng serve`
 
-  Teraz w przeglądarce zobaczysz listę przepisów kulinarnych! 🎉
+Teraz w przeglądarce zobaczysz listę przepisów kulinarnych! 🎉
 
 ##### Podsumowanie Modułu 1:
 W tym module:
 
-* Nauczyliśmy się jak zainstalować Angular CLI i stworzyć projekt.
+* Zainstalowaliśmy Angular CLI i stworzyliśmy projekt.
 * Zrozumieliśmy strukturę projektu Angular.
-* Stworzyliśmy pierwszy komponent, który wyświetla listę przepisów kulinarnych.
+* Stworzyliśmy pierwszy komponent wyświetlający listę przepisów.
