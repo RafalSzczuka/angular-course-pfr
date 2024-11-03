@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { RecipeModel } from '../../core/recipe/model';
 import { RecipeService } from '../../core/recipe/service';

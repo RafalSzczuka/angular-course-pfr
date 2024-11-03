@@ -19,11 +19,6 @@ _W ramach tego modułu dowiemy się, jak ustawić routing dla listy przepisów, 
    Widok edycji i szczegółów przepisu powinna zawierać parametr **id** by móc określić o jaki przepis chodzi.
    Kod znajdziesz w `component-code.ts` - krok 1.
 
-
-   brakuje importu - pułapka?
-
-
-
 2. Tworzenie Linków do Nawigacji Między Widokami
    Teraz utworzymy header naszej aplikacji a w nim menu z linkami, które umożliwią użytkownikowi nawigację po aplikacji.
 
@@ -35,13 +30,13 @@ _W ramach tego modułu dowiemy się, jak ustawić routing dla listy przepisów, 
         > `  this.selectedRecipe = recipe;`
         > `}`
     * Przejdź teraz do `app.component.scss` i podmień zawartość na style z pliku `component-style.scss` krok 2.
-    * Pozbądź się też zaimportowanych, nie używanych zależności z listy imports oraz dodaj `RouterOutlet`
+    * Pozbądź się też zaimportowanych, nie używanych zależności z listy imports oraz dodaj `RouterOutlet, RouterLink`
 
 
 **Tworzenie Widoków dla Każdej Ścieżki**
 Teraz utworzymy widoki, które użytkownik zobaczy korzystająć z nawigacji po aplikacji
 
-1. Widok Listy Przepisów (RecipeListComponent)
+3. Widok Listy Przepisów (RecipeListComponent)
   * Otwórz `recipe-list.component.html` i upewnij się, że każdy przepis ma link, który prowadzi do widoku szczegółowego.
     * Dodajmy przycisk "Zobacz szczegóły".
       Kod znajdziesz w pliku `template-code.html` - krok 3.
@@ -51,7 +46,7 @@ Teraz utworzymy widoki, które użytkownik zobaczy korzystająć z nawigacji po 
   * Przejdź do `recipe-list.component.scss`, a następnie:
     * dodaj style z pliku `component-style.scss` - krok 3
 
-2. Widok Szczegółów Przepisu (RecipeDetailComponent)
+4. Widok Szczegółów Przepisu (RecipeDetailComponent)
    * Przejdź do `recipe-details-component.ts`, gdzie musimy:
     * zadbać by ten komponent sam zdobył sobie przepis. 
         Podanie go przez Input'a już nie wchodzi w grę.
