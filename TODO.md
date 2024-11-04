@@ -1,159 +1,60 @@
-**Moduł 5: Routing i nawigacja**
-* Routing: tworzenie wielostronicowej aplikacji.
-* Dodanie widoków dla różnych części aplikacji, takich jak: lista przepisów, szczegóły przepisu, formularz dodawania/edycji przepisu.
-* Widok szczegółowy przepisu: wyświetlanie składników i instrukcji po kliknięciu na dany przepis.
-  
-_Moduł 5 jest ważnym krokiem w zrozumieniu, jak organizować wielostronicową aplikację w Angularze za pomocą routingu, co pozwala użytkownikom przemieszczać się między różnymi sekcjami aplikacji._
-_W ramach tego modułu dowiemy się, jak ustawić routing dla listy przepisów, widoku szczegółowego oraz formularza dodawania/edycji przepisów._
+**Moduł 5.1: Refaktoryzacja**
+Do tej pory tworzyliśmy aplikacje częściowo w nowym standardzie (standalone) ale mimo to nie używaliśmy wszystkich najnowszych konstrukcji języka.
+Wszystko specjalnie po to, żebyśmy mieli okazje poznać możliwie szeroki zakres konstrukcji frameworka.
+W tym module zrobimy mały refactor powstałego do tej pory kodu oraz dodamy linter.
+EsLint to narzędzie któremu podaje się reguły w jakimi chcemy się kierować budując projekt, a ono tego będzie pilnować. (np. nie używane importy)
 
+1. Instalacja i inicjalizacja lintera.
+   * W terminalu, będąć w projekcie wykonaj polecenie `ng lint`. W projekcie nie ma skonfigurowanego linta, więc kompilator powinien zasugerować ESLinta i użycie `@angular-eslint/schematics` na oba zadane pytania odpowiadamy **yes**
 
-1. Konfiguracja Angular Router
-  Angular Router umożliwia nawigację między widokami w aplikacji. Najpierw zainstalujemy podstawową konfigurację routingu w głównym module aplikacji.
+    > Polecenie powinno dodać skrypt `lint` w sekcji scripts w `package.json`
+    > Powinno dodać też plik `eslint.config.js` to plik konfiguracyjny do ESLinta
+    > _Nie wejdziemy w szczegóły konfiguracji, na ten moment wystarczy nam,_
+    > _że dodamy linter do projektu i skorzystany z predefiniowanych ustawień dla projektów pisanych w Angularze._
+    > Po wykonaniu polecenia, powinna też zajść zmiana w pliku `angular.json`
+2. Użycie lintera
+  * W terminalu, będąc w projekcie, wykonaj ponownie polecenie `ng lint` lub jak wolisz `npm run lint`
+  * Jako efekt, powinniśmy zobaczyć ścieżki do plików w których są problemy, ich dokładną lokalizację, typ oraz opisany problem - napraw problemy :)
+    
+    > Problemy w `recipe-list-element.component.ts` zostaw jak są, dotyczą zagadnień w które nie będziemy wchodzić.
+    > Gdybyśmy chcieli teraz głębiej wejść w temat, moglibyśmy dorzucić `husky` do projektu i skonfigurować tzw hooki jak preCommit czy prePush.
+    > Tam moglibyśmy skonfigurować wszystko to co chcielibyśmy żeby odpalało się przed commit'em lub przed git push'em, m.in. linter.
 
-   * Przejdź do `app.config.ts` i upewnij się że masz `provideRouter(routes)` w liście providers.
-   * Przejdź do `app.routes.ts` i zdefiuniuj tablice routingu tak by zawierała:
-     * trasy do widoków listy przepisów,
-     * szczegółów przepisu,
-     * widoku dodania / edycji przepisu. 
-     * Powinna też zawierać przekierowanie do komponentu listy dla pustych tras.
-   Widok edycji i szczegółów przepisu powinna zawierać parametr **id** by móc określić o jaki przepis chodzi.
-   Kod znajdziesz w `component-code.ts` - krok 1.
+3. Lazy loading - bo wielkość inicjalnej paczki ma znaczenie
+  4 z 5 komponentów jakie do tej pory stworzyliśmy, mogłbybyć osobnym feature naszej aplikacji który zaciągalibyśmy z serwerwa tylko wtedy, gdy porzebujemy
 
-2. Tworzenie Linków do Nawigacji Między Widokami
-   Teraz utworzymy header naszej aplikacji a w nim menu z linkami, które umożliwią użytkownikowi nawigację po aplikacji.
+  * dodajmy folder `src/app/features`.
+  * przenieśmy do tego folderu całe foldery komponentów `RecipeDetailComponent`, `RecipeReactiveFormComponent`, `RecipeListComponent`, oraz `RecipeTemplateFormComponent`
+  * Nie chcemy by nasze features były importowane przez inne moduły. Nie będziemy wchodzić w szczegóły co moglibyśmy zrobić by tego pilnować automatycznie, to co chciałbym żebyśmy teraz zrobili, to usuńmy pliki `index.ts` z folderów z komponentami które dopiero przenieśliśmy.
+  * Trochę nam to namieszało w importach, ale to co chciałbym, żebyśmy teraz poznali to sekcja `path` w `tsconfig.json`
+  Przejdźmy tam i dodajmy do obiektu `compilerOptions` kolejną sekcje:
+  > `"paths": {`
+  > `   "@core/*": ["./src/app/core/*"],`
+  > `   "@ui/*": ["./src/app/ui/*"],`
+  > `}`
+  > więcej info: https://www.typescriptlang.org/tsconfig/#paths
 
-    * Przejdź do `app.component.html` i zastąp obecny kod tym z `template-code.html` - krok 1
-    * Następnie przejdź do `app.component.ts` i pozbądź się niepotrzebnego kodu:
-        > `selectedRecipe: RecipeModel | null = null;`
-        >
-        > `onRecipeSelected(recipe: RecipeModel | null) {`
-        > `  this.selectedRecipe = recipe;`
-        > `}`
-    * Przejdź teraz do `app.component.scss` i podmień zawartość na style z pliku `component-style.scss` krok 2.
-    * Pozbądź się też zaimportowanych, nie używanych zależności z listy imports oraz dodaj `RouterOutlet, RouterLink`
+  * poprawmy importy stosując się do nowo dodanych ścieżek - `app.component.ts` zawiera importy komponentów których nie używamy w jego ramach, usuń je.
+  * Przejdźmy teraz do `app.routes.ts` i zastąp zawartość kodem z pliku `component-code.ts`. Zwróć uwagę, że brakuje Ci plików konfiguracyjnych routingu dodanych feature. Dodajmy je
+  * Przejdź do folderu `recipe-detail` i dodaj plik `recipe-detail.routes.ts`. W jego wnętrzu dodaj kod:
+    > `export const RECIPE_DETAILS_ROUTES: Routes = [`
+    > `    { path: '', component: RecipeDetailComponent },`
+    > `];`
+  * Analogicznie zrób dla reszty komponentów, pilnuj nazwy zmiennej oraz nazwy komponentu.
+  * Gdy już to zrobimy wszystko w kontekście loadingu części naszej aplikacji mamy gotowe.
 
+4. Pozbądźmy się pustych konstruktorów
+   * funkcja inject() - injection context?
+     * przykłady z użyciem - zamiast constructor(), w fukncji, w funkcji która zwraca
 
-**Tworzenie Widoków dla Każdej Ścieżki**
-Teraz utworzymy widoki, które użytkownik zobaczy korzystająć z nawigacji po aplikacji
+5. Signals
+   * signals
+     * signal input/output
 
-3. Widok Listy Przepisów (RecipeListComponent)
-  * Otwórz `recipe-list.component.html` i upewnij się, że każdy przepis ma link, który prowadzi do widoku szczegółowego.
-    * Dodajmy przycisk "Zobacz szczegóły".
-      Kod znajdziesz w pliku `template-code.html` - krok 3.
-  * Przejdź do `recipe-list.component.ts`, a następnie:
-    * pozbądź się metody `onRecipeClick()` gdyż nie jest już potrzebna
-    * dodaj `MatButtonModule` do listy import 
-  * Przejdź do `recipe-list.component.scss`, a następnie:
-    * dodaj style z pliku `component-style.scss` - krok 3
+6. Mapowanie parametrów routera do zmiennych w komponencie - do zrobienia
 
-4. Widok Szczegółów Przepisu (RecipeDetailComponent)
-   * Przejdź do `recipe-details-component.ts`, gdzie musimy:
-    * zadbać by ten komponent sam zdobył sobie przepis. 
-        Podanie go przez Input'a już nie wchodzi w grę.
-        To czego będziemy potrzebowali to:
-          * **id** przepisu, weźmiemy go sobie z adresu URL,
-          * serwis `RecipeService`, który dostarczy nam przpis na podstawie **id**
-    * Podmień klase komponentu na tę z pliku `component-code.ts` - krok 4
-    * Podmień listę importów komponentu na `CommonModule, RouterLink, MatCardModule, MatButtonModule`.
+7. Usuwamy nie używane rzeczy
+   * recipe-list-element delete
+  * EventRecipeModel delete
 
-**Zadanie do wykonania:**
-  * Kompilator po skopiowaniu wcześniejszego kodu, na pewno krzyknie, że brakuje mu implementacji metody `getRecipeById` - napisz ją.
-
-  Gdy implementacja `getRecipeById` jest już gotowa:
-   * przejdźmy do `recipe-details-component.html` a następnie:
-     * musimy go trochę dostosować. Podmień kod na ten z `template-code.html` krok 4
-   * Następnie przejdź do `recipe-details-component.scss` i:
-     * podmień style na te z `component-style.scss` - krok 4
-
-5. Widok edycji/dodania przepisu (RecipeReactiveFormComponent)
-  Musimy zadbać by nasz komponent obsługiwał zerówno dodawanie przepisu jak i edycje.
-  Logikę oprzemy o parametr id pochodzący ze ścieżki (route).
-
-  * Przejdź do `recipe-reactive-form-component.ts`.
-    * Wstrzyknijmy do konstruktora zależnośc  `Router` oraz `ActivatedRoute`
-    * Następnie edytujmy ngOnInit tak by pobierał i ustawiał sobie przepis na podstawie **id** pochodzącego ze ścieżki route.
-    * Zostaje metoda `onSubmit()`, która posłuży nam do zapisania zmian i powrotu do listy przepisów.
-    > `onSubmit(): void {`
-    > `  if (this.recipeFormGroup.valid) {`
-    > `    const recipe: RecipeModel = this.recipeFormGroup.value; // Zbieramy dane formularza`
-    > `    if (this.isEditMode) {`
-    > `      this.recipeService.editRecipe(recipe) // Wysyłanie danych do serwisu w postaci edycji istniejącego przepisu`
-    > `    } else {`
-    > `    this.recipeService.addRecipe(recipe); // Wysyłanie danych do serwisu w postaci nowego przepisu`
-    > `    }`
-    > 
-    > `    this.router.navigate(['/recipes']); // Powrót do listy przepisów`
-    > `  }`
-    > `}`
-
-
-**Zadanie do wykonania:**
-  * Brakuje nam **id** w modelu który przesyłamy do serwisu.
-  * Gdy już mamy gotową implementacje `recipe-reactive-form.component.ts` podmień w głównej tablicy routingu
-    `app.routes.ts` gotowy komponent na `recipe-template-form.component` i samodzielnie doprowadź go do analogicznego stanu.
-
-
-
-6. Możesz się zastanawiać co gdy widoki są bardziej skomplikowane - potrzebują dodatkowych danych co spowoduje opóźnienie w wyświetleniu strony.
-   W takiej sytuacji warto wyświetlić loader (spinner) by użytkownik Naszej aplikacji wiedział, że coś się dzieje. Dodajmy go zatem - użyjemy gotowego komponentu pochodzącego z dodanej przez Nas wcześniej biblioteki komponentów Angular Material (https://material.angular.io/components/progress-spinner/overview)
-  * Przejdźmy do `app.component.ts` i zaimportujmy `MatProgressSpinnerModule`
-  * Następnie przejdźmy do `app.component.html` i dodajmy go w widoku pod `<router-outlet></router-outlet>`
-  * Fajnie żeby był na środku strony i trochę odsunięty od headera. Dodajmy potrzebne style.
-    > `mat-spinner {`
-    > `place-self: center;`
-    > `margin-top: 10rem;`
-    > `}`
-  * Teraz zostaje nam już tylko logika która wyświetli spinner w odpowiednim momencie jak również go ukryje.
-    Tu do gry wchodzą eventy pochodzące z routera, które powiedzą nam w jakim stanie jest router naszej aplikacji.
-      * Przejdźmy do `app.component.ts`
-      * Dodaj konstruktor i wstrzyknij `Router`.
-      * Dodaj zmienną `isLoading: boolean = false`
-      * Następnie do ciała konstruktora dodaj
-        > `constructor(private router: Router) {`
-        > `  this.router.events.subscribe(e => { // subskrybujemy się do strumienia events`
-        > `    if (e instanceof NavigationStart) { // sprawdzamy instancje`
-        > `      this.isLoading = true // gdy nawigacja startuje chcemy widzieć loader`
-        > `    }`
-        > `    if (e instanceof NavigationEnd) {`
-        > `      this.isLoading = false // w każdym innym przypadku chcemy go wyłączyć`
-        > `    }`
-        > `    if (e instanceof NavigationCancel) {`
-        > `      this.isLoading = false`
-        > `    }`
-        > `    if (e instanceof NavigationError) {`
-        > `      this.isLoading = false`
-        > `    }`
-        > `  })`
-        > `}`
-      * Dorzuć dyrektywę `*ngIf` do widoku Naszego spinnera oraz do naszego `router-outlet`, powinieneś mieć
-        > `<router-outlet *ngIf="!isLoading"></router-outlet>`
-        > `<mat-spinner *ngIf="isLoading"></mat-spinner>`
-      * Nie zapomnij o imporcie dyrektywy do komponentu.
-
-**Zagadka**
-   Czy domyślasz się dlaczego umieszczamy spinner w tym a nie w innym miejscu?
-
-
-
-  * Gdy wszystko już niemal gotowe - przydałoby się coś co opóźni wyświetlanie którejś ze stron by sprawdzić czy spinner zadziała. Użyjmy `Resolver` a w nim dodamy timmer który opóźni wyświetlenie strony. Zaimplementujmy go więc.
-    * Przejdźmy do terminala, będąc w projekcie wpisz `ng generate resolver core/recipe/resolvers/recipe-page`
-      Guardy można obsłużyć funkcyjnie, można też poprzez serwis.
-    * Przejdźmy do naszego nowo utworzonego resolvera `recipe-page.resolver.ts`
-    * linijkę z return'em zamień na
-    >  `return of(null).pipe( // of() tworzy strumień`
-    >  `  debounceTime(5000), // opóźni zwrotkę o 5 sekund`
-    >  `  map(() => true) // zmapuje zwrotkę do wartości true`
-    >  `);`
-    * Dodaj potrzebne importy. O strumieniach porozmawiamy sobie później, na razie nie przejmuj się, jeżeli nie rozumiesz kodu.
-    * Przejdźmy teraz do `app.routes.ts` i dodajmy nasz resolver do routa który obsługuje dodanie nowego przepisu
-      > `{ path: 'recipe/add', component: RecipeReactiveFormComponent, resolve: { recipePageResolver } },`
-
-##### Podsumowanie Modułu:
-W tym module:
-
-Mieliśmy okazję poznać czym jest Angular Router oraz podstawowe zasady działania.
-* Utworzyliśmy RecipeReactiveFormComponent, który obsługuje widok dodawania i edytowania przepisów za pomocą Reactive Forms.
-* Dodaliśmy logikę umożliwiającą dynamiczne zarządzanie listą składników.
-* Stworzyliśmy przyjazny dla użytkownika widok formularza z intuicyjną walidacją pól.
-* Użyliśmy Angular Material do stylizacji formularzy, co wzmacnia spójność i wygląd aplikacji.
-* W oparciu o Event'y Router'a dodaliśmy spinner oraz logikę decydującą o momencie jego wyświetlenia
+zmergowałem zmiany do brancha start...
