@@ -1,6 +1,6 @@
-// CZĘŚĆ Template Driven Forms
+// ######################## CZĘŚĆ Template Driven Forms ########################
 
-// KROK 4 - LOGIKA KOMPONENTU RecipeTemplateFormComponent
+// ############ recipe-template-form-component.ts - krok 4 ############
 
 // ...
 export class RecipeTemplateFormComponent implements OnInit {
@@ -14,7 +14,7 @@ export class RecipeTemplateFormComponent implements OnInit {
   @Input() currentRecipe: RecipeModel | null = null;
 
   // Dzięki konstruktorowi wstzrzykniemy zależność (zasób) RecipeService
-  constructor(private recipeService: RecipeService) {}
+  constructor(private recipeService: RecipeService) { }
 
   // onInit life cycle hook przyda się gdy będziemy przygotowywać logikę edycji przepisu
   ngOnInit(): void {
@@ -25,7 +25,7 @@ export class RecipeTemplateFormComponent implements OnInit {
 
   // Metoda do pokazania/ukrycia formularza
   toggleForm(): void {
-      this.showForm = !this.showForm;
+    this.showForm = !this.showForm;
   }
 
   // Metoda do zatwierdzenia zmian (submit) formularza
@@ -56,12 +56,15 @@ export class RecipeTemplateFormComponent implements OnInit {
   }
 }
 
+// ############ ############
+// ######################## ########################
 
 
 
 
-// CZĘŚĆ Reactive Forms
+// ######################## CZĘŚĆ Reactive Forms  ########################
 
+// ############ recipe-template-form-component.ts - krok 4 ############
 
 // ...
 export class RecipeFormComponent implements OnInit {
@@ -72,7 +75,7 @@ export class RecipeFormComponent implements OnInit {
   recipeFormGroup!: FormGroup;
 
   // wstrzykujemy FormBuildera, to dzięki niemu będziemy w stanie zbudować reactive forms
-  constructor(private fb: FormBuilder, private recipeService: RecipeService) {}
+  constructor(private fb: FormBuilder, private recipeService: RecipeService) { }
 
   // definiujemy nasza formGroup dzięki FormBuilder'owi, zauważ że na tym poziomie defiuniujesz strukturę, wartośc początkową, walidatory i tak dalej.
   ngOnInit(): void {
@@ -114,17 +117,20 @@ export class RecipeFormComponent implements OnInit {
   }
 }
 
+// ############ ############
+// ######################## ########################
 
 
+// ######################## CZĘŚĆ Angular Material ########################
 
-// CZĘŚĆ Angular Material
+// Lista popularnych składników
+popularIngredients: string[] = [
+  'Tomatoes', 'Onions', 'Garlic', 'Potatoes', 'Carrots', 'Olive oil', 'Butter',
+  'Chicken', 'Beef', 'Pork', 'Salt', 'Pepper', 'Paprika', 'Basil', 'Parsley',
+  'Oregano', 'Lemon', 'Sugar', 'Flour', 'Eggs', 'Milk', 'Cheese', 'Cream',
+  'Bread', 'Rice', 'Pasta', 'Beans', 'Lettuce', 'Spinach', 'Broccoli', 'Mushrooms',
+  'Fish', 'Shrimp', 'Soy sauce', 'Vinegar', 'Honey', 'Peppers', 'Zucchini', 'Cucumber',
+  'Corn', 'Chili powder'
+];
 
-  // Lista popularnych składników
-  popularIngredients: string[] = [
-    'Tomatoes', 'Onions', 'Garlic', 'Potatoes', 'Carrots', 'Olive oil', 'Butter',
-    'Chicken', 'Beef', 'Pork', 'Salt', 'Pepper', 'Paprika', 'Basil', 'Parsley',
-    'Oregano', 'Lemon', 'Sugar', 'Flour', 'Eggs', 'Milk', 'Cheese', 'Cream',
-    'Bread', 'Rice', 'Pasta', 'Beans', 'Lettuce', 'Spinach', 'Broccoli', 'Mushrooms',
-    'Fish', 'Shrimp', 'Soy sauce', 'Vinegar', 'Honey', 'Peppers', 'Zucchini', 'Cucumber',
-    'Corn', 'Chili powder'
-  ];
+// ######################## ########################
