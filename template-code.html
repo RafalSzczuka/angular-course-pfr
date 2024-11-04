@@ -1,22 +1,16 @@
-<!-- Krok 4 - recipe-list-element.component.html -->
+<!-- ############ recipe-list-element.component.html - krok 4 ############ -->
+
 <article *ngIf="recipe" (click)="onRecipeClick(recipe)">
     <h3>{{ recipe.title }}</h3>
     <p>{{ recipe.description }}</p>
     <p>Poziom trudności: {{ recipe.difficulty }}</p>
     <p>Czas przygotowania: {{ recipe.preparationTime }} minut</p>
 </article>
-<!--  -->
 
-<!-- Krok 4 - recipe-detail.component.html -->
-<article *ngIf="recipe" (click)="onRecipeClick(recipe)">
-    <h2>{{ selectedRecipe.title }}</h2>
-    <p>{{ selectedRecipe.description }}</p>
-    <p>Poziom trudności: {{ selectedRecipe.difficulty }}</p>
-    <p>Czas przygotowania: {{ selectedRecipe.preparationTime }} minut</p>
-</article>
-<!--  -->
+<!-- ############ ############ -->
 
-<!-- Krok 5 - recipe-list-element.component.html -->
+<!-- ############ recipe-list-element.component.html - krok 5 ############ -->
+
 <article *ngIf="recipe" (click)="onRecipeClick(recipe)">
     <h3>{{ recipe.title }}</h3>
     <p>{{ recipe.description }}</p>
@@ -24,9 +18,11 @@
     <p>Czas przygotowania: {{ recipe.preparationTime }} minut</p>
     <button (click)="onDeleteRecipe(recipe.id)">Usuń</button>
 </article>
-<!--  -->
 
-<!-- krok 5 - recipe-list.component.html -->
+<!-- ############ ############ -->
+
+<!-- ############ recipe-list.component.html - krok 5 -->
+
 <h2 class="header">Lista Przepisów</h2>
 <section>
     <ul>
@@ -38,4 +34,5 @@
         </li>
     </ul>
 </section>
-<!--  -->
+
+<!-- ############ ############ -->
