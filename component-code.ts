@@ -1,4 +1,5 @@
-// Krok 1 - Aktualizacja modelu RecipeModel
+// ############ recipe.model.ts - krok 1 ############
+
 export interface RecipeModel {
   id: number;
   title: string;
@@ -8,7 +9,11 @@ export interface RecipeModel {
   difficulty: 'easy' | 'medium' | 'hard';
 }
 
-// Krok 2 - Tworzenie serwisu RecipeService
+// ############ ############
+
+
+
+// ############ recipe.service.ts - krok 2 ############
 import { Injectable } from '@angular/core';
 import { RecipeModel } from '../models/recipe.model';
 
@@ -43,7 +48,7 @@ export class RecipeService {
     }
   ];
 
-  constructor() {}
+  constructor() { }
 
   // Metoda pobierająca wszystkie przepisy
   getRecipes(): RecipeModel[] {
@@ -51,27 +56,33 @@ export class RecipeService {
   }
 }
 
-// Krok 5 - recipe-list-element.component.ts emitowanie zdarzenia usunięcia przepisu
+// ############ ############
+
+
+
+// ############ recipe-list-element.component.ts - krok 5 ############
 // ...
 export class RecipeListComponent implements OnInit {
   // ...
   @Output() recipeRemoved = new EventEmitter<number>();
-// ...
+  // ...
   onDeleteRecipe(id: number): void {
     this.recipeRemoved.emit(id);
   }
 }
 
+//  ############ ############
 
 
-// Krok 5 - recipe.service.ts
+
+// ############ recipe.service.ts - krok 5 ############
 
 // ...
 @Injectable({
   providedIn: 'root'
 })
 export class RecipeService {
-// ...
+  // ...
 
   // Metoda usuwająca przepis
   deleteRecipe(id: number): void {
@@ -79,13 +90,19 @@ export class RecipeService {
   }
 }
 
-// Krok 5 - recipe-list.component usuwanie przepisu
+// ############ ############
+
+
+
+// ############ recipe-list.component - krok 5 ############
 
 // ...
-export class RecipeListComponent implements OnInit{
-// ...
+export class RecipeListComponent implements OnInit {
+  // ...
   onDeleteRecipe(id: number): void {
     this.recipeService.deleteRecipe(id);  // Usuwanie przepisu
     this.recipes = this.recipeService.getRecipes();  // Odśwież listę
   }
 }
+
+// ############ ############
