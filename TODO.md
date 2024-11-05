@@ -43,18 +43,5 @@ EsLint to narzędzie któremu podaje się reguły w jakimi chcemy się kierować
   * Analogicznie zrób dla reszty komponentów, pilnuj nazwy zmiennej oraz nazwy komponentu.
   * Gdy już to zrobimy wszystko w kontekście loadingu części naszej aplikacji mamy gotowe.
 
-4. Pozbądźmy się pustych konstruktorów
-   * funkcja inject() - injection context?
-     * przykłady z użyciem - zamiast constructor(), w fukncji, w funkcji która zwraca
 
-5. Signals
-   * signals
-     * signal input/output
-
-6. Mapowanie parametrów routera do zmiennych w komponencie - do zrobienia
-
-7. Usuwamy nie używane rzeczy
-   * recipe-list-element delete
-  * EventRecipeModel delete
-
-zmergowałem zmiany do brancha start...
+4. Angular przechodzi ostatnio sporo zmian. Wprowadzenie w temat wymaga już trochę wiedzy o samym frameworku dlatego zrezygnowałem z refactor'u kodu pod tym kątem. Informacje o zmianach możesz znaleźć m.in. tutaj https://angular.dev/reference/migrations
