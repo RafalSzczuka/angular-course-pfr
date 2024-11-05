@@ -7,11 +7,11 @@ EsLint to narzędzie któremu podaje się reguły w jakimi chcemy się kierować
 1. Instalacja i inicjalizacja lintera.
    * W terminalu, będąć w projekcie wykonaj polecenie `ng lint`. W projekcie nie ma skonfigurowanego linta, więc kompilator powinien zasugerować ESLinta i użycie `@angular-eslint/schematics` na oba zadane pytania odpowiadamy **yes**
 
-    > Polecenie powinno dodać skrypt `lint` w sekcji scripts w `package.json`
-    > Powinno dodać też plik `eslint.config.js` to plik konfiguracyjny do ESLinta
-    > _Nie wejdziemy w szczegóły konfiguracji, na ten moment wystarczy nam,_
-    > _że dodamy linter do projektu i skorzystany z predefiniowanych ustawień dla projektów pisanych w Angularze._
-    > Po wykonaniu polecenia, powinna też zajść zmiana w pliku `angular.json`
+    > Ważne: Problemy w pliku recipe-list-element.component.ts pomiń, gdyż dotyczą one zagadnień, których nie będziemy teraz omawiać.
+    > Jeśli chcesz zgłębić temat, warto zapoznać się z narzędziem Husky.
+    > Husky pozwala na konfigurację hooków, np. preCommit czy prePush.
+    > Dzięki czemu można uruchamiać lintera automatycznie przed każdym commitem lub pushowaniem zmian do repozytorium.
+
 2. Użycie lintera
   * W terminalu, będąc w projekcie, wykonaj ponownie polecenie `ng lint` lub jak wolisz `npm run lint`
   * Jako efekt, powinniśmy zobaczyć ścieżki do plików w których są problemy, ich dokładną lokalizację, typ oraz opisany problem - napraw problemy :)
@@ -21,7 +21,7 @@ EsLint to narzędzie któremu podaje się reguły w jakimi chcemy się kierować
     > Tam moglibyśmy skonfigurować wszystko to co chcielibyśmy żeby odpalało się przed commit'em lub przed git push'em, m.in. linter.
 
 3. Lazy loading - bo wielkość inicjalnej paczki ma znaczenie
-  4 z 5 komponentów jakie do tej pory stworzyliśmy, mogłbybyć osobnym feature naszej aplikacji który zaciągalibyśmy z serwerwa tylko wtedy, gdy porzebujemy
+  W celu optymalizacji aplikacji powinniśmy wczytywać części aplikacji na żądanie, czyli dopiero, gdy są potrzebne.
 
   * dodajmy folder `src/app/features`.
   * przenieśmy do tego folderu całe foldery komponentów `RecipeDetailComponent`, `RecipeReactiveFormComponent`, `RecipeListComponent`, oraz `RecipeTemplateFormComponent`
@@ -34,14 +34,23 @@ EsLint to narzędzie któremu podaje się reguły w jakimi chcemy się kierować
   > `}`
   > więcej info: https://www.typescriptlang.org/tsconfig/#paths
 
-  * poprawmy importy stosując się do nowo dodanych ścieżek - `app.component.ts` zawiera importy komponentów których nie używamy w jego ramach, usuń je.
-  * Przejdźmy teraz do `app.routes.ts` i zastąp zawartość kodem z pliku `component-code.ts`. Zwróć uwagę, że brakuje Ci plików konfiguracyjnych routingu dodanych feature. Dodajmy je
-  * Przejdź do folderu `recipe-detail` i dodaj plik `recipe-detail.routes.ts`. W jego wnętrzu dodaj kod:
-    > `export const RECIPE_DETAILS_ROUTES: Routes = [`
-    > `    { path: '', component: RecipeDetailComponent },`
-    > `];`
-  * Analogicznie zrób dla reszty komponentów, pilnuj nazwy zmiennej oraz nazwy komponentu.
+  * Poprawmy importy stosując się do nowo dodanych ścieżek
+    `app.component.ts` zawiera importy komponentów których nie używamy w jego ramach, usuń je.
+  * Przejdźmy teraz do `app.routes.ts` i zastąp zawartość kodem z pliku `component-code.ts`.
+    Brakuje plików konfiguracyjnych routingu dodanych feature. Dodajmy je:
+      * Przejdź do folderu `recipe-detail` i dodaj plik `recipe-detail.routes.ts`. W jego wnętrzu dodaj kod:
+        > `export const RECIPE_DETAILS_ROUTES: Routes = [`
+        > `    { path: '', component: RecipeDetailComponent },`
+        > `];`
+      * Analogicznie zrób dla reszty komponentów, pilnuj nazwy zmiennej oraz nazwy komponentu.
   * Gdy już to zrobimy wszystko w kontekście loadingu części naszej aplikacji mamy gotowe.
 
 
-4. Angular przechodzi ostatnio sporo zmian. Wprowadzenie w temat wymaga już trochę wiedzy o samym frameworku dlatego zrezygnowałem z refactor'u kodu pod tym kątem. Informacje o zmianach możesz znaleźć m.in. tutaj https://angular.dev/reference/migrations
+4. Angular w ostatnim czasie przechodzi liczne zmiany. Refaktoryzacja kodu pod kątem najnowszych aktualizacji wymaga bardziej zaawansowanej wiedzy o frameworku, dlatego obecnie tego nie będziemy omawiać. Jeśli chcesz dowiedzieć się więcej, odwiedź stronę: https://angular.dev/reference/migrations.
+
+
+Podsumowanie:
+* W tym module dodaliśmy lintera do projektu, co pozwoli nam kontrolować jakość kodu na bieżąco.
+* Zapoznaliśmy się z komendą ng lint i nauczyliśmy się, jak konfigurować lintera z domyślnymi ustawieniami dla Angulara.
+* Omówiliśmy także lazy loading, dzięki czemu aplikacja ładuje komponenty tylko wtedy, gdy są potrzebne, co zwiększa jej wydajność.
+* Na koniec dowiedzieliśmy się, że Angular jest w fazie dynamicznych zmian, co wymaga czasem dostosowania kodu.
