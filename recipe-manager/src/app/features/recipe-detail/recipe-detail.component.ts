@@ -1,10 +1,10 @@
-import { CommonModule, NgIf } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
-import { RecipeModel } from '../../core/recipe/model';
+import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { RecipeService } from '../../core/recipe/service';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { RecipeModel } from '@core/recipe/model';
+import { RecipeService } from '@core/recipe/service';
 
 @Component({
   selector: 'app-recipe-detail',

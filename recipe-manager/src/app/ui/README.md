@@ -1,0 +1,1 @@
+Folder ui zawierać będzie komponenty ładowane poprzez import, pipe oraz dyrektywy

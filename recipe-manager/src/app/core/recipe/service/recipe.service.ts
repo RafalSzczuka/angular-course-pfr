@@ -41,8 +41,6 @@ export class RecipeService {
     'Corn', 'Chili powder'
   ];
 
-  constructor() {}
-
   // Metoda pobierająca wszystkie przepisy
   getRecipes(): RecipeModel[] {
     return this.recipes;

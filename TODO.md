@@ -43,5 +43,7 @@ EsLint to narzędzie któremu podaje się reguły w jakimi chcemy się kierować
   * Analogicznie zrób dla reszty komponentów, pilnuj nazwy zmiennej oraz nazwy komponentu.
   * Gdy już to zrobimy wszystko w kontekście loadingu części naszej aplikacji mamy gotowe.
 
+1. Instalacja i inicjalizacja lintera.
+   * W terminalu, będąć w projekcie wykonaj polecenie `ng lint`. W projekcie nie ma skonfigurowanego linta, więc kompilator powinien zasugerować ESLinta i użycie `@angular-eslint/schematics` na oba zadane pytania odpowiadamy **yes**
 
 4. Angular przechodzi ostatnio sporo zmian. Wprowadzenie w temat wymaga już trochę wiedzy o samym frameworku dlatego zrezygnowałem z refactor'u kodu pod tym kątem. Informacje o zmianach możesz znaleźć m.in. tutaj https://angular.dev/reference/migrations

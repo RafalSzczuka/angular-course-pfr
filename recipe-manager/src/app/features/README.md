@@ -1,0 +1,1 @@
+Folder features będzie zawierać wszystkie feature projektu - tzn moduły ładowane poprzez router.

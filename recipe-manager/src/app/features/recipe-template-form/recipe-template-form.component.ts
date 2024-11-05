@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { RecipeModel } from '../../core/recipe/model';
-import { RecipeService } from '../../core/recipe/service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { RecipeModel } from '@core/recipe/model';
+import { RecipeService } from '@core/recipe/service';
 
 @Component({
   selector: 'app-recipe-template-form',

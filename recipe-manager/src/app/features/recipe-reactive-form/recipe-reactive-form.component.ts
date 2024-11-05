@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, FormArray, FormControl } from '@angular/forms';
-import { RecipeModel } from '../../core/recipe/model';
-import { RecipeService } from '../../core/recipe/service';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
+import { RecipeModel } from '@core/recipe/model';
+import { RecipeService } from '@core/recipe/service';
 
 @Component({
   selector: 'app-recipe-reactive-form',
@@ -17,7 +17,7 @@ import { MatCardModule } from '@angular/material/card';
   templateUrl: './recipe-reactive-form.component.html',
   styleUrl: './recipe-reactive-form.component.scss'
 })
-export class RecipeReactiveFormComponent {
+export class RecipeReactiveFormComponent implements OnInit {
   isEditMode = false;
   currentRecipe: RecipeModel | undefined;
   recipeFormGroup!: FormGroup;
