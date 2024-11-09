@@ -19,12 +19,14 @@ export class RecipeDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private recipeService: RecipeService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.recipe = this.recipeService.getRecipeById(+id);
+      this.recipeService.getRecipeById(+id).subscribe(result => {
+        this.recipe = result;
+      });
     }
   }
 }

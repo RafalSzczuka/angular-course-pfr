@@ -1,77 +1,48 @@
 import { Injectable } from '@angular/core';
 import { RecipeModel } from '../model';
+import { HttpClient } from '@angular/common/http';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RecipeService {
-  private recipes: RecipeModel[] = [
-    {
-      id: 1,
-      title: 'Spaghetti Carbonara',
-      description: 'Klasyczne włoskie danie.',
-      ingredients: ['Pasta', 'Eggs', 'Pork', 'Cheese', 'Pepper'],
-      preparationTime: 30,
-      difficulty: 'easy'
-    },
-    {
-      id: 2,
-      title: 'Pancakes',
-      description: 'Puszyste naleśniki z syropem klonowym.',
-      ingredients: ['Flour', 'Milk', 'Eggs', 'Honey'],
-      preparationTime: 20,
-      difficulty: 'medium'
-    },
-    {
-      id: 3,
-      title: 'Tacos',
-      description: 'Meksykańskie tacos z wołowiną i salsą.',
-      ingredients: ['Flour', 'Milk', 'Eggs', 'Beef', 'Salt'],
-      preparationTime: 60,
-      difficulty: 'hard'
-    }
-  ];
+  baseUrl = 'http://localhost:3000';
 
-  popularIngredients: string[] = [
-    'Tomatoes', 'Onions', 'Garlic', 'Potatoes', 'Carrots', 'Olive oil', 'Butter',
-    'Chicken', 'Beef', 'Pork', 'Salt', 'Pepper', 'Paprika', 'Basil', 'Parsley',
-    'Oregano', 'Lemon', 'Sugar', 'Flour', 'Eggs', 'Milk', 'Cheese', 'Cream',
-    'Bread', 'Rice', 'Pasta', 'Beans', 'Lettuce', 'Spinach', 'Broccoli', 'Mushrooms',
-    'Fish', 'Shrimp', 'Soy sauce', 'Vinegar', 'Honey', 'Peppers', 'Zucchini', 'Cucumber',
-    'Corn', 'Chili powder'
-  ];
+  constructor(private httpClient: HttpClient) { }
 
-  // Metoda pobierająca wszystkie przepisy
-  getRecipes(): RecipeModel[] {
-    return this.recipes;
+  // Metoda pobierająca wszystkie przepisy asynchronicznie
+  // W tym celu używa HttpClient, bazuje na strumieniach
+  getRecipes(): Observable<RecipeModel[]> {
+    // w db.json sprawdzisz, że path do danych to właśnie /recipes
+    return this.httpClient.get<RecipeModel[]>(`${this.baseUrl}/recipes`);
   }
 
-  // Metoda pobierająca przepis po id
-  getRecipeById(id: number): RecipeModel | undefined {
-    return this.recipes.find(r => r.id === id);
+  // Metoda pobierająca przepis po id asynchronicznie
+  // W tym celu używa HttpClient, bazuje na strumieniach
+  getRecipeById(id: number): Observable<RecipeModel | undefined> {
+    return this.httpClient.get<RecipeModel>(`${this.baseUrl}/recipes/${id}`);
   }
 
-  // Metoda usuwająca przepis
-  deleteRecipe(id: number): void {
-    this.recipes = this.recipes.filter(r => r.id !== id);
+  // Metoda usuwająca przepis asynchronicznie
+  deleteRecipe(id: number): Observable<void> {
+    return this.httpClient.delete<void>(`${this.baseUrl}/recipes/${id}`);
   }
 
-  // Metoda dodająca nowy przepis
-  addRecipe(recipe: RecipeModel): void {
-    recipe.id = this.recipes.length + 1;  // Automatyczne przypisanie ID
-    this.recipes.push(recipe);
+  // Metoda dodająca nowy przepis asynchronicznie
+  // Jako zwrotkę, otrzymamy nowo dodany element
+  addRecipe(recipe: RecipeModel): Observable<RecipeModel> {
+    return this.httpClient.post<RecipeModel>(`${this.baseUrl}/recipes`, recipe);
   }
 
-  // Metoda edytująca istniejący przepis
-  editRecipe(updatedRecipe: RecipeModel): void {
-    const index = this.recipes.findIndex(r => r.id === updatedRecipe.id);
-    if (index !== -1) {
-      this.recipes[index] = updatedRecipe;
-    }
+  // Metoda edytująca istniejący przepis asynchronicznie
+  // Jako zwrotkę, otrzymamy edytowany element
+  editRecipe(updatedRecipe: RecipeModel): Observable<RecipeModel> {
+    return this.httpClient.put<RecipeModel>(`${this.baseUrl}/recipes/${updatedRecipe.id}`, updatedRecipe);
   }
 
-   // Metoda pobierająca wszystkie popularne składniki
-   getPopularIngredients(): string[] {
-    return this.popularIngredients;
+  // Metoda pobierająca wszystkie popularne składniki
+  getPopularIngredients(): Observable<string[]> {
+    return this.httpClient.get<{ popularIngredients: string[] }>(`${this.baseUrl}/ingredients`).pipe(map(result => result.popularIngredients));
   }
 }

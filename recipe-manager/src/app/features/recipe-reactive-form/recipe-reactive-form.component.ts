@@ -34,7 +34,9 @@ export class RecipeReactiveFormComponent implements OnInit {
       difficulty: ['', Validators.required]
     });
 
-    this.popularIngredients = this.recipeService.getPopularIngredients();
+    this.recipeService.getPopularIngredients().subscribe(result => {
+      this.popularIngredients = result;
+    });
 
     // jeżeli istnieje przepis to go ustawiamy - tryb edycji
     const id = this.route.snapshot.paramMap.get('id');
@@ -42,14 +44,15 @@ export class RecipeReactiveFormComponent implements OnInit {
       // ustawiamy edit mode
       this.isEditMode = true;
       // pobieramy edytowany przepis
-      this.currentRecipe = this.recipeService.getRecipeById(+id);
-
-      // jeżeli jest przepis, ustawiamy obecne wartości w formularzu
-      if (this.currentRecipe) {
-        this.currentRecipe.id = +id;
-        // zadziała dla niemal wszystkich typów kontrolek, nie zadziała dla formArray
-        this.recipeFormGroup.patchValue(this.currentRecipe);
-      }
+      this.recipeService.getRecipeById(+id).subscribe(result => {
+        this.currentRecipe = result;
+        // jeżeli jest przepis, ustawiamy obecne wartości w formularzu
+        if (this.currentRecipe) {
+          this.currentRecipe.id = +id;
+          // zadziała dla niemal wszystkich typów kontrolek, nie zadziała dla formArray
+          this.recipeFormGroup.patchValue(this.currentRecipe);
+        }
+      });
     }
   }
 
@@ -60,9 +63,9 @@ export class RecipeReactiveFormComponent implements OnInit {
         if (this.currentRecipe) {
           recipe.id = this.currentRecipe?.id;
         }
-        this.recipeService.editRecipe(recipe) // Wysyłanie danych do serwisu w postaci edycji istniejącego przepisu
+        this.recipeService.editRecipe(recipe).subscribe() // Wysyłanie danych do serwisu w postaci edycji istniejącego przepisu
       } else {
-        this.recipeService.addRecipe(recipe); // Wysyłanie danych do serwisu w postaci nowego przepisu
+        this.recipeService.addRecipe(recipe).subscribe(); // Wysyłanie danych do serwisu w postaci nowego przepisu
       }
 
       this.router.navigate(['/recipes']); // Powrót do listy przepisów

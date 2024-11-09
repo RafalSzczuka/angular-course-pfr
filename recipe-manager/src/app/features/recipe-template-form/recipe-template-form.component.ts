@@ -33,7 +33,9 @@ export class RecipeTemplateFormComponent implements OnInit {
   constructor(private recipeService: RecipeService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.popularIngredients = this.recipeService.getPopularIngredients();
+    this.recipeService.getPopularIngredients().subscribe(result => {
+      this.popularIngredients = result;
+    });
 
     // jeżeli istnieje przepis to go ustawiamy - tryb edycji
     const id = this.route.snapshot.paramMap.get('id');
@@ -41,7 +43,9 @@ export class RecipeTemplateFormComponent implements OnInit {
       // ustawiamy edit mode
       this.isEditMode = true;
       // pobieramy edytowany przepis
-      this.currentRecipe = this.recipeService.getRecipeById(+id);
+      this.recipeService.getRecipeById(+id).subscribe(result => {
+        this.currentRecipe = result;
+      });
 
       // jeżeli jest przepis, ustawiamy obecne wartości w formularzu
       if (this.currentRecipe) {

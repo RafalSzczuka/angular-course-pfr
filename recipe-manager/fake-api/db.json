@@ -1,0 +1,76 @@
+{
+  "recipes": [
+    {
+      "id": "2",
+      "title": "Pancakes",
+      "description": "Puszyste naleśniki z syropem klonowym.",
+      "ingredients": [
+        "Flour",
+        "Milk",
+        "Eggs",
+        "Honey"
+      ],
+      "preparationTime": 20,
+      "difficulty": "medium"
+    },
+    {
+      "id": "3",
+      "title": "Tacos",
+      "description": "Meksykańskie tacos z wołowiną i salsą.",
+      "ingredients": [
+        "Flour",
+        "Milk",
+        "Eggs",
+        "Beef",
+        "Salt"
+      ],
+      "preparationTime": 60,
+      "difficulty": "hard"
+    }
+  ],
+  "ingredients": {
+    "popularIngredients": [
+      "Tomatoes",
+      "Onions",
+      "Garlic",
+      "Potatoes",
+      "Carrots",
+      "Olive oil",
+      "Butter",
+      "Chicken",
+      "Beef",
+      "Pork",
+      "Salt",
+      "Pepper",
+      "Paprika",
+      "Basil",
+      "Parsley",
+      "Oregano",
+      "Lemon",
+      "Sugar",
+      "Flour",
+      "Eggs",
+      "Milk",
+      "Cheese",
+      "Cream",
+      "Bread",
+      "Rice",
+      "Pasta",
+      "Beans",
+      "Lettuce",
+      "Spinach",
+      "Broccoli",
+      "Mushrooms",
+      "Fish",
+      "Shrimp",
+      "Soy sauce",
+      "Vinegar",
+      "Honey",
+      "Peppers",
+      "Zucchini",
+      "Cucumber",
+      "Corn",
+      "Chili powder"
+    ]
+  }
+}
