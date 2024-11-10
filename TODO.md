@@ -62,4 +62,38 @@ Pipes: wyświetlanie przepisów w estetyczny sposób, np. formatowanie czasu got
    * Przejdź do `recipe-list.component.html` i po selektorze `appHighlightOnHover` dodaj `[hoverColor]="'#e0f7fa'"`
    > `<mat-card class="recipe-card" *ngFor="let recipe of recipes" appHighlightOnHover [hoverColor]="'#e0f7fa'" >`
 
-4. 
+4. Rozszerzmy widok uzyskiwany po przejściu w szczegóły przepisu.
+   * przjdź do `recipe-details.html`
+   * wewnątrz taga `<mat-card-content>` definiujemy zawartość naszej karty przepisów. Rozszerzmy ten widok o kolejne wartościu modelu recipe.
+   > `<mat-card-content>`
+   >  `     <p><strong>Składniki:</strong> {{ recipe.ingredients.join(', ') }}</p>`
+   >  `     <p><strong>Opis:</strong> {{ recipe.description }}</p>`
+   >  `     <p><strong>Czas przygotowania:</strong> {{ recipe.preparationTime }}</p>`
+   >  `     <p><strong>Trudność wykonania:</strong> {{ recipe.difficulty }}</p>`
+   >  `</mat-card-content>`
+
+   Widzimy tu 3 problemy:
+      * preparationTime - wyrażane w liczbach, bez minut
+      * difficulty - jest po angielsku
+      * ingredient - wywoływane jest wraz z funckją .join(', '), używanie funkcji w template jest nikorzystnę z punktu widzenia performance aplikacji.
+
+   Rozwiążemy te problemy poprzez użycie Pipe.
+
+5. Pipe `PreparationTimePipe`
+   * W terminalu, będąc w projekcie wpisz i wykonaj `ng generate pipe core/recipe/pipes/preparationTime`
+   > Ta komenda wygeneruje pliki `preparation-time.pipe.ts` oraz zaktualizuje app.module.ts, jeśli aplikacja jest modułowa.
+   > Jeśli pracujemy na komponentach standalone, dodamy dyrektywę ręcznie do odpowiednich komponentów.
+
+   * przejdźmy do `preparation-time.pipe.ts` i edytujmy metodę transform tak by zwracała czas w minutach. Nie zapomnijmy o odpowiednich typach.
+   > ` transform(value: number | undefined, ...args: unknown[]): string | undefined { `
+   >    return value != null ? `${value} minut` : value;
+   >  `}`
+
+   * Następnie przejdźmy do `recipe-detail.component.ts` i dodajmy `PreparationTimePipe` do listy importów.
+   * Gdy już to mamy, dodajmy użycie w template, przejdźmy do `recipe-detail.component.html` i edytujmy linijkę odpowiedzialną za wyświetlenie czasu przygotowania:
+   > `<p><strong>Czas przygotowania:</strong> {{ recipe.preparationTime | preparationTime }}</p>`
+
+6. Pipe `DifficultyPipe`
+   * W terminalu, będąc w projekcie wpisz i wykonaj `ng generate pipe core/recipe/pipes/difficulty`
+   > Ta komenda wygeneruje pliki `difficulty.pipe.ts` oraz zaktualizuje app.module.ts, jeśli aplikacja jest modułowa.
+   > Jeśli pracujemy na komponentach standalone, dodamy dyrektywę ręcznie do odpowiednich komponentów.
