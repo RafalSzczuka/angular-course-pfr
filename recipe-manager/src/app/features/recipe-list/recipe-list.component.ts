@@ -7,11 +7,12 @@ import { RecipeListElementComponent } from '@ui/recipe-list-element';
 import { RecipeModel } from '@core/recipe/model';
 import { RecipeService } from '@core/recipe/service';
 import { tap } from 'rxjs';
+import { HighlightOnHoverDirective } from '@core/recipe/directives/highlight-on-hover.directive';
 
 @Component({
   selector: 'app-recipe-list',
   standalone: true,
-  imports: [CommonModule, RecipeListElementComponent, RouterLink, MatCardModule, MatButtonModule],
+  imports: [CommonModule, RecipeListElementComponent, RouterLink, MatCardModule, MatButtonModule, HighlightOnHoverDirective],
   templateUrl: './recipe-list.component.html',
   styleUrl: './recipe-list.component.scss'
 })

@@ -1,103 +1,65 @@
-**Moduł 6: HTTP Client – komunikacja z serwerem**
-Pobieranie przepisów z API: wprowadzenie do komunikacji z backendem.
-Wysyłanie żądań HTTP do serwera (np. zapisywanie, aktualizowanie i usuwanie przepisów).
-Użycie JSON-server jako lokalnego backendu do symulacji rzeczywistej bazy danych.
+**Moduł 7: Dyrektywy i Pipes**
+Tworzenie własnej dyrektywy i pipe.
+Dyrektywa: podkreślająca przepis na hover
+Pipes: wyświetlanie przepisów w estetyczny sposób, np. formatowanie czasu gotowania (np. "45 minut" zamiast "45").
 
-1. Instalacja JSON-server
-Zaczniemy od stworzenia swojego lokalnego serwera, który posłuży za nasz backend.
-W prawdziwych projektach używa się tego typu rozwiązać by uniknąć problemów gdy API jest niedostępne.
 
-   * W terminalu, będąc w projekcie wykonaj `npm install json-server` - https://www.npmjs.com/package/json-server
-   * następne stwórzmy folder a w nim plik `fake-api/db.json`
-   * z pliku `component-code.ts` - krok 1 - przekopiuj kod do `fake-api/db.json`.
-   * przejdź do `package.json` i dodaj w sekcji `scripts` skrypt `"fake-api": "json-server --watch fake-api/db.json --port 3000"`
-   * serwer uruchomisz poleceniem `npm run fake-api`
+1. Generowanie dyrektywy `HighlightOnHoverDirective`
+   * W terminalu, będąc w projekcie wpisz i wykonaj `ng generate directive core/recipe/directives/highlightOnHover`
+   > Ta komenda wygeneruje pliki highlight-on-hover.directive.ts oraz zaktualizuje app.module.ts, jeśli aplikacja jest modułowa.
+   > Jeśli pracujemy na komponentach standalone, dodamy dyrektywę ręcznie do odpowiednich komponentów.
 
-1. Dostosowanie metody GET w serwisie RecipeService
-  Zastosowanie HttpClient'a pozwala aplikacjom Angular na efektywną wymianę danych z serwerem, co jest kluczowe w przypadku aplikacji typu SPA (Single Page Application).
+   * Przejdźmy do nowo utworzonej dyrektywy i dodajmy w jej konstruktorze:
+    > `console.log('to ja dyrektywa');`
 
-  * Zacznijmy od podania `provideHttpClient()` w pliku głównym konfiguracji naszej aplikacji `app.config.ts`.
-  * Natępnie przejdźmy do `recipe-service.ts`
-  * Będąc w serwisie wstrzyknijmy `HttpClient`. To on dostarczy nam metody CRUD których użyjemy do komunikacji z backendem.
-  > `constructor(private httpClient: HttpClient) {}`
+   * Następnie uruchommy aplikacje, nie zapomnij o serwerze fake-api.
+   > w terminalu będąc w projekcie `npm run start` w kolejnym terminalu `npm run fake-api`
 
-  * Będziemy potrzebowali url pod który mamy uderzać po dane.
-    Normalnie w projekcie mielibyśmy plik konfiguracyjny, ale na potrzeby naszego projektu zdefiniujmy zmienną
-    > `baseUrl = 'http://localhost:3000';`
-    Zmienna zawiera defaultowy url dla json-server'a.
+  * Zauważ, że na razie niczego to nie zmieniło w naszej aplikacji. Możesz sprawdzić w dev-tools przeglądarki, że nie widzimy log'a z konstruktora.
 
-  * Następnie edytujmy kod naszej metody `getRecipes()`
-    Obecnie moteda wygląd tak:
-    > ` getRecipes(): RecipeModel[] {`
-    > `  return this.recipes;`
-    > `}`
-    By wykonać zapytanie o dane do backendu użyjemy wcześniej podanego do pliku konfiguracyjnego a nastepnie wstrzykniętego do serwisu HttpClient'a.
-    > `// Metoda pobierająca wszystkie przepisy asynchronicznie`
-    > `// W tym celu używa HttpClient, bazuje na strumieniach`
-    > `getRecipes(): Observable<RecipeModel[]> {`
-    > `  // w db.json sprawdzisz, że path do danych to właśnie /recipes`
-    > `  return this.httpClient.get<RecipeModel[]>(`${this.baseUrl}/recipes`)`
-    > `}`
+2. Dodanie dyrektywy do komponentu
+   * przejdź do `recipe-list.component.ts` i dodaj do tablicy importów naszą nowo utworzną dyrektywę `HighlightOnHoverDirective`
+   * przejdź do `recipe-list.component.html` i dodaj użycie dyrektywy. Docelowo chcemy by dyrektywa działała na hover elementu listy.
+     Dodajmy więc selektor dyrektywy `appHighlightOnHover` do taga `<mat-card>` o tak:
+     > `<mat-card class="recipe-card" *ngFor="let recipe of recipes" appHighlightOnHover>`
 
-1. Dostosowanie komponentów używających metody GET z serwisu RecipeService
-  * przejdź do `recipe-list.component`
-  * w ngOnInit zachodzi inicjalne pobranie i przypisanie przepsiów. Kod wygląda tak
-    > `ngOnInit(): void {`
-    > `  this.recipes = this.recipeService.getRecipes();`
-    > `}`
-  * Metoda `getRecipes` zwraca strumień danych. By pobrać z niego dane, musimy się do niego zasubskrybować.
-    Przypisanie metody jak dotąd nie wchodzi w grę, musimy użyć operatora `pipe`, a nastepnie `tap` pochądzących z biblioteki RxJS.
-    Wewnątrz operatora `tap` dokonamy przypisania wartości do zmiennej `recipes`.
-    > `   ngOnInit(): void {`
-    > `  // metoda zwraca strumień, za pomocą operatora pipe jesteśmy w stanie wykonać dodatkowe operacje na danych które w nim "płyną"`
-    > `  this.recipeService.getRecipes().pipe(`
-    > `    // operator tap służy do wykonania działań na danych, ale bez wpływu na zwracany model`
-    > `    tap((recipesFromGetRecipesMethod: RecipeModel[]) => {`
-    > `      //przypisanie modelu do zmiennej`
-    > `      this.recipes = recipesFromGetRecipesMethod;`
-    > `    })`
-    > `    // gdy wykonamy metodę subscribe() strumień zwróci nam dane gdy tylko będą dostępne`
-    > `  ).subscribe();`
-    > `}`
-  * Gdy już inicjalne przypisanie modelu danych mamy za sobą pora dostosować metodę `onDeleteRecipe`, ta też korzysta z serwisu.
-    Jednak zanim do tego przejdziemy, wcześniej musimy dostosować metodę w serwisie.
+   * przejdźmy do konsoli w dev-tools przeglądarki - zobaczysz log'a którego wywołujemy z konstruktora dyrektywy.
 
-2. Dostosowanie metody DELETE w serwisie RecipeService
-    * Przejdźmy do `RecipeService` a następnie odnajdźmy metodę `deleteRecipe`. Obecnie kod wygląda tak:
-    > ` // Metoda usuwająca przepis`
-    > `deleteRecipe(id: number): void {`
-    > `  this.recipes = this.recipes.filter(r => r.id !== id);`
-    > `}`
+3. Implementacja dyrektywy `HighlightOnHoverDirective`
+   * przejdź do `highlight-on-hover.directive.ts`, dodamy tam logikę kóra sprawi, komponent listy podświetli się na niebiesko przy akcji hover'a.
+     Wszystko zdefiniujemy w ramach naszej syrektywy, tak by dyrektywa była w pełni odizolowana i jedyne czego będziemy potrzebować do jej użycia to import i selektor.
+   * usuńmy log'a z konstruktora. Następnie wstrzyknijmy ElementRef oraz Renderer2.
+   > `constructor(private el: ElementRef, private renderer: Renderer2) {}`
+   Wyjaśnienie czym są te dwie rzeczy znajdziemy w prezentacji.
 
-    * By pobrać dane z serwera, musimy użyć instancji HttpClient. Model zwracanych danych też się zmieni, domyślasz się już pewnie,
-    że będzie to strumień.
-    > ` // Metoda usuwająca przepis`
-    > `deleteRecipe(id: number): Observable<void> {`
-    > `  return this.httpClient.delete<void>(`${this.baseUrl}/recipes/${id}`)`
-    > `}`
+   * Mamy już niemal wszystko potrzebne do uzyskania oczekiwanego efektu. Potrzebujemy jeszcze jakoś podpiąć się do akcji `mouseenter` i `mouseleave`. To da nam kontrole nad czasem zmiany stanu efektu.
+   W tym celu użyjemy `@HostListener`.
 
-3. Dostosowanie komponentów używających metody DELETE z serwisu RecipeService
-    * przejdź do `recipe-list.component`
-    * następnie odnajdź metodę `onDeleteRecipe(id: number | undefined)`, na ten moment kod wygląda tak:
-    > `onDeleteRecipe(id: number | undefined): void {`
-    > ` if (id) {`
-    > `   this.recipeService.deleteRecipe(id);  // Usuwanie przepisu`
-    > `   this.recipes = this.recipeService.getRecipes();  // Odśwież listę`
-    > `}`
+   * zdefiniuj na górze klasy dyrektywy zmieną:
+    > `hoverColor: string = 'dodgerblue';`
 
-    * Domyślasz się już pewnie że, samo wywołanie metody teraz nic nie da, gdyż metoda z serwisu zwraca teraz strumień.
-      Musimy się zasubskrybować.
-      Po usunięciu musimy odświeżyć model przepisów dla komponentów. Mamy już gotową logikę w `ngOnInit`
-      Warto byłoby wynieść ją do osobnej metody którą wywołamy tu i w `ngOnInit`
-    * Stwórzmy metodę `private getRecipes(): void` do niej przenieśmy logikę z `ngOnInit`.
-    * W metodzie `ngOnInit` wywołajmy świeżo utworzoną metodę `getRecipes`.
-    * Następnie po subskrybcji do `deleteRecipe` wywołajmy metodę `getRecipes` by odświeżyć model zawierający przepisy.
+   * natępnie na dole klasy zdefiniuj
+      > `  // Obsługuje zdarzenie 'mouseenter' - zmienia styl, gdy użytkownik najedzie myszką na element`
+      > `@HostListener('mouseenter') onMouseEnter() {`
+      > `  this.renderer.setStyle(this.el.nativeElement, 'backgroundColor', this.hoverColor);`
+      > `  this.renderer.setStyle(this.el.nativeElement, 'transition', 'background-color 0.3s ease');`
+      > `}`
 
-6 Przerób resztę metod serwisu RecipeService, tak by dane były pobierane z naszego fake-api poprzez HttpClient.
-  Gotowy kod znajdziesz w `component-code.ts` - spróbuj jednak zrobić wszystko sam, nie krepuj się zadawać pytania,
-  gdy coś jest niezrozumiałe.
+   * w tym momencie po najechaniu kursorem na element listy przepisów zmienia się kolor jego tła.
+      Gdy jednak zabierzesz kursor, stan zostaje zachowany. Naprawmy to:
+      Będąć w dyrektywnie, dodaj poniżej kolejne listenere:
+      > `  // Obsługuje zdarzenie 'mouseleave' - przywraca pierwotny styl, gdy myszka opuszcza element`
+      > `@HostListener('mouseleave') onMouseLeave() {`
+      > `  this.renderer.removeStyle(this.el.nativeElement, 'backgroundColor');`
+      > `}`
 
-W tym module:
-  * Zainstalowaliśmy i skonfigurowaliśmy JSON-server jako lokalny backend do symulacji rzeczywistej bazy danych.
-  * Skonfigurowaliśmy HttpClient i przelobiliśmy serwis RecipeService, który teraz umożliwia wysyłanie żądań HTTP do serwera.
-  * Wykorzystaliśmy metody get, post, put oraz delete z HttpClient do pobierania, dodawania, aktualizowania i usuwania przepisów.
+   * Teraz po najechaniu na element zmieni się jego tło a po zjechaniu styl zostanie usunięty,
+      w efekcie czego powrócimy do stanu sprzed najechania.
+
+   * Zastanawiasz się pewnie czy możemy parametryzować dyrektywy. Odpowiedź brzmi tak, dyrektywa może przyjmować wartości w formie inputa. Dodajmy jeden.
+   * Zmień `hoverColor: string = 'dodgerblue';` na ` @Input() hoverColor: string = 'dodgerblue';`
+      Teraz nasza zmienna to input do którego możemy podać kolor z zewnątrz dynamicznie.
+   * Przejdź do `recipe-list.component.html` i po selektorze `appHighlightOnHover` dodaj `[hoverColor]="'#e0f7fa'"`
+   > `<mat-card class="recipe-card" *ngFor="let recipe of recipes" appHighlightOnHover [hoverColor]="'#e0f7fa'" >`
+
+4. 
