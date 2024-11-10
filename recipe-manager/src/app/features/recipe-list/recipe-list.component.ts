@@ -8,11 +8,14 @@ import { RecipeModel } from '@core/recipe/model';
 import { RecipeService } from '@core/recipe/service';
 import { tap } from 'rxjs';
 import { HighlightOnHoverDirective } from '@core/recipe/directives/highlight-on-hover.directive';
+import { DifficultyPipe } from '@core/recipe/pipes/difficulty.pipe';
+import { IngredientPipe } from '@core/recipe/pipes/ingredient.pipe';
+import { PreparationTimePipe } from '@core/recipe/pipes/preparation-time.pipe';
 
 @Component({
   selector: 'app-recipe-list',
   standalone: true,
-  imports: [CommonModule, RecipeListElementComponent, RouterLink, MatCardModule, MatButtonModule, HighlightOnHoverDirective],
+  imports: [CommonModule, RecipeListElementComponent, RouterLink, MatCardModule, MatButtonModule, HighlightOnHoverDirective, PreparationTimePipe, DifficultyPipe, IngredientPipe],
   templateUrl: './recipe-list.component.html',
   styleUrl: './recipe-list.component.scss'
 })

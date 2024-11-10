@@ -6,11 +6,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { RecipeModel } from '@core/recipe/model';
 import { RecipeService } from '@core/recipe/service';
 import { PreparationTimePipe } from '@core/recipe/pipes/preparation-time.pipe';
+import { DifficultyPipe } from '@core/recipe/pipes/difficulty.pipe';
+import { IngredientPipe } from '@core/recipe/pipes/ingredient.pipe';
 
 @Component({
   selector: 'app-recipe-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink, MatCardModule, MatButtonModule, PreparationTimePipe],
+  imports: [CommonModule, RouterLink, MatCardModule, MatButtonModule, PreparationTimePipe, DifficultyPipe, IngredientPipe],
   templateUrl: './recipe-detail.component.html',
   styleUrl: './recipe-detail.component.scss'
 })

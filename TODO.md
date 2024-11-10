@@ -85,15 +85,43 @@ Pipes: wyświetlanie przepisów w estetyczny sposób, np. formatowanie czasu got
    > Jeśli pracujemy na komponentach standalone, dodamy dyrektywę ręcznie do odpowiednich komponentów.
 
    * przejdźmy do `preparation-time.pipe.ts` i edytujmy metodę transform tak by zwracała czas w minutach. Nie zapomnijmy o odpowiednich typach.
-   > ` transform(value: number | undefined, ...args: unknown[]): string | undefined { `
-   >    return value != null ? `${value} minut` : value;
+   > ` transform(value: number, ...args: unknown[]): string { `
+   >    return `${value} minut`
    >  `}`
 
    * Następnie przejdźmy do `recipe-detail.component.ts` i dodajmy `PreparationTimePipe` do listy importów.
    * Gdy już to mamy, dodajmy użycie w template, przejdźmy do `recipe-detail.component.html` i edytujmy linijkę odpowiedzialną za wyświetlenie czasu przygotowania:
-   > `<p><strong>Czas przygotowania:</strong> {{ recipe.preparationTime | preparationTime }}</p>`
+   > `<p><strong>Czas przygotowania:</strong> {{ recipe.preparationTime! | preparationTime }}</p>`
+   dodajemy `!` na końcu parametru, mówiąc kompilatorowi że nie wpadnie tam null albo undefined.
+   Nie wpadnie, bo zadbaliśmy o to na górze dyrektywą *ngIf
 
 6. Pipe `DifficultyPipe`
    * W terminalu, będąc w projekcie wpisz i wykonaj `ng generate pipe core/recipe/pipes/difficulty`
    > Ta komenda wygeneruje pliki `difficulty.pipe.ts` oraz zaktualizuje app.module.ts, jeśli aplikacja jest modułowa.
    > Jeśli pracujemy na komponentach standalone, dodamy dyrektywę ręcznie do odpowiednich komponentów.
+
+   * przejdźmy do `difficulty.pipe.ts` i edytujmy metodę transform tak by poziom trudności w języku polskim. Nie zapomnijmy o odpowiednich typach.
+   > `   transform(value: 'easy' | 'medium' | 'hard', ...args: unknown[]): string {`
+   > `  switch (value) {`
+   > `    case 'easy':`
+   > `      return 'łatwy';`
+   > `    case 'medium':`
+   > `      return 'średnio trudny';`
+   > `    case 'hard':`
+   > `      return 'trudny'`
+   > `  }`
+   > `}`
+
+   * Następnie przejdźmy do `recipe-detail.component.ts` i dodajmy `DifficultyPipe` do listy importów.
+   * Gdy już to mamy, dodajmy użycie w template, przejdźmy do `recipe-detail.component.html` i edytujmy linijkę odpowiedzialną za wyświetlenie czasu przygotowania:
+   > `<p><strong>Trudność wykonania:</strong> {{ recipe.difficulty! | difficulty }}</p>`
+   dodajemy `!` na końcu parametru, mówiąc kompilatorowi że nie wpadnie tam null albo undefined.
+   Nie wpadnie, bo zadbaliśmy o to na górze dyrektywą *ngIf
+
+   **Nie tak się podchodzi do tematu wielu języków w aplikacji. Jednak temat ten wybiega poza ten kurs, jeżeli jesteś ciekaw: https://v17.angular.io/guide/i18n-overview**
+
+
+Zadanie do wykonania:
+   * Utwórz pipe dla przypadku ingredient. Przenieś wywołanie funkcji .join do ciała pipe i zwróć gotowy ciąg.
+   * W komponencie `recipe-list.component` zamiast składników, chcemy widzieć opis, czas wykonania i poziom trudności. Użyj stworzonych pipe.
+   Gdy to zrobisz, test może się trochę rozjeźdżać, dorzuć `text-align: start;` w stylach dla `mat-card-content > p`

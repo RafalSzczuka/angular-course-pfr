@@ -6,8 +6,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class PreparationTimePipe implements PipeTransform {
 
-  transform(value: number | undefined, ...args: unknown[]): string | undefined {
-    return value != null ? `${value} minut` : value;
+  transform(value: number, ...args: unknown[]): string {
+    return `${value} minut`
   }
 
 }
