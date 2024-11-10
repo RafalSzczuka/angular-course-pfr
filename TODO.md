@@ -1,21 +1,19 @@
 **Moduł 7: Dyrektywy i Pipes**
-Tworzenie własnej dyrektywy i pipe.
-Dyrektywa: podkreślająca przepis na hover
-Pipes: wyświetlanie przepisów w estetyczny sposób, np. formatowanie czasu gotowania (np. "45 minut" zamiast "45").
+W tym module nauczymy się tworzyć własne dyrektywy i pipes. Naszym celem będzie:
+  * Dyrektywa: Utworzenie dyrektywy HighlightOnHoverDirective, która podkreśli przepis po najechaniu kursorem.
+  * Pipes: Stworzenie pipe’ów formatujących, takich jak przekształcanie czasu gotowania na czytelny format (np. "45 minut" zamiast "45")
+    oraz tłumaczenie poziomu trudności przepisu na język polski.
 
+1. Tworzenie Dyrektywy `HighlightOnHoverDirective`
+   * Wygenerowanie dyrektywy:
+     * W terminalu, będąc w projekcie, wpisz: `ng generate directive core/recipe/directives/highlightOnHover`
+      > Komenda wygeneruje pliki `highlight-on-hover.directive.ts` oraz doda dyrektywę do app.module.ts (dla aplikacji modułowej)
+      > W przypadku komponentów standalone, musimy dodać ją sami.
 
-1. Generowanie dyrektywy `HighlightOnHoverDirective`
-   * W terminalu, będąc w projekcie wpisz i wykonaj `ng generate directive core/recipe/directives/highlightOnHover`
-   > Ta komenda wygeneruje pliki highlight-on-hover.directive.ts oraz zaktualizuje app.module.ts, jeśli aplikacja jest modułowa.
-   > Jeśli pracujemy na komponentach standalone, dodamy dyrektywę ręcznie do odpowiednich komponentów.
-
-   * Przejdźmy do nowo utworzonej dyrektywy i dodajmy w jej konstruktorze:
-    > `console.log('to ja dyrektywa');`
-
-   * Następnie uruchommy aplikacje, nie zapomnij o serwerze fake-api.
-   > w terminalu będąc w projekcie `npm run start` w kolejnym terminalu `npm run fake-api`
-
-  * Zauważ, że na razie niczego to nie zmieniło w naszej aplikacji. Możesz sprawdzić w dev-tools przeglądarki, że nie widzimy log'a z konstruktora.
+   * Testowanie konstrukcji: 
+     * Dodajmy w konstruktorze dyrektywy: `console.log('Dyrektywa załadowana');`
+     * Uruchom aplikację i serwer fake-api: `npm run start` oraz `npm run fake-api`
+     * Zauważ, że na razie niczego to nie zmieniło w naszej aplikacji. Możesz sprawdzić w dev-tools przeglądarki, że nie widzimy log'a z konstruktora.
 
 2. Dodanie dyrektywy do komponentu
    * przejdź do `recipe-list.component.ts` i dodaj do tablicy importów naszą nowo utworzną dyrektywę `HighlightOnHoverDirective`
