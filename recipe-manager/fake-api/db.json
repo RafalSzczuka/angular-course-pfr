@@ -1,6 +1,20 @@
 {
   "recipes": [
     {
+      "id": 1,
+      "title": "Spaghetti Carbonara",
+      "description": "Klasyczne włoskie danie.",
+      "ingredients": [
+        "Pasta",
+        "Eggs",
+        "Pork",
+        "Cheese",
+        "Pepper"
+      ],
+      "preparationTime": 30,
+      "difficulty": "easy"
+    },
+    {
       "id": "2",
       "title": "Pancakes",
       "description": "Puszyste naleśniki z syropem klonowym.",
