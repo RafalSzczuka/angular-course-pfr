@@ -125,3 +125,13 @@ Zadanie do wykonania:
    * Utwórz pipe dla przypadku ingredient. Przenieś wywołanie funkcji .join do ciała pipe i zwróć gotowy ciąg.
    * W komponencie `recipe-list.component` zamiast składników, chcemy widzieć opis, czas wykonania i poziom trudności. Użyj stworzonych pipe.
    Gdy to zrobisz, test może się trochę rozjeźdżać, dorzuć `text-align: start;` w stylach dla `mat-card-content > p`
+
+
+Podsumowanie:
+W tym kroku utworzyliśmy niestandardową dyrektywę `HighlightOnHoverDirective`, która dodaje interaktywne podświetlenie kart przepisów po najechaniu na nie kursorem. Dyrektywa zwiększa estetykę i użyteczność interfejsu, ułatwiając użytkownikom przeglądanie przepisów.
+
+Podstawowe elementy w `HighlightOnHoverDirective`:
+   * `Renderer2` do dynamicznego ustawiania styli na elemencie.
+   * `HostListener` do nasłuchiwania zdarzeń mouseenter i mouseleave, aby kontrolować interakcje użytkownika.
+
+Utorzyliśmyu też niestandardowe Pipe's, którę formatują nam wartości bezpośrednio w template komponentu. Pozwala to na dużą elastyczność i enkapsulacje logiki.
