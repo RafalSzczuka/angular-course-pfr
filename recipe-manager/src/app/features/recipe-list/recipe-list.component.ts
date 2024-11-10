@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, OnInit, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -11,17 +11,22 @@ import { HighlightOnHoverDirective } from '@core/recipe/directives/highlight-on-
 import { DifficultyPipe } from '@core/recipe/pipes/difficulty.pipe';
 import { IngredientPipe } from '@core/recipe/pipes/ingredient.pipe';
 import { PreparationTimePipe } from '@core/recipe/pipes/preparation-time.pipe';
+import { MatSelectModule } from '@angular/material/select';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-recipe-list',
   standalone: true,
-  imports: [CommonModule, RecipeListElementComponent, RouterLink, MatCardModule, MatButtonModule, HighlightOnHoverDirective, PreparationTimePipe, DifficultyPipe, IngredientPipe],
+  imports: [CommonModule, RecipeListElementComponent, RouterLink, MatCardModule, MatButtonModule, HighlightOnHoverDirective, PreparationTimePipe, DifficultyPipe, IngredientPipe, MatSelectModule, FormsModule],
   templateUrl: './recipe-list.component.html',
-  styleUrl: './recipe-list.component.scss'
+  styleUrl: './recipe-list.component.scss',
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class RecipeListComponent implements OnInit {
   selectedRecipeTitle: string | null = '';
   recipes: RecipeModel[] = [];
+  filteredRecipes: RecipeModel[] = []; // przechowuje liste przefiltrowanych przepisów wg trudności wykonania
+  selectedDifficulty: string = '';  // informacja o aktualnie wybranym poziomie trudności.
 
   @Output() recipeSelected = new EventEmitter<RecipeModel | null>();
 
@@ -49,8 +54,19 @@ export class RecipeListComponent implements OnInit {
       tap((recipesFromGetRecipesMethod: RecipeModel[]) => {
         //przypisanie modelu do zmiennej
         this.recipes = recipesFromGetRecipesMethod;
+        this.filterRecipes(); // Inicjalne filtrowanie przy pobraniu przepisów
       })
       // gdy wykonamy metodę subscribe() strumień zwróci nam dane gdy tylko będą dostępne
     ).subscribe();
+  }
+
+  //Gdy przepisy zostaną pobrane z serwera, funkcja getRecipes() zapisze je w recipes,
+  // a następnie wywoła filterRecipes(), by zastosować filtr (jeśli jest ustawiony).
+  filterRecipes(): void {
+    if (this.selectedDifficulty) {
+      this.filteredRecipes = this.recipes.filter(recipe => recipe.difficulty === this.selectedDifficulty);
+    } else {
+      this.filteredRecipes = this.recipes;  // Bez filtra pokazujemy wszystkie przepisy
+    }
   }
 }

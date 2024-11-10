@@ -1,5 +1,18 @@
+ <!-- Pole wyboru poziomu trudności -->
+<mat-form-field>
+  <mat-label>Filtruj wg trudności wykonania</mat-label>
+  <mat-select [(ngModel)]="selectedDifficulty"
+    (selectionChange)="filterRecipes()">
+    <mat-option value>Wszystkie</mat-option>
+    <mat-option value="easy">Łatwy</mat-option>
+    <mat-option value="medium">Średni</mat-option>
+    <mat-option value="hard">Trudny</mat-option>
+  </mat-select>
+</mat-form-field>
 <div class="container">
-  <mat-card class="recipe-card" *ngFor="let recipe of recipes"
+
+  <!-- Lista przepisów filtrowana wg trudności -->
+  <mat-card class="recipe-card" *ngFor="let recipe of filteredRecipes"
     appHighlightOnHover [hoverColor]="'#e0f7fa'">
     <mat-card-title>{{ recipe.title }}</mat-card-title>
     <mat-card-content>

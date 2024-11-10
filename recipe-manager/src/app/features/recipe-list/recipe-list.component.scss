@@ -73,3 +73,8 @@ mat-card-actions {
     filter: brightness(0.9); /* Przyciemnia kolor przycisku na hover */
   }
 }
+
+mat-form-field {
+  width: 100%;
+  border-radius: 12px;
+}
