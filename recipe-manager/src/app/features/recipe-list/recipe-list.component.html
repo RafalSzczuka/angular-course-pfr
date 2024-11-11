@@ -1,4 +1,10 @@
- <!-- Pole wyboru poziomu trudności -->
+ <!-- Pole wyboru przepisu po nazwie -->
+<mat-form-field>
+  <input matInput placeholder="Wyszukaj przepis" [(ngModel)]="searchTerm"
+    (input)="filterRecipes()" />
+</mat-form-field>
+
+<!-- Pole wyboru poziomu trudności -->
 <mat-form-field>
   <mat-label>Filtruj wg trudności wykonania</mat-label>
   <mat-select [(ngModel)]="selectedDifficulty"

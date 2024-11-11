@@ -13,11 +13,12 @@ import { IngredientPipe } from '@core/recipe/pipes/ingredient.pipe';
 import { PreparationTimePipe } from '@core/recipe/pipes/preparation-time.pipe';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-recipe-list',
   standalone: true,
-  imports: [CommonModule, RecipeListElementComponent, RouterLink, MatCardModule, MatButtonModule, HighlightOnHoverDirective, PreparationTimePipe, DifficultyPipe, IngredientPipe, MatSelectModule, FormsModule],
+  imports: [CommonModule, RecipeListElementComponent, RouterLink, MatCardModule, MatButtonModule, HighlightOnHoverDirective, PreparationTimePipe, DifficultyPipe, IngredientPipe, MatSelectModule, FormsModule, MatInputModule],
   templateUrl: './recipe-list.component.html',
   styleUrl: './recipe-list.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
@@ -27,6 +28,8 @@ export class RecipeListComponent implements OnInit {
   recipes: RecipeModel[] = [];
   filteredRecipes: RecipeModel[] = []; // przechowuje liste przefiltrowanych przepisów wg trudności wykonania
   selectedDifficulty: string = '';  // informacja o aktualnie wybranym poziomie trudności.
+  searchTerm: string = ''; // Tekst wpisany przez użytkownika do wyszukiwania
+
 
   @Output() recipeSelected = new EventEmitter<RecipeModel | null>();
 
@@ -63,10 +66,14 @@ export class RecipeListComponent implements OnInit {
   //Gdy przepisy zostaną pobrane z serwera, funkcja getRecipes() zapisze je w recipes,
   // a następnie wywoła filterRecipes(), by zastosować filtr (jeśli jest ustawiony).
   filterRecipes(): void {
-    if (this.selectedDifficulty) {
-      this.filteredRecipes = this.recipes.filter(recipe => recipe.difficulty === this.selectedDifficulty);
+    // Filtrowanie według trudności
+    let filteredByDifficulty = this.selectedDifficulty ? this.recipes.filter(recipe => recipe.difficulty === this.selectedDifficulty) : this.recipes;
+  
+    // Dodatkowe filtrowanie według nazwy przepisu
+    if (this.searchTerm) {
+      this.filteredRecipes = filteredByDifficulty.filter(recipe => recipe.title.toLowerCase().includes(this.searchTerm.toLowerCase()));
     } else {
-      this.filteredRecipes = this.recipes;  // Bez filtra pokazujemy wszystkie przepisy
+      this.filteredRecipes = filteredByDifficulty; // Bez filtra wyszukiwania pokazujemy przepisy przefiltrowane według trudności
     }
   }
 }

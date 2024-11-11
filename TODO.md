@@ -1,7 +1,6 @@
 **Moduł 8: Filtrowanie i wyszukiwanie**
-Filtrowanie przepisów według kategorii (np. śniadanie, obiad, deser).
+Filtrowanie przepisów według poziomu trudności wykonania (łatwe, trudne, średnio trudne).
 Wyszukiwanie przepisów na podstawie nazwy.
-Dodanie paska wyszukiwania i funkcji dynamicznego filtrowania wyników.
 
 
 1. Na początek, rozszerzmy trochę zakres naszych przepsów.
@@ -64,3 +63,36 @@ Dodanie paska wyszukiwania i funkcji dynamicznego filtrowania wyników.
    > `  width: 100%;`
    > `  border-radius: 12px;`
    > `}`
+
+
+3. Dodanie funkcji wyszukiwania po nazwie.
+   * Przejdź do `recipe-list.component.ts`
+   * Dodaj zmienną `searchTerm`, która będzie przechowywać tekst wpisany przez użytkownika w polu wyszukiwania.
+   > `searchTerm: string = ''; // Tekst wpisany przez użytkownika do wyszukiwania`
+
+   * Zaktualizuj funkcję `filterRecipes()`, by uwzględniała wyszukiwanie po nazwie
+   > `filterRecipes(): void {`
+   > `  // Filtrowanie według trudności`
+   > `  let filteredByDifficulty = this.selectedDifficulty ? this.recipes.filter(recipe => recipe.difficulty === this.selectedDifficulty) : this.recipes;`
+   > 
+   > `  // Dodatkowe filtrowanie według nazwy przepisu`
+   > `  if (this.searchTerm) {`
+   > `    this.filteredRecipes = filteredByDifficulty.filter(recipe => recipe.title.toLowerCase().includes(this.searchTerm.toLowerCase()));`
+   > `  } else {`
+   > `    this.filteredRecipes = filteredByDifficulty; // Bez filtra wyszukiwania pokazujemy przepisy przefiltrowane według trudności`
+   > `  }`
+   > `}`
+
+   * dodaj `MatInputModule` do listy importów.
+
+   * następnie przejdź do `recipe-list.component.html` i dodaj na samej górze naszej strony input, który będzie wyszukiwarką przepisów
+   > `  <!-- Pole wyboru przepisu po nazwie -->`
+   > `<mat-form-field>`
+   > `  <input matInput placeholder="Wyszukaj przepis" [(ngModel)]="searchTerm"`
+   > `    (input)="filterRecipes()" />`
+   > `</mat-form-field>`
+
+
+
+W tym module:
+   * Dodaliśmy funkcjonalność filtrowania listy przepisów po poziomie trudności oraz po nazwie.
