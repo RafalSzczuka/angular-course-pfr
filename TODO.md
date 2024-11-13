@@ -96,6 +96,10 @@ Podgląd zdjęć dla każdego przepisu w szczegółowym widoku przepisu.
 
 Teraz w przeglądarce zobaczysz listę przepisów kulinarnych oraz będziesz mógł podejrzeć ich szczegóły a wszystkiemu będą towarzyszyć zdjęcia jakie możesz dodać! 🎉
 
+
+Dla chętnych:
+   * Dodaj obsługę zdjęć przez komponent `RecipeTemplateFormComponent`
+
 ##### Podsumowanie Modułu:
 W tym module:
    * Dodaliśmy funkcjonalność obsługi zdjęć przez nasz formularz
