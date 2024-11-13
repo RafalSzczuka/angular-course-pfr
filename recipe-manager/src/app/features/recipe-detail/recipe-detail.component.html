@@ -1,6 +1,9 @@
 <mat-card *ngIf="recipe">
     <mat-card-title>{{ recipe.title }}</mat-card-title>
     <mat-card-content>
+        <div *ngIf="recipe.imageBase64" class="recipe-image">
+            <img [src]="recipe.imageBase64" alt="Zdjęcie przepisu" />
+          </div>
         <p><strong>Składniki:</strong> {{ recipe.ingredients! | ingredient
             }}</p>
         <p><strong>Opis:</strong> {{ recipe.description }}</p>

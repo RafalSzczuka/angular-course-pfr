@@ -70,3 +70,15 @@ mat-card-actions {
     filter: brightness(0.9); /* Przyciemnia kolor przycisku na hover */
   }
 }
+
+.recipe-image {
+  place-self: center;
+
+  img {
+    width: 100%;
+    max-width: 300px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+  }
+}
+

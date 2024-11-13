@@ -31,7 +31,8 @@ export class RecipeReactiveFormComponent implements OnInit {
       description: ['', Validators.required],
       ingredients: [[], Validators.required],
       preparationTime: ['', Validators.required],
-      difficulty: ['', Validators.required]
+      difficulty: ['', Validators.required],
+      imageBase64: [''] // nowe pole na obraz
     });
 
     this.recipeService.getPopularIngredients().subscribe(result => {
@@ -55,6 +56,18 @@ export class RecipeReactiveFormComponent implements OnInit {
       });
     }
   }
+
+  // Obsługa wczytania pliku
+onFileSelected(event: Event): void {
+  const file = (event.target as HTMLInputElement).files?.[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.recipeFormGroup.patchValue({ imageBase64: reader.result as string });
+    };
+    reader.readAsDataURL(file);
+  }
+}
 
   onSubmit(): void {
     if (this.recipeFormGroup.valid) {

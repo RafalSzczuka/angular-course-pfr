@@ -22,6 +22,9 @@
     appHighlightOnHover [hoverColor]="'#e0f7fa'">
     <mat-card-title>{{ recipe.title }}</mat-card-title>
     <mat-card-content>
+      <div *ngIf="recipe.imageBase64" class="recipe-image">
+        <img [src]="recipe.imageBase64" alt="Zdjęcie przepisu" />
+      </div>
       <p><strong>Opis:</strong> {{ recipe.description }}</p>
       <p><strong>Czas przygotowania:</strong> {{ recipe.preparationTime! |
         preparationTime }}

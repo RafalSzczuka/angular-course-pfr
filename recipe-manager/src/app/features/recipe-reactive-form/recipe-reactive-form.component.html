@@ -68,6 +68,12 @@
             </mat-error>
         </mat-form-field>
 
+        <!-- Image -->
+        <div class="file-upload-field">
+            <label for="image">Zdjęcie przepisu</label>
+            <input type="file" id="image" (change)="onFileSelected($event)" />
+        </div>
+
         <button mat-raised-button color="primary" type="submit"
             [disabled]="recipeFormGroup.invalid">Zapisz</button>
         <button mat-button color="warn" type="button"
