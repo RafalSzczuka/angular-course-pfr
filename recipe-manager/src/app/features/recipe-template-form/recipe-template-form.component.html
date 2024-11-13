@@ -85,6 +85,13 @@
 
         </mat-form-field>
 
+        <!-- Image -->
+        <div class="file-upload-field">
+            <label for="image">Zdjęcie przepisu</label>
+            <input type="file" name="image" id="image"
+                (change)="onFileSelected($event)" />
+        </div>
+
         <!-- Przycisk wysyłający -->
         <button mat-raised-button color="primary" type="submit"
             [disabled]="recipeForm.invalid">Zapisz</button>

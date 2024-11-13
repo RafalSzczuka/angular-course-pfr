@@ -27,7 +27,8 @@ export class RecipeTemplateFormComponent implements OnInit {
     description: '',
     ingredients: [''],
     preparationTime: undefined,
-    difficulty: undefined
+    difficulty: undefined,
+    imageBase64: '',
   };
 
   constructor(private recipeService: RecipeService, private router: Router, private route: ActivatedRoute) { }
@@ -45,24 +46,34 @@ export class RecipeTemplateFormComponent implements OnInit {
       // pobieramy edytowany przepis
       this.recipeService.getRecipeById(+id).subscribe(result => {
         this.currentRecipe = result;
+
+        // jeżeli jest przepis, ustawiamy obecne wartości w formularzu
+        if (this.currentRecipe) {
+          this.currentRecipe.id = +id;
+          this.recipe = this.currentRecipe;
+        }
       });
-
-      // jeżeli jest przepis, ustawiamy obecne wartości w formularzu
-      if (this.currentRecipe) {
-        this.currentRecipe.id = +id;
-        this.recipe = this.currentRecipe;
-      }
     }
+  }
 
-
+  // Obsługa wczytania pliku
+  onFileSelected(event: Event): void {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.recipe = { ...{ imageBase64: reader.result as string }, ...this.recipe }
+      };
+      reader.readAsDataURL(file);
+    }
   }
 
   onSubmit(form: NgForm): void {
     if (form.valid) {
       if (this.isEditMode) {
-        this.recipeService.editRecipe(this.recipe); // Wysyłanie danych do serwisu w postaci edycji istniejącego
+        this.recipeService.editRecipe(this.recipe).subscribe(); // Wysyłanie danych do serwisu w postaci edycji istniejącego
       } else {
-        this.recipeService.addRecipe(this.recipe); // Wysyłanie danych do serwisu w postaci nowego przepisu
+        this.recipeService.addRecipe(this.recipe).subscribe(); // Wysyłanie danych do serwisu w postaci nowego przepisu
       }
       this.router.navigate(['/recipes']); // Powrót do listy przepisów
     }
