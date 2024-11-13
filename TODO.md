@@ -1,98 +1,106 @@
-**Moduł 8: Filtrowanie i wyszukiwanie**
-Filtrowanie przepisów według poziomu trudności wykonania (łatwe, trudne, średnio trudne).
-Wyszukiwanie przepisów na podstawie nazwy.
+**Moduł 9: Obsługa plików i zdjęć**
+Dodawanie możliwości wgrania zdjęcia do przepisu.
+Podgląd zdjęć dla każdego przepisu w szczegółowym widoku przepisu.
 
 
-1. Na początek, rozszerzmy trochę zakres naszych przepsów.
-   * Przejdź do `component-code.ts`
-   * Podmień zawartość pliku `db.json` na kod z `component-code.ts` - krok 1.
+1. Dodanie pola image do modelu `RecipeModel`
+   Zakładamy, że chcielibyśmy, by zdjęcia były częścią formularza, dlatego:
+   * przejdź do `recipe.model.ts`
+   * dodaj pole `image?: string; // URL lub ścieżka do zdjęcia przepisu`
 
-2. Dodanie funkcji filtrowania
-   * przejdź do `recipe-list.component.ts`
-   * dodaj dwie zmienne
-   > `filteredRecipes: RecipeModel[] = []; // przechowuje liste przefiltrowanych przepisów wg trudności wykonania`
-   > `selectedDifficulty: string = '';  // informacja o aktualnie wybranym poziomie trudności.`
-
-   * Stwórz funkcję filterRecipes() - ta funkcja sprawdzi, czy użytkownik wybrał konkretny poziom trudności.
-     Jeśli tak, to wyświetli przepisy o tej trudności, a jeśli nie, to pokaże wszystkie przepisy
-
-      > `//Gdy przepisy zostaną pobrane z serwera, funkcja getRecipes() zapisze je w recipes,`
-      > `// a następnie wywoła filterRecipes(), by zastosować filtr (jeśli jest ustawiony).`
-      > `filterRecipes(): void {`
-      > `  if (this.selectedDifficulty) {`
-      > `    this.filteredRecipes = this.recipes.filter(recipe => recipe.difficulty === this.selectedDifficulty);`
-      > `  } else {`
-      > `    this.filteredRecipes = this.recipes;  // Bez filtra pokazujemy wszystkie przepisy`
-      > `  }`
-      > `}`
-
-   * Zmień istniejącą funkcję `getRecipes()`, by uwzględniała automatyczne filtrowanie po pobraniu przepisów:
-   > `private getRecipes(): void {`
-   > `  this.recipeService.getRecipes().pipe(`
-   > `    tap((recipesFromGetRecipesMethod: RecipeModel[]) => {`
-   > `      this.recipes = recipesFromGetRecipesMethod;`
-   > `      this.filterRecipes(); // Inicjalne filtrowanie przy pobraniu przepisów`
-   > `    })`
-   > `  ).subscribe();`
-   > `}`
-
-   * Dodaj do listy importów dwa moduły `MatSelectModule` i `FormsModule`
-      **MatSelectModule** jest potrzebny, aby móc używać elementu `<mat-select>`, który pozwala na wybór poziomu trudności.
-      **FormsModule** jest potrzebny, aby poprawnie działało dwukierunkowe bindowanie danych, dzięki któremu wybrana trudność automatycznie zapisze się w zmiennej `selectedDifficulty`.
-
-
-   * przejdź do `recipe-list.component.html`.
-   * Wstaw poniższy kod na początku pliku:
-   > ` <mat-form-field>`
-   > `  <mat-label>Filtruj wg trudności wykonania</mat-label>`
-   > `  <mat-select [(ngModel)]="selectedDifficulty" (selectionChange)="filterRecipes()">`
-   > `    <mat-option value="">Wszystkie</mat-option>`
-   > `    <mat-option value="easy">Łatwy</mat-option>`
-   > `    <mat-option value="medium">Średni</mat-option>`
-   > `    <mat-option value="hard">Trudny</mat-option>`
-   > `  </mat-select>`
-   > `</mat-form-field>`
-
-   **(ngModel)** wiąże zmienną selectedDifficulty z wybraną wartością w `<mat-select>`.
-   **(selectionChange)="filterRecipes()"** wywołuje funkcję `filterRecipes()`, gdy użytkownik zmieni poziom trudności, dzięki czemu lista przepisów zostanie automatycznie przefiltrowana.
-
-
-   * Znajdź pętlę `*ngFor="let recipe of recipes"` i zmień ją na: `*ngFor="let recipe of filteredRecipes"`
-   * na koniec dorzuć drobne style do pliku `recipe-list.component.scss`
-   > ` mat-form-field {`
-   > `  width: 100%;`
-   > `  border-radius: 12px;`
-   > `}`
-
-
-3. Dodanie funkcji wyszukiwania po nazwie.
-   * Przejdź do `recipe-list.component.ts`
-   * Dodaj zmienną `searchTerm`, która będzie przechowywać tekst wpisany przez użytkownika w polu wyszukiwania.
-   > `searchTerm: string = ''; // Tekst wpisany przez użytkownika do wyszukiwania`
-
-   * Zaktualizuj funkcję `filterRecipes()`, by uwzględniała wyszukiwanie po nazwie
-   > `filterRecipes(): void {`
-   > `  // Filtrowanie według trudności`
-   > `  let filteredByDifficulty = this.selectedDifficulty ? this.recipes.filter(recipe => recipe.difficulty === this.selectedDifficulty) : this.recipes;`
-   > 
-   > `  // Dodatkowe filtrowanie według nazwy przepisu`
-   > `  if (this.searchTerm) {`
-   > `    this.filteredRecipes = filteredByDifficulty.filter(recipe => recipe.title.toLowerCase().includes(this.searchTerm.toLowerCase()));`
-   > `  } else {`
-   > `    this.filteredRecipes = filteredByDifficulty; // Bez filtra wyszukiwania pokazujemy przepisy przefiltrowane według trudności`
+2. Aktualizacja formularza przepisu
+   * przejdź do `recipe-reactive-form.ts`
+   * dodaj pole do modelu formularza;
+      > `imageBase64: [''] // nowe pole na obraz`
+   * dodaj metodę do obsługi wczytywania pliku
+   > `   // Obsługa wczytania pliku`
+   > `onFileSelected(event: Event): void {`
+   > `  const file = (event.target as HTMLInputElement).files?.[0];`
+   > `  if (file) {`
+   > `    const reader = new FileReader();`
+   > `    reader.onload = () => {`
+   > `      this.recipeFormGroup.patchValue({ imageBase64: reader.result as string });`
+   > `    };`
+   > `    reader.readAsDataURL(file);`
    > `  }`
    > `}`
 
-   * dodaj `MatInputModule` do listy importów.
+   * następnie przejdź do `recipe-reactive-form.html` i dodaj jako ostatnie pole formularza:
+   > ` <!-- Image -->`
+   > ` <div class="file-upload-field">`
+   > `     <label for="image">Zdjęcie przepisu</label>`
+   > `     <input type="file" id="image" (change)="onFileSelected($event)" />`
+   > ` </div>`
 
-   * następnie przejdź do `recipe-list.component.html` i dodaj na samej górze naszej strony input, który będzie wyszukiwarką przepisów
-   > `  <!-- Pole wyboru przepisu po nazwie -->`
-   > `<mat-form-field>`
-   > `  <input matInput placeholder="Wyszukaj przepis" [(ngModel)]="searchTerm"`
-   > `    (input)="filterRecipes()" />`
-   > `</mat-form-field>`
+   * przydałoby się jeszcze trochę ostylować nasze nowe pole, dlatego przejdź do `recipe-reactive-form.scss` i dodaj
+   > `.file-upload-field {`
+   > `  display: flex;`
+   > `  flex-direction: column;`
+   > `  margin-bottom: 16px;`
+   > 
+   > `  label {`
+   > `    font-size: 14px;`
+   > `    color: #616161;`
+   > `    margin-bottom: 8px;`
+   > `  }`
+   > 
+   > `  input[type="file"] {`
+   > `    cursor: pointer;`
+   > `    padding: 8px;`
+   > `    border: 1px solid #ccc;`
+   > `    border-radius: 4px;`
+   > `  }`
+   > `}`
+
+   Pięknie, jesteśmy w stanie dodać i przyjąć zdjęcie. Pora je wyświetlić.
+
+3. Modyfikacja komponentu `recipe-detail.component`
+   * przejdź do widoku komponentu i dodaj na jako pierwszy element taga `<mat-card-content>`
+   > ` <div *ngIf="recipe.imageBase64" class="recipe-image">`
+   > `   <img [src]="recipe.imageBase64" alt="Zdjęcie przepisu" />`
+   > ` </div>`
+
+   * następnie przejdź do pliku ze stylami i dodaj
+   > `.recipe-image {`
+   > `  place-self: center;`
+   > 
+   > `  img {`
+   > `    width: 100%;`
+   > `    max-width: 300px;`
+   > `    border-radius: 8px;`
+   > `    margin-bottom: 16px;`
+   > `  }`
+   > `}`
+
+   Dzięki temu, przechodząc do szczegółów przepisu, jesteśmy w stanie zobaczyć opis i zdjęcie dania.
+   Dobrze byłoby widzieć zdjęcia też jako elementy strony głownej, z listą przepisów, może tylko w delikatnie mniejszym wydaniu.
+
+4. Modyfikacja komponentu `recipe-list.component`
+   * przejdź do widoku komponentu i dodaj jako pierwszy element taga `<mat-card-content>`
+   > `<div *ngIf="recipe.imageBase64" class="recipe-image">`
+   > `  <img [src]="recipe.imageBase64" alt="Zdjęcie przepisu" />`
+   > `</div>`
+
+   * następnie przejdź do pliku ze stylami i dodaj
+   > `.recipe-image {`
+   > `  place-self: center;`
+   > 
+   > `  img {`
+   > `    width: 100%;`
+   > `    max-width: 150px;`
+   > `    border-radius: 8px;`
+   > `    margin-bottom: 16px;`
+   > `  }`
+   > `}`
 
 
+Teraz w przeglądarce zobaczysz listę przepisów kulinarnych oraz będziesz mógł podejrzeć ich szczegóły a wszystkiemu będą towarzyszyć zdjęcia jakie możesz dodać! 🎉
 
+
+Dla chętnych:
+   * Dodaj obsługę zdjęć przez komponent `RecipeTemplateFormComponent`
+
+##### Podsumowanie Modułu:
 W tym module:
-   * Dodaliśmy funkcjonalność filtrowania listy przepisów po poziomie trudności oraz po nazwie.
+   * Dodaliśmy funkcjonalność obsługi zdjęć przez nasz formularz
+   * Dodaliśmy wyświetlanie dodanych zdjęć
