@@ -52,7 +52,8 @@ Podgląd zdjęć dla każdego przepisu w szczegółowym widoku przepisu.
    > `  }`
    > `}`
 
-   Pięknie, jesteśmy w stanie dodać i przyjąć zdjęcie. Pora je wyświetlić.
+   Pięknie, jesteśmy w stanie dodać i przyjąć zdjęcie. (przykładowe zdjęcia znajdziesz w folderze `/public`)
+   Pora je wyświetlić.
 
 3. Modyfikacja komponentu `recipe-detail.component`
    * przejdź do widoku komponentu i dodaj na jako pierwszy element taga `<mat-card-content>`
