@@ -91,8 +91,8 @@ Teraz w przeglądarce zobaczysz przycisk dodaj nowy przepis, a po kliknięciu zo
 Zadanie do wykonania
   * Dodaj kontrolki do obsługi poziomu trudności wykonania oraz czas przygotowania dania z przepisu.
 
-
-
+> [!TIP]
+> przed instalacją Materiala trzeba zacommitowac zmiany (lub wrzucic do stasha), inaczej podczas instalacji rzuci błędem (który powie to samo :P )
 
 **CZĘŚĆ Angular Material**
 
