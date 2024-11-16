@@ -1,33 +1,46 @@
 ##### Moduł 1: Wprowadzenie do Angulara
 
-1. **Instalacja Angular CLI.**
+1. **Instalacja <mark>Angular CLI.<mark/>**
      * `npm install -g @angular/cli`
 
     **Wyjaśnienie:** Komenda npm install -g instaluje pakiet globalnie, co oznacza, że Angular CLI będzie dostępny z każdego katalogu na twoim komputerze. CLI to skrót od "Command Line Interface".
 
     > Aby sprawdzić czy instalacja się powiodła, możesz wpisać **`ng version`**
-    Jeśli zobaczysz wersję Angular CLI, oznacza to, że narzędzie zostało zainstalowane prawidłowo.
+    > Jeśli zobaczysz wersję Angular CLI, oznacza to, że narzędzie zostało zainstalowane prawidłowo.
+    
+> [!TIP]
+> Jeżeli zależy nam na konkretnej wersji angulara warto wtedy wspomnieć że należy zainstalować odpowiednią wersję CLI.
+> Np jeżeli chcemy zainstalować kokretnie wersję 14, wtedy najpierw: npm install -g @angular/cli@14.
+> Lub zamiast instalować paczkę globalnie można skorzystać z polecenia npx i zrobić to jednorazowo (tymczasowe zaciągnięcie odpowiednich paczek).
+> Przykład: `npx @angular/cli@14 new angular-v14-app`
 
-2. **Stworzenie projektu**
+3. **Stworzenie projektu**
     * `ng new recipe-manager` 
     **Wyjaśnienie:** Komenda ng new tworzy nowy projekt Angulara o nazwie recipe-manager.
     
   
     > Angular CLI poprosi o kilka konfiguracji
-    > * wybierz SCSS jako preprocesor CSS 
+    > * <mark>wybierz SCSS jako preprocesor CSS<mark/>
     > * potwierdź dodanie Routingu.
+    
+> [!TIP]
+> SCSS czy CSS - może prościej byłoby z CSS? Pytanie co kto wie na temat SCSS i preprocesorów i czy warto to rozgrzebywać. Z CSS może być prościej.
 
 
-3. **Instalacja zależności**
+4. **Instalacja zależności**
 
    _Po stworzeniu projektu, przejdźmy do jego lokalizacji w terminalu:_
    * `cd recipe-manager`
-  
-   _Następnie zainstalujmy zależności:_
+> [!TIP]
+> Zdaje się nie jest potrzebny podczas tworzenia nowego projektu. Korzystając z CLI i `ng new` node modulsy są instalowane od razu
+
+
+  <mark>_Następnie zainstalujmy zależności:_<mark/>
+   
    * `npm install`
    **Wyjaśnienie:** Komenda npm install pobiera wszystkie wymagane paczki, które są zapisane w pliku package.json – są to biblioteki i narzędzia potrzebne do działania projektu.
 
-4. **Uruchom serwer deweloperski**
+6. **Uruchom serwer deweloperski**
    _W terminalu, będąc w lokalizacji projektu wykonaj:_
      * `ng serve`
      **Wyjaśnienie:** Komenda ng serve uruchamia serwer lokalny, dzięki czemu możesz testować aplikację na swoim komputerze.
@@ -45,7 +58,7 @@
     > Możesz dowolnie definiować własne skrypty, skrypty mogą zawierać flagi
 
 
-5. Teraz omówimy strukturę plików, które zostały wygenerowane po utworzeniu projektu. W edytorze kodu, takim jak VS Code, otwórz folder projektu.
+7. Teraz omówimy strukturę plików, które zostały wygenerowane po utworzeniu projektu. W edytorze kodu, takim jak VS Code, otwórz folder projektu.
     * **angular.json** - _Jest to główny plik konfiguracyjny Angulara. Zawiera ustawienia dotyczące budowania, testowania oraz uruchamiania aplikacji._
     * **package.json** - _Zawiera listę zależności projektu oraz skrypty do zarządzania aplikacją. Znajdziesz tu m.in. informację o tym, jaką wersję Angulara i innych bibliotek używasz._
     * **package-lock.json** - _Zabezpiecza konkretne wersje zależności, które zostały zainstalowane przez npm. Dzięki temu wszyscy deweloperzy pracujący nad projektem będą używać tych samych wersji bibliotek._
@@ -56,7 +69,7 @@
     * **src/app/** - _To najważniejszy folder, ponieważ tutaj będą znajdować się moduły, komponenty i serwisy twojej aplikacji._
 
 
-6. Dlaczego projekt nie zawiera żadnego modułu?
+8. Dlaczego projekt nie zawiera żadnego modułu?
 
 Kiedyś podczas tworzenia projektu, Angular automatycznie wygenerowałby podstawowy moduł o nazwie AppModule. Znalazłbyś go w pliku:
 **src/app/app.module.ts.**
@@ -94,17 +107,20 @@ Więcej o standalone komponentach powiemy sobie w dalszej części materiału.
         > `    <p>{{ recipe.description }}</p>`
         > `  </li>`
         > `</ul>`
-
-        **Wyjaśnienie**: Użyliśmy dyrektywy *ngFor, która iteruje po tablicy recipes i generuje elementy listy na podstawie danych. W Angularze {{ recipe.title }} i {{ recipe.description }} to przykład tzw. interpolacji.
         
-      * By iteracja po tablicy była możliwa musisz zaimportować dyrektywę ngFor. Przejdź do `src/app/recipe-list/recipe-list.component.ts` i dodaj do listy importów `ngFor`
-        > `@Component({`
-        > `  selector: 'app-recipe-list',`
-        > `  standalone: true,`
-        > `  imports: [NgFor],`
-        > `  templateUrl: './recipe-list.component.html',`
-        > `  styleUrl: './recipe-list.component.scss'`
-        > `})`
+> [!TIP]
+> Celowo *ngFor? Osobiście chyba bym zrobił odwrotnie - szedł w nowy sytnax i pokazał że jest możliwość (i projekty tak będą często miały) z starym syntaxem. Ten nowy jest prostszy do ogarnięcia.> 
+
+**Wyjaśnienie**: Użyliśmy dyrektywy *ngFor, która iteruje po tablicy recipes i generuje elementy listy na podstawie danych. W Angularze {{ recipe.title }} i {{ recipe.description }} to przykład tzw. interpolacji.
+
+* By iteracja po tablicy była możliwa musisz zaimportować dyrektywę ngFor. Przejdź do `src/app/recipe-list/recipe-list.component.ts` i dodaj do listy importów `ngFor`
+> `@Component({`
+> `  selector: 'app-recipe-list',`
+> `  standalone: true,`
+> `  imports: [NgFor],`
+> `  templateUrl: './recipe-list.component.html',`
+> `  styleUrl: './recipe-list.component.scss'`
+> `})`
   * Otwórz plik `src/app/app.component.ts` a następnie: 
     * zaimporuj stworzony komponent poprzez dodanie `RecipeListComponent` do listy importów.
   * Teraz otwórz plik `src/app/app.component.html`, a następnie:
