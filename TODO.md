@@ -1,3 +1,6 @@
+> [!TIP]
+> Taka uwaga - widzę, że nigdzie się nie odsubowujesz z subskrypcji w ts. Celowo? Gdy np. subujesz sie do paramsów z routingu, wtedy takie suby sie nawarstwiają gdy wchodzisz i wychodzisz z komponentów
+
 **Moduł 5: Routing i nawigacja**
 * Routing: tworzenie wielostronicowej aplikacji.
 * Dodanie widoków dla różnych części aplikacji, takich jak: lista przepisów, szczegóły przepisu, formularz dodawania/edycji przepisu.
