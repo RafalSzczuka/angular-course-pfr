@@ -7,6 +7,9 @@ Użycie JSON-server jako lokalnego backendu do symulacji rzeczywistej bazy danyc
 Zaczniemy od stworzenia swojego lokalnego serwera, który posłuży za nasz backend.
 W prawdziwych projektach używa się tego typu rozwiązać by uniknąć problemów gdy API jest niedostępne.
 
+> [!TIP]
+> brakuje mi tu flagi `--save-dev`. Widzę, że json-server wylądował w dependencies, a powinien imo byc w dev.
+
    * W terminalu, będąc w projekcie wykonaj `npm install json-server` - https://www.npmjs.com/package/json-server
    * następne stwórzmy folder a w nim plik `fake-api/db.json`
    * z pliku `component-code.ts` - krok 1 - przekopiuj kod do `fake-api/db.json`.
