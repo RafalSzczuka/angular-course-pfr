@@ -36,21 +36,28 @@ _Serwisy w Angularze pozwalają oddzielić logikę biznesową od warstwy prezent
     * Na początek przenieśmy do serwisu `recipe-service.ts`  przepisy z komponentu `recipe-list`. Uzupełnijmy brakujące pola modelu wg uznania. (ingredients, preparationTime, difficulty)
     * Teraz dodajmy metodę `getRecipes(): RecipeModel[]` którą pobierzemy nasz przepisy w przyszłości.
     * Gdy metoda jest już gotowa, a przepisy są przeniesione do ciała serwisu, wstrzyknijmy serwis `RecipeService` do komponentu `RecipeListComponent` i sprawmy by nasza aplikacja zaczęła działać z wykorzystaniem serwisu.
-      * By wstrzyknąć serwis do komponentu będzie potrzebny nam konstruktor `constructor() {}` w ciele klasy komponentu. Dodajmy go.
-      * Następnie jako parametr podajmy nasz serwis `private recipeService: RecipeService`
-      * W komponencie `RecipeListComponent` dodajmy zmienną `recipes: RecipeModel[]  = []`.
-      * Następnie zaciągnijmy dane z serwisu i przypiszmy je do naszej zmiennej. Żeby zrobić to w odpowiednim momencie, musimy dodać `ngOnInit` life cycle hook.
-        Zrobimy to poprzez implementacje interfejsu OnInit i spełnienie jego kontraktu, czyli stworzenie metody `ngOnInit(): void {}`
-      * W ciele ngOnInit przypisz wywołanie funkcji getRecipes z serwisu, o tak
-        > `ngOnInit(): void {`
-        > `    this.recipes =  this.recipeService.getRecipes();`
-        > `}`
-    * Cały kod znajdziesz w `component-code.ts`, jednak chciałbym żebyście najpierw spróbowali sami.
 
-    Akcja przypisania wartości do zmiennej recipe dzieje się w metodzie ngOnInit, bo to pierwszy moment w którym wszystko potrzebne jest gotowe, komponent jest wyrenderowany i mamy dostępn do jego zależności, serwis jest stworzony a jego instancja jest dostępna w scope komponentu.
-    Jest to bardzo istotne, w momencie w którym przejdziemy do programowania reaktywnego, zrozumienie cyków życia jest niezbędne.
-    Po wykonaniu wszystkich kroków aplikacja powinna wrócić do stanu sprzed dodania serwisu.
-    Możesz mieć problem z importami, wyrównaj je.
+> [!TIP]
+> Dodałbym info, że poza konstruktorem istnieje możliwość wstrzykiwania używając po prostu metody `inject()`. Dalej używałbym tutaj konstruktora, jedynie bym wspomniał że idzie nowe ;)
+
+   * <mark>By wstrzyknąć serwis do komponentu będzie potrzebny nam konstruktor `constructor() {}` w ciele klasy komponentu. Dodajmy go.<mark/>
+   * Następnie jako parametr podajmy nasz serwis `private recipeService: RecipeService`
+   * W komponencie `RecipeListComponent` dodajmy zmienną `recipes: RecipeModel[]  = []`.
+   * Następnie zaciągnijmy dane z serwisu i przypiszmy je do naszej zmiennej. Żeby zrobić to w odpowiednim momencie, musimy dodać `ngOnInit` life cycle hook.
+     Zrobimy to poprzez implementacje interfejsu OnInit i spełnienie jego kontraktu, czyli stworzenie metody `ngOnInit(): void {}`
+   * W ciele ngOnInit przypisz wywołanie funkcji getRecipes z serwisu, o tak
+     > `ngOnInit(): void {`
+     > `    this.recipes =  this.recipeService.getRecipes();`
+     > `}`
+ * Cały kod znajdziesz w `component-code.ts`, jednak chciałbym żebyście najpierw spróbowali sami.
+
+> [!TIP]
+> Ogólnie rzecz biorąc przy pobieraniu danych nie trzeba wcale robić tego w hooku `ngOnInit`. Możesz zadeklarować to po prostu tworząc pole `public recipes = this.recipeService.getRecipes()`. Skoro dane przychodzą asynchronicznie to hook tutaj nie ma za wiele do rzeczy - ba, wręcz nieraz lepiej jest szybciej zainicjować niż na onInit.
+
+ Akcja przypisania wartości do zmiennej recipe dzieje się w metodzie ngOnInit, bo to pierwszy moment w którym wszystko potrzebne jest gotowe, komponent jest wyrenderowany i mamy dostępn do jego zależności, serwis jest stworzony a jego instancja jest dostępna w scope komponentu.
+ Jest to bardzo istotne, w momencie w którym przejdziemy do programowania reaktywnego, zrozumienie cyków życia jest niezbędne.
+ Po wykonaniu wszystkich kroków aplikacja powinna wrócić do stanu sprzed dodania serwisu.
+ Możesz mieć problem z importami, wyrównaj je.
 
 4. Rozszerzyliśmy model o dodatkowe właściwości, zróbmy to samo z widokiem komponentów wyświetlających nasze przepisy
     *  Przejdzmy do `recipe-list-element.component.html` dostosujmy widok do modelu analogiczne do tego co już jest tam robione. Dorzućmy linijki które wyświtlą nam poziom trudności oraz czas przygotowania. Gotowy kod znajdziesz w `template-code.html`, najpierw spróbuj wykonać wszystko sam.
