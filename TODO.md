@@ -24,6 +24,9 @@ W tym module nauczymy się tworzyć własne dyrektywy i pipes. Naszym celem będ
    * przejdźmy do konsoli w dev-tools przeglądarki - zobaczysz log'a którego wywołujemy z konstruktora dyrektywy.
 
 3. Implementacja dyrektywy `HighlightOnHoverDirective`
+
+>[!TIP]
+> ciekawostka - Renderer2 nie jest juz niezbędny. Można w zasadzie korzystać wprost z ElementRef i działać na WebApi z tym elementem - zmieniać klasy, atrybuty itp. Źródło: https://www.youtube.com/shorts/Y6nn_jgd4ck
    * przejdź do `highlight-on-hover.directive.ts`, dodamy tam logikę kóra sprawi, komponent listy podświetli się na niebiesko przy akcji hover'a.
      Wszystko zdefiniujemy w ramach naszej syrektywy, tak by dyrektywa była w pełni odizolowana i jedyne czego będziemy potrzebować do jej użycia to import i selektor.
    * usuńmy log'a z konstruktora. Następnie wstrzyknijmy ElementRef oraz Renderer2.
